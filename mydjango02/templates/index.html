@@ -1,0 +1,41 @@
+{# 장고 템플릿 엔진 주석 문법 : templates/index.html 경로의 파일 #}
+
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>Melon List</title>
+    <style>
+        body {
+            width: 400px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Melon List</h1>
+
+    <table>
+        <thead>
+            <tr><th>곡명</th><th>가수</th></tr>
+        </thead>
+        <tbody>
+            {% for song in song_list %}
+                <tr>
+                    <td>{{ song.곡명 }}</td>
+                    <td>{{ song.가수 }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
