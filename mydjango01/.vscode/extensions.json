@@ -1,0 +1,13 @@
+// 프로젝트/.vscode/extensions.json
+//  - 아래 설정을 추가하면 확장 탭에서
+//    추천 확장으로 확인하실 수 있습니다.
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.black-formatter",
+    "batisteo.vscode-django",
+    "Glavin001.unibeautify-vscode",
+    "esbenp.prettier-vscode",
+    "PKief.material-icon-theme"
+  ]
+}
