@@ -25,6 +25,8 @@ django.setup()
 
 
 def index(request):
+    query = request.GET.get("query", "").strip()  # 검색어
+
     json_url = "https://raw.githubusercontent.com/pyhub-kr/dump-data/main/melon/melon-20230906.json"
 
     response = requests.get(json_url)
@@ -33,6 +35,12 @@ def index(request):
         song_list = response.json()
     else:
         song_list = []
+
+    if query:
+        song_list = filter(
+            lambda song: query in song["가수"],
+            song_list,
+        )
 
     # query = "Love"  # 검색어
     #
@@ -46,7 +54,7 @@ def index(request):
     # # 파이썬 빌트인 함수 filter를 활용해서, 곡명에 검색어가 포함된 노래만 필터링
     # song_list = filter(lambda song: query in song["가수"] or query in song["곡명"], song_list)
 
-    return render(request, "index.html", {"song_list": song_list})
+    return render(request, "index.html", {"song_list": song_list, "query": query})
 
 
 urlpatterns = [
