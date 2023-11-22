@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.management import execute_from_command_line
 from django.db import models
 from django.db.models import Q
+from django.http import JsonResponse
 # from django.db import connection
 # from django.http import HttpResponse
 from django.shortcuts import render
@@ -49,13 +50,13 @@ class Song(models.Model):
 
 
 def index(request):
-    query = request.GET.get("query", "").strip()  # 검색어
-
-    song_list = Song.objects.all()  # QuerySet
-    if query:
-        song_list = song_list.filter(
-            Q(곡명__icontains=query) | Q(가수__icontains=query)
-        )
+    # query = request.GET.get("query", "").strip()  # 검색어
+    #
+    # song_list = Song.objects.all()  # QuerySet
+    # if query:
+    #     song_list = song_list.filter(
+    #         Q(곡명__icontains=query) | Q(가수__icontains=query)
+    #     )
 
     # song_list = get_song_list(query)
 
@@ -71,10 +72,28 @@ def index(request):
     # # 파이썬 빌트인 함수 filter를 활용해서, 곡명에 검색어가 포함된 노래만 필터링
     # song_list = filter(lambda song: query in song["가수"] or query in song["곡명"], song_list)
 
+    # song_list_data = list(song_list.values())
+
+    return render(request, "index.html")
+
+
+def song_list_api(request):
+    query = request.GET.get("query", "").strip()  # 검색어
+
+    song_list = Song.objects.all()  # QuerySet
+    if query:
+        song_list = song_list.filter(
+            Q(곡명__icontains=query) | Q(가수__icontains=query)
+        )
+
     song_list_data = list(song_list.values())
 
-    return render(request, "index.html", {"song_list_data": song_list_data, "query": query})
-
+    return JsonResponse(
+        song_list_data,
+        safe=False,
+        json_dumps_params={"ensure_ascii": False},
+        content_type="application/json; charset=utf-8",
+    )
 
 # def get_song_list(query: str):
 #     # connection = sqlite3.connect("melon-20230906.sqlite3")
@@ -103,6 +122,7 @@ def index(request):
 
 urlpatterns = [
     path("", index),
+    path("api/song-list.json", song_list_api),
 ]
 
 
