@@ -71,7 +71,9 @@ def index(request):
     # # 파이썬 빌트인 함수 filter를 활용해서, 곡명에 검색어가 포함된 노래만 필터링
     # song_list = filter(lambda song: query in song["가수"] or query in song["곡명"], song_list)
 
-    return render(request, "index.html", {"song_list": song_list, "query": query})
+    song_list_data = list(song_list.values())
+
+    return render(request, "index.html", {"song_list_data": song_list_data, "query": query})
 
 
 # def get_song_list(query: str):
