@@ -3,47 +3,39 @@
 <!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Melon List</title>
-    <style>
-        body {
-            width: 400px;
-            margin: 0 auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        form { margin-bottom: 10px; }
-        form input { width: 100%; }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
 </head>
 <body>
 
-    <h1>Melon List</h1>
+<div class="container">
+    <h1 class="fw-bold">Melon List</h1>
 
-    <form action="" method="get" autocomplete="off">
+    <form action="" method="get" autocomplete="off" class="my-4">
         <input type="text" name="query" placeholder="검색어를 입력해주세요." autofocus
                value="{{ query }}"
+               class="form-control"
         >
     </form>
 
-    <table>
+    <table class="table table-hover table-bordered">
         <thead>
-            <tr><th>곡명</th><th>가수</th></tr>
+        <tr>
+            <th>곡명</th>
+            <th>가수</th>
+        </tr>
         </thead>
         <tbody>
-            {% for song in song_list %}
-                <tr>
-                    <td>{{ song.곡명 }}</td>
-                    <td>{{ song.가수 }}</td>
-                </tr>
-            {% endfor %}
+        {% for song in song_list %}
+        <tr>
+            <td>{{ song.곡명 }}</td>
+            <td>{{ song.가수 }}</td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
+</div>
 
 </body>
 </html>
