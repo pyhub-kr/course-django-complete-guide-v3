@@ -6,6 +6,9 @@
     <meta charset="UTF-8"/>
     <title>Melon List</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.16/babel.min.js"></script>
 </head>
 <body>
 
@@ -30,22 +33,36 @@
         <tbody></tbody>
     </table>
 
-    <script>
-      fetch("/api/song-list.json")
-        .then(response => response.json())
-        .then(songList => {
-          songList.forEach(song => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${song['곡명']}</td>
-                <td>${song['가수']}</td>
-              `;
-            document.querySelector("#song-list-table tbody").append(tr);
+    <script type="text/babel">
+        function SongList() {
+          const [songList, setSongList] = React.useState([]);
 
-          });
-        });
-      /*
-       */
+          React.useEffect(() => {
+              fetch("/api/song-list.json")
+                .then(response => response.json())
+                .then(_songList => {
+                  setSongList(_songList);
+                });
+          }, []);
+
+          return (
+            <>
+              {songList.map(song => {
+                return (
+                  <tr key={song.id}>
+                    <td>{song.곡명}</td>
+                    <td>{song.가수}</td>
+                  </tr>
+                )
+              })}
+            </>
+          )
+        }
+
+        ReactDOM.render(
+          <SongList />,
+          document.querySelector("#song-list-table tbody")
+        )
     </script>
 </div>
 
