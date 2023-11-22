@@ -30,19 +30,22 @@
         <tbody></tbody>
     </table>
 
-    {{ song_list_data|json_script:"song-list-json" }}
-
     <script>
-        const songList = JSON.parse(document.querySelector("#song-list-json").textContent);
-        songList.forEach(song => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${song['곡명']}</td>
-            <td>${song['가수']}</td>
-          `;
-          document.querySelector("#song-list-table tbody").append(tr);
+      fetch("/api/song-list.json")
+        .then(response => response.json())
+        .then(songList => {
+          songList.forEach(song => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${song['곡명']}</td>
+                <td>${song['가수']}</td>
+              `;
+            document.querySelector("#song-list-table tbody").append(tr);
 
+          });
         });
+      /*
+       */
     </script>
 </div>
 
