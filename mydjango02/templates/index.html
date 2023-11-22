@@ -5,32 +5,32 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Melon List</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
-<div class="container">
-    <h1 class="fw-bold">Melon List</h1>
+<div class="container mx-auto">
+    <h1 class="font-bold text-2xl">Melon List</h1>
 
     <form action="" method="get" autocomplete="off" class="my-4">
         <input type="text" name="query" placeholder="검색어를 입력해주세요." autofocus
                value="{{ query }}"
-               class="form-control"
+               class="w-full p-2 border rounded focus:outline-none focus:ring"
         >
     </form>
 
-    <table class="table table-hover table-bordered">
+    <table class="min-w-full bg-white border border-gray-300 divide-y divide-gray-300">
         <thead>
-        <tr>
-            <th>곡명</th>
-            <th>가수</th>
+        <tr class="text-center">
+            <th class="py-2 px-4 border-b">곡명</th>
+            <th class="py-2 px-4 border-b">가수</th>
         </tr>
         </thead>
         <tbody>
         {% for song in song_list %}
-        <tr>
-            <td>{{ song.곡명 }}</td>
-            <td>{{ song.가수 }}</td>
+        <tr class="hover:bg-gray-200">
+            <td class="py-2 px-4">{{ song.곡명 }}</td>
+            <td class="py-2 px-4">{{ song.가수 }}</td>
         </tr>
         {% endfor %}
         </tbody>
