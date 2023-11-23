@@ -28,6 +28,8 @@ class SongAdmin(admin.ModelAdmin):
         for song in queryset:
             if song.like_count != likes_dict.get(song.melon_uid):
                 song.like_count = likes_dict.get(song.melon_uid)
+                # song.save()  # 모델의 모든 필드에 대해서 업데이트를 수행
+                # song.save(update_fields=["like_count"])
                 changed_count += 1
 
         Song.objects.bulk_update(
