@@ -3,9 +3,10 @@ from urllib.request import urlopen
 
 from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from hottrack.models import Song
+from hottrack.utils.cover import make_cover_image
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -40,3 +41,21 @@ def index(request: HttpRequest) -> HttpResponse:
             "query": query,
         },
     )
+
+
+def cover_png(request, pk):
+    # 최대값 512, 기본값 256
+    canvas_size = min(512, int(request.GET.get("size", 256)))
+
+    song = get_object_or_404(Song, pk=pk)
+
+    cover_image = make_cover_image(
+        song.cover_url, song.artist_name, canvas_size=canvas_size
+    )
+
+    # param fp : filename (str), pathlib.Path object or file object
+    # image.save("image.png")
+    response = HttpResponse(content_type="image/png")
+    cover_image.save(response, format="png")
+
+    return response

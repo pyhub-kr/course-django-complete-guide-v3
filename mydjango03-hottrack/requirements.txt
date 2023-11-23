@@ -1,2 +1,4 @@
 django==4.2.7
 django-debug-toolbar==4.2.0
+requests==2.31.0
+pillow==10.1.0
