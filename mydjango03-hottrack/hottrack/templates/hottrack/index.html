@@ -78,18 +78,11 @@
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div class="col">
-                    {% include "hottrack/_song.html" %}
-                </div>
-                <div class="col">
-                    {% include "hottrack/_song.html" %}
-                </div>
-                <div class="col">
-                    {% include "hottrack/_song.html" %}
-                </div>
-                <div class="col">
-                    {% include "hottrack/_song.html" %}
-                </div>
+                {% for song in song_list %}
+                    <div class="col">
+                        {% include "hottrack/_song.html" with song=song only %}
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
