@@ -1,5 +1,8 @@
 import json
+from io import BytesIO
 from urllib.request import urlopen
+
+import pandas as pd
 
 from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse
@@ -41,6 +44,20 @@ def index(request: HttpRequest) -> HttpResponse:
             "query": query,
         },
     )
+
+
+def export_csv(request):
+    song_qs = Song.objects.all()
+    df = pd.DataFrame(data=song_qs.values())
+
+    export_file = BytesIO()
+
+    df.to_csv(export_file, index=False, encoding="utf-8-sig")
+
+    response = HttpResponse(content=export_file.getvalue(), content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="hottrack.csv"'
+
+    return response
 
 
 def cover_png(request, pk):
