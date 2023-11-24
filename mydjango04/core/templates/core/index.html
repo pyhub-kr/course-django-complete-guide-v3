@@ -14,6 +14,15 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <style>
+        /* bootstrap5 스타일 따라하기 */
+        .alert-secondary, .alert-debug { color: #41464b; background: #e2e3e5; border: 1px solid #d3d6d8; }
+        .alert-info { color: #055160; background: #cff4fc; border: 1px solid #b6effb; }
+        .alert-success { color: #0f5132; background: #d1e7dd; border: 1px solid #badbcc; }
+        .alert-warning { color: #664d03; background: #fff3cd; border: 1px solid #ffecb5; }
+        .alert-danger, .alert-error { color: #842029; background: #f8d7da; border: 1px solid #f5c2c7; }
+    </style>
 </head>
 <body>
 
@@ -26,6 +35,7 @@
             Toastify({
               text: "{{ message }}",
               duration: 3000,
+              className: "alert-{{ message.level_tag }}",
             }).showToast();
         {% endfor %}
     </script>
