@@ -14,14 +14,18 @@
 <div class="container">
     <h1>core</h1>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.level_tag }}">
-                [{{ message.level_tag }}]
-                {{ message.message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+    {% for message in messages %}
+        <div class="alert
+                {% if message.level_tag == "debug" %}
+                    alert-secondary
+                {% elif message.level_tag == "error" %}
+                    alert-danger
+                {% else %}
+                    alert-{{ message.level_tag }}
+                {% endif %}">
+            {{ message.message }}
+        </div>
+    {% endfor %}
 </div>
 
 </body>
