@@ -11,13 +11,27 @@
 
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
 
 <div class="container">
     <h1>core</h1>
 
-    {% include "_messages_as_toast.html" %}
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+            Toastify({
+              text: "{{ message }}",
+              duration: 3000,
+            }).showToast();
+        {% endfor %}
+    </script>
+{% endif %}
+
+{#    {% include "_messages_as_toast.html" %}#}
 </div>
 
 </body>
