@@ -31,6 +31,19 @@
 
     {{ messages_list|json_script:"messages-list" }}
 
+    <script>
+        const jsonString = document.querySelector("#messages-list").textContent;
+        const messagesList = JSON.parse(jsonString);
+        console.log(messagesList);
+        messagesList.forEach(({ level_tag, message }) => {
+          Toastify({
+            text: message,
+            className: `alert-${level_tag}`,
+            duration: 3000,
+          }).showToast();
+        });
+    </script>
+
 {#    {% include "_messages_as_toast.html" %}#}
 </div>
 
