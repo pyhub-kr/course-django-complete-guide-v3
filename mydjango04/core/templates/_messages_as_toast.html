@@ -1,0 +1,38 @@
+{# _messages_as_toast.html #}
+
+{% if messages %}
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        {% for message in messages %}
+            <div class="
+                    toast align-items-center border-0
+                    {% if message.level_tag == "info" %}text-white bg-primary
+                    {% elif message.level_tag == "success" %}text-white bg-success
+                    {% elif message.level_tag == "warning" %}text-dark bg-warning
+                    {% elif message.level_tag == "error" %}text-white bg-danger
+                    {% else %}text-dark bg-light
+                    {% endif %}">
+                <div class="d-flex">
+                    <div class="toast-body">{{ message }}</div>
+                    <button type="button" class="btn-close
+                    {% if message.level_tag == "warning" or message.level_tag == "debug" %}
+                        btn-close-dark
+                    {% else %}
+                        btn-close-white
+                    {% endif %}
+                    me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+      (function () {
+        const toast_container = document.currentScript.previousElementSibling;
+        document.addEventListener("DOMContentLoaded", function () {
+          toast_container.querySelectorAll(".toast").forEach(function (el) {
+            const toast = new bootstrap.Toast(el);
+            toast.show();
+          });
+        });
+      })();
+    </script>
+{% endif %}
