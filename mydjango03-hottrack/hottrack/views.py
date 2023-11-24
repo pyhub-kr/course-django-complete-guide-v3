@@ -1,11 +1,12 @@
 import json
 from io import BytesIO
+from typing import Literal
 from urllib.request import urlopen
 
 import pandas as pd
 
 from django.db.models import QuerySet, Q
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 
 from hottrack.models import Song
@@ -46,16 +47,25 @@ def index(request: HttpRequest) -> HttpResponse:
     )
 
 
-def export_csv(request):
+def export(request, format: Literal["csv", "xlsx"]):
     song_qs = Song.objects.all()
     df = pd.DataFrame(data=song_qs.values())
 
     export_file = BytesIO()
 
-    df.to_csv(export_file, index=False, encoding="utf-8-sig")
+    if format == "csv":
+        content_type = "text/csv"
+        filename = "hottrack.csv"
+        df.to_csv(path_or_buf=export_file, index=False, encoding="utf-8-sig")
+    elif format == "xlsx":
+        content_type = "application/vnd.ms-excel"
+        filename = "hottrack.xlsx"
+        df.to_excel(excel_writer=export_file, index=False)
+    else:
+        return HttpResponseBadRequest(f"Invalid format : {format}")
 
-    response = HttpResponse(content=export_file.getvalue(), content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="hottrack.csv"'
+    response = HttpResponse(content=export_file.getvalue(), content_type=content_type)
+    response["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
 
     return response
 
