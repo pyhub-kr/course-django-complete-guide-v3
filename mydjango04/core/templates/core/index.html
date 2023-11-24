@@ -29,17 +29,7 @@
 <div class="container">
     <h1>core</h1>
 
-    {% if messages %}
-    <script>
-        {% for message in messages %}
-            Toastify({
-              text: "{{ message }}",
-              duration: 3000,
-              className: "alert-{{ message.level_tag }}",
-            }).showToast();
-        {% endfor %}
-    </script>
-{% endif %}
+    {{ messages_list|json_script:"messages-list" }}
 
 {#    {% include "_messages_as_toast.html" %}#}
 </div>
