@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_bootstrap5",
     "core",
+    "hottrack",
 ]
 
 MIDDLEWARE = [

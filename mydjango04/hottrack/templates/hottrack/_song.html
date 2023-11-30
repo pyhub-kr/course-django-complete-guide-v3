@@ -1,0 +1,21 @@
+{# 경로 : hottrack/templates/hottrack/_song.html #}
+
+<div class="card shadow-sm">
+    {# refs: https://picsum.photos/ #}
+    <img src="{{ song.cover_url }}" alt="{{ song.name }}" class="cart-img-top" />
+
+    <div class="card-body">
+        <p class="card-text">
+            <div class="text-nowrap overflow-hidden text-truncate">{{ song.artist_name }} | {{ song.name }}</div>
+        </p>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+                <a href="{{ song.melon_detail_url }}" type="button" class="btn btn-sm btn-outline-danger">Melon</a>
+                <a href="{{ song.youtube_search_url }}" type="button" class="btn btn-sm btn-outline-danger">Youtube</a>
+            </div>
+            <small class="text-body-secondary">
+                {{ song.like_count }}
+            </small>
+        </div>
+    </div>
+</div>

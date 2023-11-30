@@ -1,2 +1,6 @@
 django==4.2.7
 django-bootstrap5==23.3
+
+requests==2.31.0
+pillow==10.1.0
+pandas==2.1.3
