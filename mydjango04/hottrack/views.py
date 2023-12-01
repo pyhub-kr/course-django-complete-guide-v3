@@ -9,6 +9,7 @@ import pandas as pd
 from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import DetailView
 
 from hottrack.models import Song
 from hottrack.utils.cover import make_cover_image
@@ -49,6 +50,9 @@ def index(request: HttpRequest, release_date: datetime.date = None) -> HttpRespo
             "query": query,
         },
     )
+
+
+song_detail = DetailView.as_view(model=Song)
 
 
 def export(request, format: Literal["csv", "xlsx"]):
