@@ -13,6 +13,8 @@
                 {# TODO: 향후 URL Reverse로 변경하기 : "hottrack:song_detail" #}
                 <a href="/hottrack/{{ song.pk }}/" type="button"
                    class="btn btn-sm btn-outline-primary">Detail</a>
+                <a href="/hottrack/melon-{{ song.melon_uid }}/" type="button"
+                   class="btn btn-sm btn-outline-primary">Detail#2</a>
                 <a href="{{ song.melon_detail_url }}" type="button" class="btn btn-sm btn-outline-danger">Melon</a>
                 <a href="{{ song.youtube_search_url }}" type="button" class="btn btn-sm btn-outline-danger">Youtube</a>
             </div>

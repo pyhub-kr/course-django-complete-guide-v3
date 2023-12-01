@@ -52,7 +52,11 @@ def index(request: HttpRequest, release_date: datetime.date = None) -> HttpRespo
     )
 
 
-song_detail = DetailView.as_view(model=Song)
+song_detail = DetailView.as_view(
+    model=Song,
+    slug_field="melon_uid",
+    slug_url_kwarg="melon_uid",
+)
 
 
 def export(request, format: Literal["csv", "xlsx"]):
