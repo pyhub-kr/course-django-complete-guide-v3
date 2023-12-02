@@ -1,0 +1,17 @@
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; 처음으로</a>
+            <a href="?page={{ page_obj.previous_page_number }}">이전페이지</a>
+        {% endif %}
+
+        <span class="current">
+            현재 {{ page_obj.number }}페이지 (전체: {{ page_obj.paginator.num_pages }})
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">다음페이지</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">마지막으로</a>
+        {% endif %}
+    </span>
+</div>

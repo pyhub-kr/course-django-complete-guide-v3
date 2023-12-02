@@ -18,6 +18,7 @@ from hottrack.utils.cover import make_cover_image
 class IndexView(ListView):
     model = Song
     template_name = "hottrack/index.html"
+    paginate_by = 10
 
     def get_queryset(self):
         qs = super().get_queryset()
