@@ -9,7 +9,7 @@ import pandas as pd
 from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, YearArchiveView
 
 from hottrack.models import Song
 from hottrack.utils.cover import make_cover_image
@@ -121,3 +121,9 @@ def cover_png(request, pk):
     cover_image.save(response, format="png")
 
     return response
+
+
+class SongYearArchiveView(YearArchiveView):
+    model = Song
+    date_field = "release_date"  # 조회할 날짜 필드
+    make_object_list = True

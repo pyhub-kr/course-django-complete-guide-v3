@@ -9,4 +9,9 @@ urlpatterns = [
     path(route="archives/<date:release_date>/", view=views.index),
     re_path(route=r"^export\.(?P<format>(csv|xlsx))$", view=views.export),
     path(route="<int:pk>/cover.png", view=views.cover_png),
+    path(
+        route="archives/<int:year>/",
+        view=views.SongYearArchiveView.as_view(),
+        name="song_archive_year",
+    ),
 ]
