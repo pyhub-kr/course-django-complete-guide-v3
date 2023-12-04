@@ -17,6 +17,7 @@ from django.views.generic import (
     MonthArchiveView,
     DayArchiveView,
     TodayArchiveView,
+    WeekArchiveView,
 )
 
 from hottrack.models import Song
@@ -166,3 +167,12 @@ class SongTodayArchiveView(TodayArchiveView):
             except ValueError:
                 # fake_today 파라미터가 없거나 날짜 형식이 잘못되었을 경우
                 return super().get_dated_items()
+
+
+class SongWeekArchiveView(WeekArchiveView):
+    model = Song
+    date_field = "release_date"
+    # date_list_period = "week"
+    # 템플릿 필터 date의 "W" 포맷은 ISO 8601에 따라 한 주의 시작을 월요일로 간주합니다.
+    #  - 템플릿 단에서 한 주의 시작을 일요일로 할려면 커스텀 템플릿 태그 구현이 필요합니다.
+    week_format = "%W"  # "%U" (디폴트, 한 주의 시작을 일요일), %W (한 주의 시작을 월요일)
