@@ -39,4 +39,9 @@ urlpatterns = [
         view=views.SongArchiveIndexView.as_view(),
         name="song_archive_index",
     ),
+    path(
+        route="<int:year>/<int:month>/<int:day>/<int:pk>/",
+        view=views.SongDateDetailView.as_view(),
+        name="song_date_detail",
+    ),
 ]
