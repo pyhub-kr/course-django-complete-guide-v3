@@ -9,7 +9,7 @@ import pandas as pd
 from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView, ListView, YearArchiveView
+from django.views.generic import DetailView, ListView, YearArchiveView, MonthArchiveView
 
 from hottrack.models import Song
 from hottrack.utils.cover import make_cover_image
@@ -127,3 +127,11 @@ class SongYearArchiveView(YearArchiveView):
     model = Song
     date_field = "release_date"  # 조회할 날짜 필드
     make_object_list = True
+
+
+class SongMonthArchiveView(MonthArchiveView):
+    model = Song
+    # paginate_by = None
+    date_field = "release_date"
+    # 날짜 포맷 : "%m" (숫자, ex: "01", "1" 등), "%b" (디폴트, 월 이름의 약어, ex: "Jan", "Feb" 등)
+    month_format = "%m"

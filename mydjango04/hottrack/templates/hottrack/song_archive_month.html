@@ -1,0 +1,49 @@
+{# hottrack/song_archive_month.html #}
+
+{% extends "hottrack/base.html" %}
+
+{% block content %}
+
+<div class="p-3 d-flex gap-3">
+    <div>
+        <h2>{{ month|date:"Y년 m월" }}</h2>
+
+        <div class="text-center">
+            <div class="btn-group">
+                {% if previous_month %}
+                    <a href="{% url 'song_archive_month' previous_month.year previous_month.month %}"
+                       class="btn btn-outline-primary">
+                        {{ previous_month|date:"Y년 m월" }}
+                    </a>
+                {% endif %}
+                {% if next_month %}
+                    <a href="{% url 'song_archive_month' next_month.year next_month.month %}"
+                       class="btn btn-outline-primary">
+                        {{ next_month|date:"Y년 m월" }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <ul>
+            {% for song in song_list %}
+                <li>
+                    {{ song.name|truncatechars:20 }}
+                    <small class="text-secondary fw-light">{{ song.release_date|date:"Y년 m월 d일" }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h3>Nav</h3>
+        <ul>
+            {% for date in date_list %}
+                <li>
+                    {{ date|date:"Y년 m월 d일" }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
