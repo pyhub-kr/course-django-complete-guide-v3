@@ -18,6 +18,7 @@ from django.views.generic import (
     DayArchiveView,
     TodayArchiveView,
     WeekArchiveView,
+    ArchiveIndexView,
 )
 
 from hottrack.models import Song
@@ -176,3 +177,20 @@ class SongWeekArchiveView(WeekArchiveView):
     # 템플릿 필터 date의 "W" 포맷은 ISO 8601에 따라 한 주의 시작을 월요일로 간주합니다.
     #  - 템플릿 단에서 한 주의 시작을 일요일로 할려면 커스텀 템플릿 태그 구현이 필요합니다.
     week_format = "%W"  # "%U" (디폴트, 한 주의 시작을 일요일), %W (한 주의 시작을 월요일)
+
+
+class SongArchiveIndexView(ArchiveIndexView):
+    model = Song
+    # queryset = Song.objects.all()
+    date_field = "release_date"  # 기준 날짜 필드
+    paginate_by = 10  # 페이지 당 출력할 객체 수
+
+    # date_list_period = "year"  # 단위 : year (디폴트), month, day, week
+    def get_date_list_period(self):
+        # URL Captured Value에 date_list_period가 없으면, date_list_period 속성을 활용합니다.
+        return self.kwargs.get("date_list_period", self.date_list_period)
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data["date_list_period"] = self.get_date_list_period()
+        return context_data

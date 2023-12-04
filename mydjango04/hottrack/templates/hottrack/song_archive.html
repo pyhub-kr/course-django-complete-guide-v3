@@ -1,0 +1,53 @@
+{# hottrack/song_archive.html #}
+
+{% extends "hottrack/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+<div class="p-3 d-flex gap-3">
+    <div>
+        <h2>{{ date_list_period|title }} Index</h2>
+
+        <ul>
+            {% for song in latest %}
+                <li>
+                    {{ song.name|truncatechars:20 }}
+                    <small class="text-secondary fw-light">{{ song.release_date|date:"Y년 m월 d일" }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+
+        {% if page_obj %}{% bootstrap_pagination page_obj %}{% endif %}
+    </div>
+    <div>
+        <h3>{{ date_list_period|title }} 목록</h3>
+        <ul>
+            {% for date in date_list %}
+                <li>
+                    {% if date_list_period == "year" %}
+                        <a href="{% url 'song_archive_year' date.year %}">
+                            {{ date|date:"Y년" }}
+                        </a>
+                    {% elif date_list_period == "month" %}
+                        <a href="{% url 'song_archive_month' date.year date.month %}">
+                            {{ date|date:"Y년 m월" }}
+                        </a>
+                    {% elif date_list_period == "day" %}
+                        <a href="{% url 'song_archive_day' date.year date.month date.day %}">
+                            {{ date|date:"Y년 m월 d일" }}
+                        </a>
+                    {% elif date_list_period == "week" %}
+                        <a href="{% url 'song_archive_week' date.year date.isocalendar.week %}">
+                            {{ date|date:"Y년 W주" }}
+                        </a>
+                    {% else %}
+                        <div class="alert alert-danger">Invalid date_list_period : {{ date_list_period }}</div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

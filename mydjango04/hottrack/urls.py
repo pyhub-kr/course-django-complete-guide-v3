@@ -34,4 +34,9 @@ urlpatterns = [
         view=views.SongWeekArchiveView.as_view(),
         name="song_archive_week",
     ),
+    re_path(
+        route=r"^archives/(?P<date_list_period>year|month|day|week)?/?$",
+        view=views.SongArchiveIndexView.as_view(),
+        name="song_archive_index",
+    ),
 ]
