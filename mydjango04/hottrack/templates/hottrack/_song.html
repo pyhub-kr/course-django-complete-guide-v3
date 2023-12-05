@@ -10,8 +10,7 @@
         </p>
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-                {# TODO: 향후 URL Reverse로 변경하기 : "hottrack:song_detail" #}
-                <a href="/hottrack/{{ song.pk }}/" type="button"
+                <a href="{{ song.get_absolute_url }}"
                    class="btn btn-sm btn-outline-primary">Detail</a>
                 <a href="/hottrack/melon-{{ song.melon_uid }}/" type="button"
                    class="btn btn-sm btn-outline-primary">Detail#2</a>

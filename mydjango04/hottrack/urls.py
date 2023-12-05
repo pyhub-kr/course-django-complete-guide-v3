@@ -39,8 +39,13 @@ urlpatterns = [
         view=views.SongArchiveIndexView.as_view(),
         name="song_archive_index",
     ),
-    path(
-        route="<int:year>/<int:month>/<int:day>/<int:pk>/",
+    # path(
+    #     route="<int:year>/<int:month>/<int:day>/<int:pk>/",
+    #     view=views.SongDateDetailView.as_view(),
+    #     name="song_date_detail",
+    # ),
+    re_path(
+        route=r"^(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<day>\d{1,2})/(?P<slug>[-\w]+)/$",
         view=views.SongDateDetailView.as_view(),
         name="song_date_detail",
     ),
