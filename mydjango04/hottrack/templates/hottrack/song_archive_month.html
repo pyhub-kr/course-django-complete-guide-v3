@@ -11,13 +11,13 @@
             <div class="text-center">
                 <div class="btn-group">
                     {% if previous_month %}
-                        <a href="{% url 'song_archive_month' previous_month.year previous_month.month %}"
+                        <a href="{% url 'hottrack:song_archive_month' previous_month.year previous_month.month %}"
                            class="btn btn-outline-primary">
                             {{ previous_month|date:"Y년 m월" }}
                         </a>
                     {% endif %}
                     {% if next_month %}
-                        <a href="{% url 'song_archive_month' next_month.year next_month.month %}"
+                        <a href="{% url 'hottrack:song_archive_month' next_month.year next_month.month %}"
                            class="btn btn-outline-primary">
                             {{ next_month|date:"Y년 m월" }}
                         </a>
@@ -39,7 +39,7 @@
             <ul>
                 {% for date in date_list %}
                     <li>
-                        <a href="{% url 'song_archive_day' date.year date.month date.day %}">
+                        <a href="{% url 'hottrack:song_archive_day' date.year date.month date.day %}">
                             {{ date|date:"Y년 m월 d일" }}
                         </a>
                     </li>

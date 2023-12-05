@@ -11,13 +11,13 @@
             <div class="text-center">
                 <div class="btn-group">
                     {% if previous_week %}
-                        <a href="{% url 'song_archive_week' previous_week.year previous_week.isocalendar.week %}"
+                        <a href="{% url 'hottrack:song_archive_week' previous_week.year previous_week.isocalendar.week %}"
                            class="btn btn-outline-primary">
                             {{ previous_week|date:"Y년 W주" }}
                         </a>
                     {% endif %}
                     {% if next_week %}
-                        <a href="{% url 'song_archive_week' next_week.year next_week.isocalendar.week %}"
+                        <a href="{% url 'hottrack:song_archive_week' next_week.year next_week.isocalendar.week %}"
                            class="btn btn-outline-primary">
                             {{ next_week|date:"Y년 W주" }}
                         </a>

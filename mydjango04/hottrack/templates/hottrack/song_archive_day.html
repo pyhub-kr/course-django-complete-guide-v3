@@ -11,13 +11,13 @@
             <div class="text-center">
                 <div class="btn-group">
                     {% if previous_day %}
-                        <a href="{% url 'song_archive_day' previous_day.year previous_day.month previous_day.day %}"
+                        <a href="{% url 'hottrack:song_archive_day' previous_day.year previous_day.month previous_day.day %}"
                            class="btn btn-outline-primary">
                             {{ previous_day|date:"Y년 m월 d일" }}
                         </a>
                     {% endif %}
                     {% if next_day %}
-                        <a href="{% url 'song_archive_day' next_day.year next_day.month next_day.day %}"
+                        <a href="{% url 'hottrack:song_archive_day' next_day.year next_day.month next_day.day %}"
                            class="btn btn-outline-primary">
                             {{ next_day|date:"Y년 m월 d일" }}
                         </a>
@@ -40,11 +40,11 @@
                 지난/다음 달 context data를 지원
             </div>
             <div class="btn-group d-flex w-100">
-                <a href="{% url 'song_archive_month' previous_month.year previous_month.month %}"
+                <a href="{% url 'hottrack:song_archive_month' previous_month.year previous_month.month %}"
                    class="btn btn-primary">
                     지난 달
                 </a>
-                <a href="{% url 'song_archive_month' next_month.year next_month.month %}"
+                <a href="{% url 'hottrack:song_archive_month' next_month.year next_month.month %}"
                    class="btn btn-primary">
                     다음 달
                 </a>

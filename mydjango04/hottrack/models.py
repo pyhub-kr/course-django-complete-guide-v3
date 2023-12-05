@@ -40,7 +40,7 @@ class Song(models.Model):
 
     def get_absolute_url(self) -> str:
         return reverse(
-            "song_date_detail",
+            "hottrack:song_detail",  # song_date_detail에서 변경
             args=[
                 self.release_date.year,
                 self.release_date.month,
