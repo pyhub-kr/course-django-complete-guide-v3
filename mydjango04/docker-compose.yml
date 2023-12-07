@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      # pg로 시작하는 이름은 불가
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypw
+      POSTGRES_DB: mydb
+    ports:
+      # 외부에 노출시킬 포트 : 내부 포트
+      - "5432:5432"
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql_pw
+      MYSQL_DATABASE: mysql_db
+      MYSQL_USER: mysql_user
+      MYSQL_PASSWORD: mysql_pw
+    ports:
+      - "3306:3306"
