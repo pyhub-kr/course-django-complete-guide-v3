@@ -1,5 +1,5 @@
 # blog/models.py
-
+from django.conf import settings
 from django.db import models
 
 
@@ -37,6 +37,7 @@ class Post(models.Model):
         DRAFT = "D", "초안"  # 상수, 값, 레이블
         PUBLISHED = "P", "발행"
 
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     status = models.CharField(
         # 선택지 값 크기에 맞춰 최대 길이를 지정
