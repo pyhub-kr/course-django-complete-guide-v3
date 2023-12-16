@@ -3,6 +3,10 @@ from django.conf import settings
 from django.db import models
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+
 class PostQuerySet(models.QuerySet):
     def published(self):
         return self.filter(status=Post.Status.PUBLISHED)
@@ -37,6 +41,7 @@ class Post(models.Model):
         DRAFT = "D", "초안"  # 상수, 값, 레이블
         PUBLISHED = "P", "발행"
 
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     status = models.CharField(
