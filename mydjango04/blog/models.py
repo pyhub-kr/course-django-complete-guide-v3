@@ -1,6 +1,9 @@
 # blog/models.py
+from uuid import uuid4
+
 from django.conf import settings
 from django.db import models
+from django.db.models import UniqueConstraint
 from django.utils.text import slugify
 
 
@@ -74,9 +77,16 @@ class Post(models.Model):
     def slugify(self, force=False):
         if force or not self.slug:
             self.slug = slugify(self.title, allow_unicode=True)
-            self.slug = self.slug[:120]
+            self.slug = self.slug[:112]
+            # 제목으로 만든 slug 문자열 뒤에 uuid를 붙여 slug의 유일성을 확보
+            self.slug += "-" + uuid4().hex[:8]
 
     def save(self, *args, **kwargs):
         """save 시에 slug 필드를 자동으로 채워줍니다."""
         self.slugify()
         super().save(*args, **kwargs)
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=["slug"], name="unique_slug"),
+        ]
