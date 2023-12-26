@@ -2,8 +2,9 @@
 from uuid import uuid4
 
 from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.db.models import UniqueConstraint
+from django.db.models import UniqueConstraint, Q
 from django.utils.text import slugify
 
 from core.model_fields import IPv4AddressIntegerField, BooleanYNField
@@ -112,3 +113,21 @@ class Article(models.Model):
         default="N",
     )
     is_public_yn = BooleanYNField(default=False)
+
+
+class Review(models.Model):
+    message = models.TextField()
+    rating = models.SmallIntegerField(
+        # validators=[
+        #     MinValueValidator(1),
+        #     MaxValueValidator(5),
+        # ],
+    )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=Q(rating__gte=1, rating__lte=5),
+                name="blog_review_rating_gte_1_lte_5",
+            ),
+        ]
