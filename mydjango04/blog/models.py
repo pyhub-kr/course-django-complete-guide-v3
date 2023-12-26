@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models import UniqueConstraint
 from django.utils.text import slugify
 
-from core.model_fields import IPv4AddressIntegerField
+from core.model_fields import IPv4AddressIntegerField, BooleanYNField
 
 
 class Category(models.Model):
@@ -97,3 +97,16 @@ class Post(models.Model):
 class AccessLog(models.Model):
     ip_generic = models.GenericIPAddressField(protocol="IPv4")
     ip_int = IPv4AddressIntegerField()
+
+
+class Article(models.Model):
+    title = models.CharField(max_length=100)
+    is_public_ch = models.CharField(
+        max_length=1,
+        choices=[
+            ("Y", "예"),
+            ("N", "아니오"),
+        ],
+        default="N",
+    )
+    is_public_yn = BooleanYNField(default=False)
