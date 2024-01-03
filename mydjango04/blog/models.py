@@ -10,6 +10,14 @@ from django.utils.text import slugify
 from core.model_fields import IPv4AddressIntegerField, BooleanYNField
 
 
+class TimestampedModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)  # 최초 생성시각을 자동 저장
+    updated_at = models.DateTimeField(auto_now=True)  # 매 수정시각을 자동 저장
+
+    class Meta:
+        abstract = True
+
+
 class Category(models.Model):
     name = models.CharField(max_length=50)
 
@@ -43,7 +51,7 @@ class PostQuerySet(models.QuerySet):
 #         return super().create(**kwargs)
 
 
-class Post(models.Model):
+class Post(TimestampedModel):
     class Status(models.TextChoices):  # 문자열 선택지
         DRAFT = "D", "초안"  # 상수, 값, 레이블
         PUBLISHED = "P", "발행"
@@ -64,9 +72,6 @@ class Post(models.Model):
         default=Status.DRAFT,
     )
     content = models.TextField()
-
-    created_at = models.DateTimeField(auto_now_add=True)  # 최초 생성시각을 자동 저장
-    updated_at = models.DateTimeField(auto_now=True)  # 매 수정시각을 자동 저장
 
     # published = PublishedPostManager()
     # objects = models.Manager()
@@ -97,12 +102,17 @@ class Post(models.Model):
         verbose_name_plural = "포스팅 목록"
 
 
-class AccessLog(models.Model):
+class Comment(TimestampedModel):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    message = models.TextField()
+
+
+class AccessLog(TimestampedModel):
     ip_generic = models.GenericIPAddressField(protocol="IPv4")
     ip_int = IPv4AddressIntegerField()
 
 
-class Article(models.Model):
+class Article(TimestampedModel):
     title = models.CharField(max_length=100)
     is_public_ch = models.CharField(
         max_length=1,
@@ -115,7 +125,7 @@ class Article(models.Model):
     is_public_yn = BooleanYNField(default=False)
 
 
-class Review(models.Model):
+class Review(TimestampedModel, models.Model):
     message = models.TextField()
     rating = models.SmallIntegerField(
         # validators=[
