@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_bootstrap5",
     "django_extensions",
+    "accounts",
     "blog",
     "core",
     "hottrack",
@@ -125,6 +126,10 @@ DATABASES = {
         "PASSWORD": "mypw",  # 암호
     }
 }
+
+
+AUTH_USER_MODEL = "accounts.User"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
