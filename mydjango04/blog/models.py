@@ -131,3 +131,13 @@ class Review(models.Model):
                 name="blog_review_rating_gte_1_lte_5",
             ),
         ]
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ["name"]
+        indexes = [
+            models.Index(fields=["name"]),
+        ]
