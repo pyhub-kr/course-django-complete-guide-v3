@@ -144,6 +144,7 @@ class Review(TimestampedModel, models.Model):
                 name="blog_review_rating_gte_1_lte_5",
             ),
         ]
+        db_table_comment = "사용자 리뷰와 평점을 저장하는 테이블. 평점(rating)은 1에서 5 사이의 값으로 제한."
 
 
 class Tag(models.Model):
