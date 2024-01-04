@@ -6,3 +6,4 @@ __pycache__
 /mediafiles
 .DS_Store
 .python-version
+draft_models.py
