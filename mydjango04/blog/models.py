@@ -100,6 +100,9 @@ class Post(TimestampedModel):
         ]
         verbose_name = "포스팅"
         verbose_name_plural = "포스팅 목록"
+        permissions = [
+            ("view_premium_post", "프리미엄 컨텐츠를 볼 수 있음"),
+        ]
 
 
 class Comment(TimestampedModel):
