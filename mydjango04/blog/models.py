@@ -148,10 +148,10 @@ class Review(TimestampedModel, models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta:
         ordering = ["name"]
         indexes = [
-            models.Index(fields=["name"]),
+            # models.Index(fields=["name"]),
         ]
