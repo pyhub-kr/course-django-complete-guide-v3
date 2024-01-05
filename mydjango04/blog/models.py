@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint, Q
+from django.db.models.functions import Lower
 from django.utils.text import slugify
 
 from core.model_fields import IPv4AddressIntegerField, BooleanYNField
@@ -154,7 +155,8 @@ class Tag(models.Model):
         ordering = ["name"]
         constraints = [
             models.UniqueConstraint(
-                fields=["name"],
+                Lower("name"),
+                # fields=["name"],
                 name="blog_tag_name_unique",
             )
         ]
