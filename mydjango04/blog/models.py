@@ -148,10 +148,22 @@ class Review(TimestampedModel, models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
 
     class Meta:
         ordering = ["name"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name"],
+                name="blog_tag_name_unique",
+            )
+        ]
         indexes = [
             # models.Index(fields=["name"]),
+            # (PostgreSQL ONLY) unique=True와 동일한 인덱스 만들기
+            models.Index(
+                fields=["name"],
+                name="blog_tag_name_like",
+                opclasses=["varchar_pattern_ops"],
+            )
         ]
