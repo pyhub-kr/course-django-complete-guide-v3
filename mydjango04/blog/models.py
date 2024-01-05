@@ -169,3 +169,28 @@ class Tag(models.Model):
                 opclasses=["varchar_pattern_ops"],
             )
         ]
+
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class Course(models.Model):
+    title = models.CharField(max_length=100)
+
+
+class Enrollment(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    semester = models.CharField(max_length=10)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                "student",
+                "course",
+                Lower("semester"),  # 다수의 expression 지정
+                # fields=["student", "course", "semester"],  # 단순 필드명 나열
+                name="blog_enrollment_uniq",
+            ),
+        ]
