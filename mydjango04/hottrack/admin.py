@@ -20,6 +20,18 @@ class SongAdmin(admin.ModelAdmin):
     list_filter = ["genre", "release_date"]
     actions = ["update_like_count"]
 
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    # def has_view_permission(self, request, obj=None):
+    #     return super().has_view_permission(request, obj)
+
     def update_like_count(self, request, queryset):
         melon_uid_list = queryset.values_list("melon_uid", flat=True)
         likes_dict = get_likes_dict(melon_uid_list)
