@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
+from .filters import ReleaseDateFilter
 from .models import Song
 from .utils.melon import get_likes_dict
 
@@ -17,7 +18,7 @@ class SongAdmin(admin.ModelAdmin):
         "like_count",
         "release_date",
     ]
-    list_filter = ["genre", "release_date"]
+    list_filter = ["genre", ReleaseDateFilter]
     actions = ["update_like_count"]
 
     def has_add_permission(self, request):
