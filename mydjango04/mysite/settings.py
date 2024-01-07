@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -183,3 +183,6 @@ from django.contrib.messages import constants as messages_constants  # noqa
 
 if DEBUG:
     MESSAGE_LEVEL = messages_constants.DEBUG
+
+
+ADMIN_PREFIX = os.environ.get("ADMIN_PREFIX", "secret-admin/")
