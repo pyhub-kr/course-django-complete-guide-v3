@@ -21,3 +21,8 @@ class SuperUser(User):
     def save(self, *args, **kwargs):
         self.is_superuser = True
         super().save(*args, **kwargs)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address = models.CharField(max_length=100, blank=True)
