@@ -65,6 +65,7 @@ class Post(TimestampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="blog_post_set",
+        related_query_name="blog_post",
     )
     title = models.CharField(max_length=100)
     slug = models.SlugField(

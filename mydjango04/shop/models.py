@@ -22,5 +22,6 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="shop_post_set",
+        related_query_name="shop_post",
     )
     message = models.TextField()
