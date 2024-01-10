@@ -61,7 +61,11 @@ class Post(TimestampedModel):
         PUBLISHED = "P", "발행"
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="blog_post_set",
+    )
     title = models.CharField(max_length=100)
     slug = models.SlugField(
         max_length=120, allow_unicode=True, help_text="title 값으로부터 자동변환됩니다."

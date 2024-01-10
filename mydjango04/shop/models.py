@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -14,3 +15,12 @@ class JuniorEmployee(models.Model):
     class Meta:
         managed = False
         db_table = "junior_employee_view"
+
+
+class Post(models.Model):
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="shop_post_set",
+    )
+    message = models.TextField()
