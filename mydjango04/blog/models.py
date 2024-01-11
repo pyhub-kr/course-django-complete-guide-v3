@@ -81,7 +81,12 @@ class Post(TimestampedModel):
         default=Status.DRAFT,
     )
     content = models.TextField()
-    tag_set = models.ManyToManyField("Tag", blank=True)
+    tag_set = models.ManyToManyField(
+        "Tag",
+        blank=True,
+        related_name="blog_post_set",
+        related_query_name="blog_post",
+    )
 
     # published = PublishedPostManager()
     # objects = models.Manager()
