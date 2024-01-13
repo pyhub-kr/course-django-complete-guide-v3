@@ -1,0 +1,203 @@
+[
+  {
+    "model": "school.student",
+    "pk": 1,
+    "fields": {
+      "name": "홍길동"
+    }
+  },
+  {
+    "model": "school.student",
+    "pk": 2,
+    "fields": {
+      "name": "이순신"
+    }
+  },
+  {
+    "model": "school.student",
+    "pk": 3,
+    "fields": {
+      "name": "김유신"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 1,
+    "fields": {
+      "name": "장고 개요와 웹 개발 기초"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 2,
+    "fields": {
+      "name": "파이썬 기초 및 심화"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 3,
+    "fields": {
+      "name": "장고 모델과 데이터베이스"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 4,
+    "fields": {
+      "name": "장고 뷰와 URL 디스패치"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 5,
+    "fields": {
+      "name": "장고 템플릿 시스템"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 6,
+    "fields": {
+      "name": "사용자 인증 및 권한"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 7,
+    "fields": {
+      "name": "장고 어드민과 폼"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 8,
+    "fields": {
+      "name": "장고 REST 프레임워크"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 9,
+    "fields": {
+      "name": "테스트 및 디버깅"
+    }
+  },
+  {
+    "model": "school.subject",
+    "pk": 10,
+    "fields": {
+      "name": "배포 및 성능 최적화"
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 1,
+    "fields": {
+      "student": 2,
+      "subject": 4,
+      "year": 2023,
+      "term": 2,
+      "is_pass": true
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 2,
+    "fields": {
+      "student": 2,
+      "subject": 4,
+      "year": 2022,
+      "term": 1,
+      "is_pass": true
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 3,
+    "fields": {
+      "student": 1,
+      "subject": 7,
+      "year": 2022,
+      "term": 2,
+      "is_pass": false
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 4,
+    "fields": {
+      "student": 2,
+      "subject": 8,
+      "year": 2020,
+      "term": 1,
+      "is_pass": true
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 5,
+    "fields": {
+      "student": 3,
+      "subject": 5,
+      "year": 2023,
+      "term": 1,
+      "is_pass": true
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 6,
+    "fields": {
+      "student": 3,
+      "subject": 5,
+      "year": 2022,
+      "term": 1,
+      "is_pass": false
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 7,
+    "fields": {
+      "student": 3,
+      "subject": 8,
+      "year": 2020,
+      "term": 1,
+      "is_pass": true
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 8,
+    "fields": {
+      "student": 2,
+      "subject": 3,
+      "year": 2022,
+      "term": 1,
+      "is_pass": true
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 9,
+    "fields": {
+      "student": 1,
+      "subject": 2,
+      "year": 2021,
+      "term": 1,
+      "is_pass": false
+    }
+  },
+  {
+    "model": "school.enrollment",
+    "pk": 10,
+    "fields": {
+      "student": 3,
+      "subject": 4,
+      "year": 2022,
+      "term": 1,
+      "is_pass": false
+    }
+  }
+]

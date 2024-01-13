@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "blog",
     "core",
     "hottrack",
+    "school",
     "shop",
 ]
 
