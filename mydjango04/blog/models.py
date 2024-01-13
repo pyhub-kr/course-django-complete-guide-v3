@@ -86,6 +86,8 @@ class Post(TimestampedModel):
         blank=True,
         related_name="blog_post_set",
         related_query_name="blog_post",
+        through="PostTagRelation",
+        through_fields=("post", "tag"),
     )
 
     # published = PublishedPostManager()
@@ -186,6 +188,21 @@ class Tag(models.Model):
                 fields=["name"],
                 name="blog_tag_name_like",
                 opclasses=["varchar_pattern_ops"],
+            )
+        ]
+
+
+class PostTagRelation(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    # 관계 모델을 통해, 관계에 대한 추가 정보를 담을 수 있습니다.
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["post", "tag"],
+                name="blog_post_tag_relation_unique",
             )
         ]
 
