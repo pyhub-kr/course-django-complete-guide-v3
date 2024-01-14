@@ -12,11 +12,15 @@ HEADERS = {
 }
 
 
-def get_likes_dict(melon_uid_list: List[str]) -> Dict[str, int]:
+# Song 모델의 melon_uid 필드는 문자열 타입이었고, 이를 id 정수 타입으로 변경
+
+
+def get_likes_dict(melon_uid_list: List[int]) -> Dict[int, int]:
     url = "https://www.melon.com/commonlike/getSongLike.json"
     params = urlencode(
         {
-            "contsIds": ",".join(melon_uid_list),
+            # 정수는 문자열로 변환해야만 join이 가능합니다.
+            "contsIds": ",".join(map(str, melon_uid_list)),
         }
     )
 
@@ -24,6 +28,6 @@ def get_likes_dict(melon_uid_list: List[str]) -> Dict[str, int]:
 
     request = Request(url_with_params, headers=HEADERS)
     result = json.loads(urlopen(request).read())
-    likes_dict = {str(song["CONTSID"]): song["SUMMCNT"] for song in result["contsLike"]}
+    likes_dict = {int(song["CONTSID"]): song["SUMMCNT"] for song in result["contsLike"]}
 
     return likes_dict

@@ -7,7 +7,7 @@ app_name = "hottrack"
 urlpatterns = [
     path(route="", view=views.index, name="index"),
     path(route="<int:pk>/", view=views.song_detail, name="song_detail"),
-    path(route="melon-<int:melon_uid>/", view=views.song_detail, name="song_detail"),
+    # Song 모델에서 melon_uid 필드를 id 기본키로 변경했기에 melon_uid 인자 지원이 필요없어졌습니다.
     re_path(
         route=r"^export\.(?P<format>(csv|xlsx))$", view=views.export, name="export"
     ),

@@ -6,14 +6,13 @@
 
     <div class="card-body">
         <p class="card-text">
-            <div class="text-nowrap overflow-hidden text-truncate">{{ song.artist_name }} | {{ song.name }}</div>
+            <div class="text-nowrap overflow-hidden text-truncate">{{ song.artist.name }} | {{ song.name }}</div>
         </p>
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
                 <a href="{{ song.get_absolute_url }}"
                    class="btn btn-sm btn-outline-primary">Detail</a>
-                <a href="/hottrack/melon-{{ song.melon_uid }}/" type="button"
-                   class="btn btn-sm btn-outline-primary">Detail#2</a>
+                {# Song 모델에서 melon_uid 필드를 id 기본키로 변경했기에 melon_uid 인자 지원이 필요없어졌습니다. #}
                 <a href="{{ song.melon_detail_url }}" type="button" class="btn btn-sm btn-outline-danger">Melon</a>
                 <a href="{{ song.youtube_search_url }}" type="button" class="btn btn-sm btn-outline-danger">Youtube</a>
             </div>

@@ -75,7 +75,7 @@
                     <img src="{{ song.cover_url }}" class="card-img-top" alt="Album Cover">
                     <div class="card-body">
                         <h1 class="card-title">{{ song.name }}</h1>
-                        <p class="card-text">{{ song.album_name }} - {{ song.artist_name }}</p>
+                        <p class="card-text">{{ song.album.name }} - {{ song.artist.name }}</p>
                         <p class="card-text">{{ song.genre }}</p>
                         <p class="card-text">{{ song.release_date }}</p>
                         <p class="card-text"><small class="text-muted">Likes: {{ song.like_count }}</small></p>

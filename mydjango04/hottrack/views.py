@@ -42,9 +42,12 @@ class IndexView(ListView):
         if query:
             qs = qs.filter(
                 Q(name__icontains=query)
-                | Q(artist_name__icontains=query)
-                | Q(album_name__icontains=query)
+                | Q(artist__name__icontains=query)
+                | Q(album__name__icontains=query)
             )
+
+        #
+        qs = qs.select_related("artist")
 
         return qs
 
@@ -62,8 +65,8 @@ index = IndexView.as_view()
 #     if query:
 #         song_qs = song_qs.filter(
 #             Q(name__icontains=query)
-#             | Q(artist_name__icontains=query)
-#             | Q(album_name__icontains=query)
+#             | Q(artist__name__icontains=query)
+#             | Q(album__name__icontains=query)
 #         )
 #
 #     return render(
@@ -79,15 +82,7 @@ index = IndexView.as_view()
 class SongDetailView(DetailView):
     model = Song
 
-    def get_object(self, queryset=None):
-        if queryset is None:
-            queryset = self.get_queryset()
-
-        melon_uid = self.kwargs.get("melon_uid")
-        if melon_uid:
-            return get_object_or_404(queryset, melon_uid=melon_uid)
-
-        return super().get_object(queryset)
+    # Song 모델에서 melon_uid 필드를 id 기본키로 변경했기에 melon_uid 인자 지원이 필요없어졌습니다.
 
 
 song_detail = SongDetailView.as_view()
@@ -123,7 +118,7 @@ def cover_png(request, pk):
     song = get_object_or_404(Song, pk=pk)
 
     cover_image = make_cover_image(
-        song.cover_url, song.artist_name, canvas_size=canvas_size
+        song.cover_url, song.artist.name, canvas_size=canvas_size
     )
 
     # param fp : filename (str), pathlib.Path object or file object
