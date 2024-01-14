@@ -3,7 +3,26 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    # 친구 관계 (대칭 관계)
+    friend_set = models.ManyToManyField(
+        to="self",
+        blank=True,
+        # to="self"에서 디폴트 True
+        symmetrical=True,
+        # related_name="friend_set",
+        related_query_name="friend_user",
+    )
+
+    # 팔로잉 관계 (비대칭 관계)
+    follower_set = models.ManyToManyField(
+        to="self",
+        blank=True,
+        # to="self"에서 디폴트 True
+        symmetrical=False,
+        # symmetrical=False 에서는 related_name을 지원
+        related_name="following_set",
+        related_query_name="following",
+    )
 
 
 class SuperUserManager(models.Manager):
