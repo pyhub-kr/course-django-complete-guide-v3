@@ -8,7 +8,7 @@ from .utils.melon import get_likes_dict
 
 @admin.register(Song)
 class SongAdmin(admin.ModelAdmin):
-    search_fields = ["name", "artist", "album"]  # where
+    search_fields = ["name", "artist__name", "album__name"]  # where
     list_display = [
         "cover_image_tag",
         "name",
