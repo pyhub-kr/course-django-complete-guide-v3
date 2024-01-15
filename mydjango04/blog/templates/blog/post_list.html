@@ -1,0 +1,31 @@
+{# blog/templates/blog/post_list.html #}
+
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>블로그</title>
+
+    {# Minimal CSS Framework #}
+    {# https://picocss.com/docs/ or https://andybrewer.github.io/mvp/ #}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+
+</head>
+<body>
+
+<main class="container">
+    <section>
+        <h2>블로그 포스팅</h2>
+        <table>
+            {% for post in post_list %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.author.username }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </section>
+</main>
+
+</body>
+</html>
