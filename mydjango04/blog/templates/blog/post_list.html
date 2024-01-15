@@ -27,6 +27,18 @@
                         {% endfor %}
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="3">
+                        <ul>
+                            {% for comment in post.comment_set.all %}
+                                <li>
+                                    {{ comment.message }}
+                                    <small>{{ comment.author.username }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
             {% endfor %}
         </table>
     </section>
