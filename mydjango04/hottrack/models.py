@@ -6,6 +6,7 @@ from datetime import date
 from typing import Dict
 from urllib.parse import quote
 
+from django.conf import settings
 from django.db import models
 from django.db.models.functions import Upper
 from django.urls import reverse
@@ -112,3 +113,16 @@ class Song(models.Model):
         )
         instance.slugify()
         return instance
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="hottrack_comment_set",
+        related_query_name="hottrack_comment",
+    )
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
