@@ -21,6 +21,11 @@
                 <tr>
                     <td>{{ post.title }}</td>
                     <td>{{ post.author.username }}</td>
+                    <td>
+                        {% for tag in post.tag_set.all %}
+                            <mark>{{ tag.name }}</mark>
+                        {% endfor %}
+                    </td>
                 </tr>
             {% endfor %}
         </table>

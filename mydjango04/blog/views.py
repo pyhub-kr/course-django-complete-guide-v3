@@ -25,6 +25,7 @@ def premium_user_guide(request):
 def post_list(request):
     post_qs = Post.objects.all()
     post_qs = post_qs.select_related("author")
+    post_qs = post_qs.prefetch_related("tag_set")
 
     return render(
         request,
