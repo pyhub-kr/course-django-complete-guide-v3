@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "hottrack",
     "school",
     "shop",
+    "weblog",
 ]
 
 if DEBUG:
