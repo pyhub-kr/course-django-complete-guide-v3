@@ -2,6 +2,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 
 class Post(models.Model):
@@ -9,6 +11,11 @@ class Post(models.Model):
     # Generic Relation에서는 1측에 관계를 정의하므로, 모델 클래스에 직접적으로 필드를 정의
     # 이 필드명으로 Comment에 대한 related_name, related_query_name 역할을 같이 수행
     comment_set = GenericRelation(to="Comment", related_query_name="post")
+
+
+@receiver(pre_delete, sender=Post)
+def set_value_or_delete(sender, instance: Post, **kwargs):
+    instance.comment_set.update(object_id=5)
 
 
 class Article(models.Model):
