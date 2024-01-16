@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
@@ -21,3 +22,9 @@ class Comment(models.Model):
     # on_delete 옵션을 지원하지 않습니다. CASCADE 정책으로만 동작합니다.
     content_object = GenericForeignKey(ct_field="content_type", fk_field="object_id")
     message = models.TextField()
+    rating = models.SmallIntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5),
+        ],
+    )
