@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class User(AbstractUser):
@@ -23,6 +25,13 @@ class User(AbstractUser):
         related_name="following_set",
         related_query_name="following",
     )
+
+
+@receiver(post_save, sender=User)
+def post_save_on_user(instance: User, created: bool, **kwargs):
+    if created:
+        print(f"User({instance})의 프로필을 생성합니다.")
+        Profile.objects.create(user=instance)
 
 
 class SuperUserManager(models.Manager):
