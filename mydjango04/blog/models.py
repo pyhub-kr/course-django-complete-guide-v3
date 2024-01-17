@@ -6,6 +6,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint, Q
 from django.db.models.functions import Lower
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils.text import slugify
 
 from core.model_fields import IPv4AddressIntegerField, BooleanYNField
@@ -106,10 +108,10 @@ class Post(TimestampedModel):
             # 제목으로 만든 slug 문자열 뒤에 uuid를 붙여 slug의 유일성을 확보
             self.slug += "-" + uuid4().hex[:8]
 
-    def save(self, *args, **kwargs):
-        """save 시에 slug 필드를 자동으로 채워줍니다."""
-        self.slugify()
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     """save 시에 slug 필드를 자동으로 채워줍니다."""
+    #     self.slugify()
+    #     super().save(*args, **kwargs)
 
     class Meta:
         constraints = [
@@ -120,6 +122,12 @@ class Post(TimestampedModel):
         permissions = [
             ("view_premium_post", "프리미엄 컨텐츠를 볼 수 있음"),
         ]
+
+
+@receiver(pre_save, sender=Post)
+def pre_save_on_save(sender, instance: Post, **kwargs):
+    print("pre_save_on_save() 메서드가 호출되었습니다.")
+    instance.slugify()
 
 
 class Comment(TimestampedModel):
