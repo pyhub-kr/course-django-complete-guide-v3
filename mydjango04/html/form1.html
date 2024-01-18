@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>HTML Form</title>
+<style>
+    form { width: 400px; margin: auto; }
+    fieldset { margin-bottom: 20px; padding: 10px; }
+    input[type="radio"], input[type="checkbox"] { display: inline; }
+</style>
+</head>
+<body>
+
+<form action="https://pyhub.kr/inspect/" method="get" enctype="application/x-www-form-urlencoded">
+    <div>
+        <label for="id_name">이름</label>
+        <input id="id_name" name="name" type="text" placeholder="이름을 입력하세요" />
+    </div>
+
+    <div>
+        <label for="email">이메일</label>
+        <input id="email" name="email" type="email" placeholder="이메일을 입력하세요" />
+    </div>
+
+    <div>
+        <label for="password">비밀번호</label>
+        <input id="password" name="password" type="password" placeholder="비밀번호를 입력하세요" />
+    </div>
+
+    <label for="id_language">모국어</label>
+    <select id="id_language" name="language">
+        <option value="ko">한국어</option>
+        <option value="en">영어</option>
+    </select>
+
+    <div>
+        <label for="id_description">자기소개</label>
+        <textarea id="id_description" name="description" rows="4" cols="50" placeholder="자기소개를 입력하세요."></textarea>
+    </div>
+
+
+    <fieldset>
+        <legend>좋아하는 운동</legend>
+        <input id="id_running" name="workout" type="checkbox" value="running" />
+        <label for="id_running">러닝</label>
+        <input id="id_weight" name="workout" type="checkbox" value="weight" />
+        <label for="id_weight">웨이트</label>
+        <input id="id_crossfit" name="workout" type="checkbox" value="crossfit" />
+        <label for="id_crossfit">크로스핏</label>
+    </fieldset>
+
+    <fieldset>
+        <legend>성별</legend>
+        <input id="male" name="gender" type="radio" value="male" />
+        <label for="male">남성</label>
+        <input id="female" name="gender" type="radio" value="female" />
+        <label for="female">여성</label>
+    </fieldset>
+
+    <div>
+        <label for="date">날짜</label>
+        <input id="date" name="date" type="date" />
+    </div>
+
+    <div>
+        <label for="file">파일 업로드</label>
+        <input id="file" name="file" type="file" />
+    </div>
+
+    <input type="submit" value="제출" />
+</form>
+
+</body>
+</html>
