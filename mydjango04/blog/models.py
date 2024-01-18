@@ -8,7 +8,9 @@ from django.db.models import UniqueConstraint, Q
 from django.db.models.functions import Lower
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.utils import timezone
 from django.utils.text import slugify
+from django_lifecycle import hook, BEFORE_UPDATE, LifecycleModelMixin, AFTER_UPDATE
 
 from core.model_fields import IPv4AddressIntegerField, BooleanYNField
 
@@ -57,7 +59,7 @@ class PostQuerySet(models.QuerySet):
 #         return super().create(**kwargs)
 
 
-class Post(TimestampedModel):
+class Post(LifecycleModelMixin, models.Model):
     class Status(models.TextChoices):  # 문자열 선택지
         DRAFT = "D", "초안"  # 상수, 값, 레이블
         PUBLISHED = "P", "발행"
@@ -91,6 +93,8 @@ class Post(TimestampedModel):
         through="PostTagRelation",
         through_fields=("post", "tag"),
     )
+    created_at = models.DateTimeField(auto_now_add=True)  # 최초 생성시각을 자동 저장
+    updated_at = models.DateTimeField(auto_now_add=True)  # 최초 생성시각을 자동 저장
 
     # published = PublishedPostManager()
     # objects = models.Manager()
@@ -107,6 +111,15 @@ class Post(TimestampedModel):
             self.slug = self.slug[:112]
             # 제목으로 만든 slug 문자열 뒤에 uuid를 붙여 slug의 유일성을 확보
             self.slug += "-" + uuid4().hex[:8]
+
+    @hook(BEFORE_UPDATE, when="content", has_changed=True)
+    def on_changed_content(self):
+        print("content 필드가 변경되었으니, updated_at을 갱신합니다.")
+        self.updated_at = timezone.now()
+
+    @hook(AFTER_UPDATE, when="status", was=Status.DRAFT, is_now=Status.PUBLISHED)
+    def on_published(self):
+        print("저자에게 이메일을 보냅니다.")
 
     # def save(self, *args, **kwargs):
     #     """save 시에 slug 필드를 자동으로 채워줍니다."""
