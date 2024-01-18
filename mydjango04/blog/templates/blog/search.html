@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>검색결과</title>
+</head>
+<body>
+
+{% if not query %}
+    <p>입력된 검색어가 없습니다.</p>
+{% else %}
+    <p>검색어는 "{{ query }}" 입니다.</p>
+{% endif %}
+
+<hr />
+request.GET: {{ request.GET }}<br/>
+request.POST: {{ request.POST }}<br/>
+request.FILES: {{ request.FILES }}<br/>
+
+</body>
+</html>

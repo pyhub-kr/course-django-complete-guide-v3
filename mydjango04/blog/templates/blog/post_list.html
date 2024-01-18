@@ -16,6 +16,13 @@
 <main class="container">
     <section>
         <h2>블로그 포스팅</h2>
+
+        <form action="" method="get">
+            <input type="text" name="query" value="{{ query }}"
+                   placeholder="검색어를 입력해주세요."/>
+            <input type="submit" value="검색"/>
+        </form>
+
         <table>
             {% for post in post_list %}
                 <tr>
@@ -25,18 +32,6 @@
                         {% for tag in post.tag_set.all %}
                             <mark>{{ tag.name }}</mark>
                         {% endfor %}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <ul>
-                            {% for comment in post.comment_set.all %}
-                                <li>
-                                    {{ comment.message }}
-                                    <small>{{ comment.author.username }}</small>
-                                </li>
-                            {% endfor %}
-                        </ul>
                     </td>
                 </tr>
             {% endfor %}
