@@ -23,6 +23,14 @@
             <input type="submit" value="검색"/>
         </form>
 
+        <form action="/blog/new/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="message"
+                   placeholder="메시지를 입력해주세요.">
+            <input type="file" name="photo" placeholder="사진"/>
+            <input type="submit" value="저장하기"/>
+        </form>
+
         <table>
             {% for post in post_list %}
                 <tr>
