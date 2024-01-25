@@ -11,6 +11,7 @@ urlpatterns = [
     path("core/", include("core.urls")),
     path("hottrack/", include("hottrack.urls")),
     path("shop/", include("shop.urls")),
+    path("weblog/", include("weblog.urls")),
     path("", RedirectView.as_view(pattern_name="hottrack:index")),
 ]
 

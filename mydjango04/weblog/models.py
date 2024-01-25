@@ -7,7 +7,18 @@ from django.dispatch import receiver
 
 
 class Post(models.Model):
+    class Status(models.TextChoices):
+        DRAFT = "D", "초안"
+        PUBLISHED = "P", "발행"
+
     title = models.CharField(max_length=100)
+    content = models.TextField(blank=True)
+    status = models.CharField(
+        max_length=1, choices=Status.choices, default=Status.DRAFT
+    )
+    photo = models.ImageField(blank=True)
+    created_date = models.DateField(auto_now_add=True)
+
     # Generic Relation에서는 1측에 관계를 정의하므로, 모델 클래스에 직접적으로 필드를 정의
     # 이 필드명으로 Comment에 대한 related_name, related_query_name 역할을 같이 수행
     comment_set = GenericRelation(to="Comment", related_query_name="post")
