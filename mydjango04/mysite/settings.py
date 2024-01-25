@@ -172,8 +172,8 @@ STATIC_URL = "static/"
 
 # Media files에 대해서 다룰 때 설정하겠습니다.
 
-# MEDIA_URL = "media/"
-# MEDIA_ROOT = BASE_DIR / "mediafiles"
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 
 # Default primary key field type
