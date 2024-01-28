@@ -25,6 +25,13 @@ class Post(models.Model):
     # 이 필드명으로 Comment에 대한 related_name, related_query_name 역할을 같이 수행
     comment_set = GenericRelation(to="Comment", related_query_name="post")
 
+    tag_set = models.ManyToManyField(
+        "blog.Tag",
+        blank=True,
+        related_name="weblog_post_set",
+        related_query_name="weblog_post",
+    )
+
 
 @receiver(pre_delete, sender=Post)
 def set_value_or_delete(sender, instance: Post, **kwargs):

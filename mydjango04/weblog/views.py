@@ -17,6 +17,8 @@ def post_new(request):
             post.ip = request.META["REMOTE_ADDR"]
             post.save()
 
+            form.save_m2m()
+
             #
             # post = Post()
             # post.title = form.cleaned_data["title"]
