@@ -13,7 +13,9 @@ def post_new(request):
         if form.is_valid():
             print("form.cleaned_data :", form.cleaned_data)
 
-            post = form.save(commit=True)
+            post = form.save(commit=False)
+            post.ip = request.META["REMOTE_ADDR"]
+            post.save()
 
             #
             # post = Post()
