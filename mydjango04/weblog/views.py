@@ -3,11 +3,12 @@ from django.forms import model_to_dict
 from django.shortcuts import render, redirect, get_object_or_404, resolve_url
 from django.urls import reverse, reverse_lazy
 
+from django.views.generic import DeleteView as DjangoDeleteView
 from vanilla import FormView, CreateView, UpdateView, DeleteView, ListView
 
 # from django.views.generic import FormView
 
-from weblog.forms import PostForm
+from weblog.forms import PostForm, ConfirmDeleteForm
 from weblog.models import Post
 
 
@@ -97,8 +98,9 @@ post_edit = PostUpdateView.as_view()
 #     )
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(DjangoDeleteView):
     model = Post
+    form_class = ConfirmDeleteForm
     success_url = reverse_lazy("weblog:index")
 
 
