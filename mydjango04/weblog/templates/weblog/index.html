@@ -1,0 +1,19 @@
+<h2>포스팅 목록</h2>
+
+<table>
+<tbody>
+{% for post in post_list %}
+    <tr>
+        <td>
+            <a href="{{ post.get_absolute_url }}">
+                {{ post.title }}
+            </a>
+        </td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+
+<hr />
+
+<a href="{% url 'weblog:post_new' %}">새 포스팅 쓰기</a>

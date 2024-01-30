@@ -1,7 +1,8 @@
-<h2>weblog post #{{ post.pk }}</h2>
+<h2>{{ post.title }}</h2>
 
 {{ post.content }}
 
 <hr />
 
+<a href="{% url 'weblog:post_edit' post.pk %}">수정하기</a>
 <a href="{% url 'weblog:post_delete' post.pk %}">삭제하기</a>

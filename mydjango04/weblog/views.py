@@ -3,12 +3,22 @@ from django.forms import model_to_dict
 from django.shortcuts import render, redirect, get_object_or_404, resolve_url
 from django.urls import reverse, reverse_lazy
 
-from vanilla import FormView, CreateView, UpdateView, DeleteView
+from vanilla import FormView, CreateView, UpdateView, DeleteView, ListView
 
 # from django.views.generic import FormView
 
 from weblog.forms import PostForm
 from weblog.models import Post
+
+
+# def index(request):
+#     return render(request, "weblog/index.html")
+
+
+index = ListView.as_view(
+    model=Post,
+    template_name="weblog/index.html",
+)
 
 
 def post_detail(request, pk):
@@ -89,7 +99,7 @@ post_edit = PostUpdateView.as_view()
 
 class PostDeleteView(DeleteView):
     model = Post
-    success_url = reverse_lazy("weblog:post_new")  # URL Reverse를 지원하지 않습니다.
+    success_url = reverse_lazy("weblog:index")
 
 
 post_delete = PostDeleteView.as_view()
