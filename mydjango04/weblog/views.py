@@ -1,8 +1,9 @@
 from django.core.files.uploadedfile import UploadedFile
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, get_object_or_404, resolve_url
+from django.urls import reverse, reverse_lazy
 
-from vanilla import FormView, CreateView, UpdateView
+from vanilla import FormView, CreateView, UpdateView, DeleteView
 
 # from django.views.generic import FormView
 
@@ -70,3 +71,25 @@ class PostUpdateView(UpdateView):
 
 
 post_edit = PostUpdateView.as_view()
+
+
+# def post_delete(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
+#     if request.method == "POST":
+#         post.delete()
+#         return redirect("weblog:post_new")  # TODO: list 페이지
+#     return render(
+#         request,
+#         "weblog/post_confirm_delete.html",
+#         {
+#             "post": post,
+#         },
+#     )
+
+
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = reverse_lazy("weblog:post_new")  # URL Reverse를 지원하지 않습니다.
+
+
+post_delete = PostDeleteView.as_view()

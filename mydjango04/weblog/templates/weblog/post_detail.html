@@ -1,3 +1,7 @@
 <h2>weblog post #{{ post.pk }}</h2>
 
 {{ post.content }}
+
+<hr />
+
+<a href="{% url 'weblog:post_delete' post.pk %}">삭제하기</a>
