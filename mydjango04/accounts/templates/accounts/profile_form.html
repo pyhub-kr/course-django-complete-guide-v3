@@ -1,0 +1,9 @@
+<h2>프로필 수정 폼</h2>
+
+<form action="" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" />
+</form>
