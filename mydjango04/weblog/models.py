@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -31,6 +32,9 @@ class Post(models.Model):
         related_name="weblog_post_set",
         related_query_name="weblog_post",
     )
+
+    def get_absolute_url(self) -> str:
+        return reverse("weblog:post_detail", args=[self.pk])
 
 
 @receiver(pre_delete, sender=Post)
