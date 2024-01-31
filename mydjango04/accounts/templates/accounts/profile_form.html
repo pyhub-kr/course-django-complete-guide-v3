@@ -1,6 +1,13 @@
+<style>
+  form#django-form table { border-collapse: collapse; }
+  form#django-form th, td { border: 1px solid black; padding: 5px; }
+  form#django-form .errorlist { color: red; padding: 0; margin: 0; font-size: .5em; }
+  form#django-form .errorlist li { list-style-type: none; }
+</style>
+
 <h2>프로필 수정 폼</h2>
 
-<form action="" method="post" enctype="multipart/form-data" novalidate>
+<form id="django-form" action="" method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     <table>
         {{ form.as_table }}
