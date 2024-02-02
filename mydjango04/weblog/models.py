@@ -18,6 +18,7 @@ class Post(models.Model):
         max_length=1, choices=Status.choices, default=Status.DRAFT
     )
     photo = models.ImageField(blank=True)
+    is_public = models.BooleanField(default=False)
     created_date = models.DateField(auto_now_add=True)
 
     ip = models.GenericIPAddressField()

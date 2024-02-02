@@ -13,6 +13,7 @@ class PostForm(forms.ModelForm):
             "status",
             "photo",
             "tag_set",
+            "is_public",
         ]
         widgets = {
             "title": CounterTextInput,
