@@ -1,3 +1,21 @@
 {# core/templates/core/forms/widgets/preview_clearable_file.html #}
 
 {% include "django/forms/widgets/clearable_file_input.html" %}
+
+<img style="max-width: 100px; opacity: 0.8; display: none;"
+     alt="프리뷰 이미지"
+     src="" />
+
+<script>
+  (function() {
+    const previewImageDom = document.currentScript.previousElementSibling;
+    const widgetDom = previewImageDom.previousElementSibling;
+
+    widgetDom.addEventListener("change", () => {
+      const file = widgetDom.files[0];
+      console.log("select file :", file);
+      previewImageDom.src = URL.createObjectURL(file);
+      previewImageDom.style.removeProperty("display");
+    });
+  })();
+</script>
