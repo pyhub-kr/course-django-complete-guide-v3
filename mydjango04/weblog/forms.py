@@ -1,6 +1,6 @@
 from django import forms
 
-from core.forms.widgets import CounterTextInput
+from core.forms.widgets import CounterTextInput, IosSwitchInput
 from weblog.models import Post
 
 
@@ -17,6 +17,7 @@ class PostForm(forms.ModelForm):
         ]
         widgets = {
             "title": CounterTextInput,
+            "is_public": IosSwitchInput,
         }
 
 

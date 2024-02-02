@@ -1,0 +1,34 @@
+/* core/static/core/forms/widgets/ios_form_switch.css */
+
+.ios-form-switch {
+  position: relative;
+  appearance: none;
+  width: 46px;
+  height: 26px;
+  background-color: #e6e6e6;
+  border-radius: 23px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s linear;
+}
+
+.ios-form-switch:before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 22px;
+  height: 22px;
+  background-color: #fff;
+  border-radius: 11px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
+  transition: transform 0.3s linear;
+}
+
+.ios-form-switch:checked {
+  background-color: #4BD763;
+}
+
+.ios-form-switch:checked:before {
+  transform: translateX(20px);
+}
