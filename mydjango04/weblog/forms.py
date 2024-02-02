@@ -1,5 +1,6 @@
 from django import forms
 
+from core.forms.widgets import CounterTextInput
 from weblog.models import Post
 
 
@@ -13,6 +14,9 @@ class PostForm(forms.ModelForm):
             "photo",
             "tag_set",
         ]
+        widgets = {
+            "title": CounterTextInput,
+        }
 
 
 class ConfirmDeleteForm(forms.Form):
