@@ -1,6 +1,6 @@
 from django import forms
 
-from core.forms.widgets import HorizontalRadioSelect
+from core.forms.widgets import HorizontalRadioSelect, StarRatingSelect
 from .models import Review
 
 
@@ -9,7 +9,7 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ["message", "rating"]
         widgets = {
-            "rating": HorizontalRadioSelect(
+            "rating": StarRatingSelect(
                 choices=[(i, i) for i in range(1, 6)],
             ),
         }
