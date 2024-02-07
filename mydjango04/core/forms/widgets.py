@@ -1,6 +1,8 @@
 # core/forms/widgets.py
+import dataclasses
+import datetime
 import re
-from typing import Tuple
+from typing import Tuple, List, Callable, Union, Dict
 
 from django.forms import (
     TextInput,
@@ -101,8 +103,48 @@ class PhoneNumberInput(MultiWidget):
         return "".join((value or "") for value in values)
 
 
+@dataclasses.dataclass
+class DatePickerOptions:
+    datesDisabled: Union[
+        List[datetime.date],
+        Callable[[], List[datetime.date]],
+    ] = dataclasses.field(default_factory=list)
+    format: str = "yyyy-mm-dd"  # 날짜 포맷
+    minDate: Union[
+        str, int, datetime.date, Callable[[], Union[str, int, datetime.date]]
+    ] = None
+    maxDate: Union[
+        str, int, datetime.date, Callable[[], Union[str, int, datetime.date]]
+    ] = None
+    todayButton: bool = False
+    todayHighlight: bool = False
+
+    def to_dict(self) -> Dict[str, Union[str, int, List[int], List[datetime.date]]]:
+        result = {}
+        for field in dataclasses.fields(self):
+            value = getattr(self, field.name)
+            if callable(value):  # value가 함수라면
+                value = value()  # 인자없이 호출하여 반환값을 value로서 활용합니다.
+            result[field.name] = value
+        return result
+
+
 class DatePickerInput(DateInput):
     template_name = "core/forms/widgets/date_picker.html"
+
+    def __init__(
+        self,
+        attrs=None,
+        format=None,
+        date_picker_options: DatePickerOptions = None,
+    ):
+        self.date_picker_options = date_picker_options or DatePickerOptions()
+        super().__init__(attrs, format)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context["date_picker_options"] = self.date_picker_options.to_dict()
+        return context
 
     class Media:
         css = {
