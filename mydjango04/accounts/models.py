@@ -59,6 +59,7 @@ class Profile(models.Model):
         related_name="profile",
         related_query_name="profile",
     )
+    birth_date = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=100, blank=True)
     phone_number = models.CharField(
         max_length=13,

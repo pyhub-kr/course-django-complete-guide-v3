@@ -9,6 +9,7 @@ from django.forms import (
     RadioSelect,
     Select,
     MultiWidget,
+    DateInput,
 )
 
 
@@ -98,3 +99,17 @@ class PhoneNumberInput(MultiWidget):
     def value_from_datadict(self, data, files, name) -> str:
         values = super().value_from_datadict(data, files, name)
         return "".join((value or "") for value in values)
+
+
+class DatePickerInput(DateInput):
+    template_name = "core/forms/widgets/date_picker.html"
+
+    class Media:
+        css = {
+            "all": [
+                "https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css",
+            ],
+        }
+        js = [
+            "https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker.min.js",
+        ]

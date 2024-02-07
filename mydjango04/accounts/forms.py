@@ -1,7 +1,7 @@
 from django import forms
 
 from core.forms.fields import PhoneNumberField
-from core.forms.widgets import PhoneNumberInput
+from core.forms.widgets import PhoneNumberInput, DatePickerInput
 from .models import Profile
 
 
@@ -15,10 +15,12 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = [
+            "birth_date",
             "address",
             "phone_number",
             "photo",
         ]
         widgets = {
+            "birth_date": DatePickerInput,
             "phone_number": PhoneNumberInput,
         }
