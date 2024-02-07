@@ -16,5 +16,8 @@ urlpatterns = [
         name="post_premium_detail",
     ),
     path("posts/<str:slug>/", views.post_detail, name="post_detail"),
+    path("reviews/", views.review_list, name="review_list"),
     path("reviews/new/", views.review_new, name="review_new"),
+    path("reviews/<int:pk>/", views.review_detail, name="review_detail"),
+    path("reviews/<int:pk>/edit/", views.review_edit, name="review_edit"),
 ]

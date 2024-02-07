@@ -8,6 +8,7 @@ from django.db.models import UniqueConstraint, Q
 from django.db.models.functions import Lower
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django_lifecycle import hook, BEFORE_UPDATE, LifecycleModelMixin, AFTER_UPDATE
@@ -176,6 +177,9 @@ class Review(TimestampedModel, models.Model):
         #     MaxValueValidator(5),
         # ],
     )
+
+    def get_absolute_url(self) -> str:
+        return reverse("blog:review_detail", args=[self.pk])
 
     class Meta:
         constraints = [
