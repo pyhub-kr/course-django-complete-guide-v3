@@ -1,4 +1,6 @@
 # core/forms/widgets.py
+import re
+from typing import Tuple
 
 from django.forms import (
     TextInput,
@@ -6,6 +8,7 @@ from django.forms import (
     ClearableFileInput,
     RadioSelect,
     Select,
+    MultiWidget,
 )
 
 
@@ -46,3 +49,52 @@ class StarRatingSelect(Select):
         js = [
             "core/star-rating-js/4.3.0/star-rating.min.js",
         ]
+
+
+class PhoneNumberInput(MultiWidget):
+    subwidget_default_attrs = {
+        "style": "width: 6ch; margin-right: 1ch;",
+        "autocomplete": "off",
+    }
+
+    def __init__(self, attrs=None):
+        widgets = [
+            TextInput(
+                attrs={
+                    **self.subwidget_default_attrs,
+                    "pattern": r"01\d",
+                    "maxlength": 3,
+                },
+            ),
+            TextInput(
+                attrs={
+                    **self.subwidget_default_attrs,
+                    "pattern": r"\d{4}",
+                    "maxlength": 4,
+                },
+            ),
+            TextInput(
+                attrs={
+                    **self.subwidget_default_attrs,
+                    "pattern": r"\d{4}",
+                    "maxlength": 4,
+                },
+            ),
+        ]
+        super().__init__(widgets, attrs)
+
+    def build_attrs(self, base_attrs, extra_attrs=None):
+        attrs = super().build_attrs(base_attrs, extra_attrs)
+        if "maxlength" in attrs:
+            del attrs["maxlength"]
+        return attrs
+
+    def decompress(self, value: str) -> Tuple[str, str, str]:
+        if value:
+            value = re.sub(r"[ -]", "", value)
+            return value[:3], value[3:7], value[7:]
+        return "", "", ""
+
+    def value_from_datadict(self, data, files, name) -> str:
+        values = super().value_from_datadict(data, files, name)
+        return "".join((value or "") for value in values)
