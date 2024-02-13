@@ -2,7 +2,10 @@ import ipaddress
 from typing import Union, Optional
 
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+
+from core.forms import fields as core_form_fields
 
 
 class BooleanYNField(models.BooleanField):
@@ -98,3 +101,24 @@ class IPv4AddressIntegerField(models.CharField):
         if prep_value is None:
             return None
         return int(ipaddress.IPv4Address(prep_value))
+
+
+class DatePickerField(models.DateField):
+    def __init__(self, *args, min_value=None, max_value=None, **kwargs):
+        self.min_value = min_value
+        self.max_value = max_value
+        super().__init__(*args, **kwargs)
+
+        if self.min_value is not None:
+            self.validators.append(MinValueValidator(self.min_value))
+
+        if self.max_value is not None:
+            self.validators.append(MaxValueValidator(self.max_value))
+
+    def formfield(self, **kwargs):
+        return super().formfield(
+            **kwargs,
+            form_class=core_form_fields.DatePickerField,
+            min_value=self.min_value,
+            max_value=self.max_value,
+        )

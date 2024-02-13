@@ -2,16 +2,16 @@ import datetime
 
 from django import forms
 
-from core.forms.fields import PhoneNumberField, DatePickerField
+# from core.forms.fields import PhoneNumberField, DatePickerField
 from core.forms.widgets import PhoneNumberInput, DatePickerInput, DatePickerOptions
 from .models import Profile
 
 
 class ProfileForm(forms.ModelForm):
-    mydate = DatePickerField(
-        min_value=lambda: datetime.date.today(),
-        max_value=lambda: datetime.date.today() + datetime.timedelta(days=7),
-    )
+    # mydate = DatePickerField(
+    #     min_value=lambda: datetime.date.today(),
+    #     max_value=lambda: datetime.date.today() + datetime.timedelta(days=7),
+    # )
 
     # phone_number = PhoneNumberField()
 
@@ -33,8 +33,6 @@ class ProfileForm(forms.ModelForm):
                     datesDisabled=lambda: [
                         datetime.date.today() + datetime.timedelta(days=2),
                     ],
-                    minDate=lambda: datetime.date.today(),
-                    maxDate=lambda: datetime.date.today() + datetime.timedelta(days=7),
                     todayButton=True,
                     todayHighlight=True,
                 ),
