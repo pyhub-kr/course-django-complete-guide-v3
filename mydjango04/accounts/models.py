@@ -70,6 +70,7 @@ class Profile(models.Model):
         null=True,
     )
     address = models.CharField(max_length=100, blank=True)
+    location_point = models.CharField(max_length=50, blank=True)
     phone_number = models.CharField(
         max_length=13,
         blank=True,

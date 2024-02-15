@@ -11,9 +11,19 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = Env()
+
+ENV_PATH = BASE_DIR / ".env"
+if ENV_PATH.exists():
+    with ENV_PATH.open(encoding="utf-8") as f:
+        env.read_env(f, overwrite=True)
+else:
+    print("not found:", ENV_PATH)
 
 
 # Quick-start development settings - unsuitable for production
@@ -202,3 +212,7 @@ if DEBUG:
 
 
 ADMIN_PREFIX = os.environ.get("ADMIN_PREFIX", "secret-admin/")
+
+
+# naver cloud platform, map api
+NAVER_MAP_POINT_WIDGET_CLIENT_ID = env.str("NAVER_MAP_POINT_WIDGET_CLIENT_ID")

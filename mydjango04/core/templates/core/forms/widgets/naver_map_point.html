@@ -1,0 +1,57 @@
+{{ naver_map_options|json_script }}
+{% include "django/forms/widgets/text.html" %}
+<div class="naver-map-container"></div>
+
+<script>
+  (function() {
+    const mapDom = document.currentScript.previousElementSibling;
+    const inputDom = mapDom.previousElementSibling;
+    const optionsDom = inputDom.previousElementSibling;
+
+    const mapOptions = JSON.parse(optionsDom.textContent);
+
+    mapDom.style = "width: 400px; height: 400px;";
+
+    const naverMap = new naver.maps.Map(mapDom, {
+      center: null,
+      scaleControl: true,
+      zoomControl: true,
+      zoom: 10,
+      ...mapOptions,
+    });
+    let marker = null;
+
+    function updateMap(moveToCenter) {
+      const [lat, lng] = inputDom.value.split(",");
+      const point = new naver.maps.LatLng(lat, lng);
+
+      // lat, lng 값이 유효한 경우에만 지도의 중심 좌표와 마커의 위치를 변경
+      if(point.lat() > 0 && point.lng() > 0) {
+        if(moveToCenter) naverMap.setCenter(point);
+
+        marker ||= new naver.maps.Marker({ map: naverMap });
+        marker.setPosition(point);
+      }
+      else {
+        if( marker !== null ) {
+          marker.setMap(null);
+          marker = null;
+        }
+        inputDom.value = "";
+      }
+    }
+
+    inputDom.addEventListener("change", () => updateMap(true));
+
+    naver.maps.Event.addListener(naverMap, "click", (e) => {
+      const moveToPoint = e.coord;
+      console.log("clicked :", moveToPoint);
+      const lat = moveToPoint.lat();
+      const lng = moveToPoint.lng();
+      inputDom.value = `${lat},${lng}`;
+      updateMap(false);
+    });
+
+    updateMap(true);
+  })();
+</script>
