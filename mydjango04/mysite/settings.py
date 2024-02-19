@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+
 import os
 from pathlib import Path
 from environ import Env
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     "django.forms",
     "django_bootstrap5",
     "django_extensions",
+    "widget_tweaks",
     "accounts",
     "blog",
     "core",
