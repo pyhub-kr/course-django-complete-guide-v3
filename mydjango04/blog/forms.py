@@ -1,5 +1,5 @@
 from crispy_bootstrap5.bootstrap5 import FloatingField
-from crispy_forms.bootstrap import PrependedText
+from crispy_forms.bootstrap import PrependedText, TabHolder, Tab
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Row, Field
 from django import forms
@@ -52,8 +52,10 @@ class DemoForm(forms.Form):
         self.helper.layout = Layout(
             FloatingField("title"),
             "summary",
-            "content",
-            "content_en",
+            TabHolder(
+                Tab("내용", "content"),
+                Tab("내용 (영문)", "content_en"),
+            ),
             Row(
                 Field("author", autocomplete="off", wrapper_class="col-sm-6"),
                 PrependedText("instagram_username", "@", wrapper_class="col-sm-6"),
