@@ -1,0 +1,10 @@
+{# crispy_bootstrap5의 TabHolder 템플릿 #}
+{% include "bootstrap5/layout/tab.html" %}
+
+<script>
+  (function() {
+    const prevDom = document.currentScript.previousElementSibling;
+    const names = 'mb-3 px-2 pt-1 border-start border-end border-bottom'.split(' ');
+    prevDom.classList.add(...names);
+  })();
+</script>

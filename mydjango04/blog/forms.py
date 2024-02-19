@@ -5,6 +5,7 @@ from crispy_forms.layout import Submit, Layout, Row, Field
 from django import forms
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 
+from core.crispy_bootstrap5_ext.layout import BorderedTabHolder
 from core.forms.widgets import HorizontalRadioSelect, StarRatingSelect
 from .models import Review
 
@@ -52,7 +53,7 @@ class DemoForm(forms.Form):
         self.helper.layout = Layout(
             FloatingField("title"),
             "summary",
-            TabHolder(
+            BorderedTabHolder(
                 Tab("내용", "content"),
                 Tab("내용 (영문)", "content_en"),
             ),
