@@ -3,9 +3,9 @@ from django.core.files import File
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from vanilla import CreateView, ListView, DetailView, UpdateView
+from vanilla import CreateView, ListView, DetailView, UpdateView, FormView
 
-from blog.forms import ReviewForm
+from blog.forms import ReviewForm, DemoForm
 from blog.models import Post, Review
 
 
@@ -110,4 +110,10 @@ review_detail = DetailView.as_view(
 review_edit = UpdateView.as_view(
     model=Review,
     form_class=ReviewForm,
+)
+
+
+demo_form = FormView.as_view(
+    form_class=DemoForm,
+    template_name="blog/demo_form.html",
 )
