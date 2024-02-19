@@ -1,0 +1,16 @@
+{# blog/demo_form_field.html #}
+
+<div style="margin: 0.5em 0;">
+    {# 각 필드의 레이블 태그 #}
+    {{ form_field.label_tag }}<br/>
+    {# 각 필드의 위젯 렌더링은 템플릿에서 수정할 수 없습니다. #}
+    {{ form_field }}
+    {# 각 폼 필드의 입력 도움말 #}
+    <div style="color: green; font-size: 0.8em;">{{ form_field.help_text }}</div>
+    <div style="color: red; font-size: 0.8em;">
+        {# 각 폼 필드의 에러 내역을 렌더링 #}
+        {% for error in form_field.errors %}
+            {{ error }}<br/>
+        {% endfor %}
+    </div>
+</div>

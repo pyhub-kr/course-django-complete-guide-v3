@@ -2,8 +2,26 @@
 
 <form action="" method="post" novalidate>
     {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
+
+{#    <h2>non_field_errors</h2>#}
+    {% if form.non_field_errors %}
+        <div style="color: red; font-size: 0.8em; margin: 1em;">
+            {% for error in form.non_field_errors %}
+                {{ error }}<br/>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{#    <h2>hidden_fields</h2>#}
+    {% for field in form.hidden_fields %}
+        {{ field }}
+    {% endfor %}
+
+{#    <h2>visible_fields</h2>#}
+
+    {% for field in form.visible_fields %}
+        {% include "blog/demo_form_field.html" with form_field=field %}
+    {% endfor %}
+
     <input type="submit" />
 </form>
