@@ -1,3 +1,5 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django import forms
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 
@@ -34,6 +36,15 @@ class DemoForm(forms.Form):
         "author",
         "instagram_username",
     ]  # 필드 순서 배치를 지원
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        # self.helper.form_action = ""
+        # self.helper.form_tag = True
+        # self.helper.disable_csrf = False
+        self.helper.attrs = {"novalidate": True}
+        self.helper.add_input(Submit("submit", "제출"))
 
     def clean(self):
         content = self.cleaned_data.get("content")
