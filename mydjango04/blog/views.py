@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.files import File
 from django.db.models import Q
@@ -120,8 +121,20 @@ demo_form = FormView.as_view(
 )
 
 
-memo_new = FormView.as_view(
-    form_class=MemoForm,
-    template_name="blog/memo_form.html",
-    success_url=reverse_lazy("blog:memo_new"),
-)
+def memo_new(request):
+    if request.method == "GET":
+        form = MemoForm()
+    else:
+        form = MemoForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            print("form.cleaned_data :", form.cleaned_data)
+            messages.success(request, "메모 1개를 입력받았습니다.")
+            return redirect("blog:memo_new")
+
+    return render(
+        request,
+        "blog/memo_form.html",
+        {
+            "form": form,
+        },
+    )
