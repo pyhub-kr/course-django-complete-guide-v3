@@ -127,6 +127,7 @@ def memo_new(request):
         model=Memo,
         form=MemoForm,
         extra=3,
+        can_delete=True,
     )
 
     queryset = None  # Memo의 모든 레코드에 대한 수정폼
@@ -137,15 +138,21 @@ def memo_new(request):
     else:
         formset = MemoFormSet(data=request.POST, files=request.FILES, queryset=queryset)
         if formset.is_valid():
-            objs = formset.save(commit=False)
+            objs = formset.save()
 
-            for memo in objs:
-                # memo.user = request.user
-                memo.save()
-            formset.save_m2m()
+            # objs = formset.save(commit=False)
+            # for memo in objs:
+            #     # memo.user = request.user
+            #     memo.save()
+            # formset.save_m2m()
 
             if objs:
                 messages.success(request, f"메모 {len(objs)}개를 저장했습니다.")
+
+            if formset.deleted_objects:
+                messages.success(
+                    request, f"메모 {len(formset.deleted_objects)}개를 삭제했습니다."
+                )
 
             return redirect("blog:memo_new")
 
