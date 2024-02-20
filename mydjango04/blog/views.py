@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from vanilla import CreateView, ListView, DetailView, UpdateView, FormView
 
 from blog.forms import ReviewForm, DemoForm, MemoForm
-from blog.models import Post, Review
+from blog.models import Post, Review, Memo
 
 
 @login_required
@@ -133,10 +133,20 @@ def memo_new(request):
     else:
         formset = MemoFormSet(data=request.POST, files=request.FILES)
         if formset.is_valid():
-            print("formset.cleaned_data :", formset.cleaned_data)
-            messages.success(
-                request, f"메모 {len(formset.cleaned_data)}개를 입력받았습니다."
-            )
+            # print("formset.cleaned_data :", formset.cleaned_data)
+
+            memo_list = []
+            for form in formset:
+                if form.has_changed():
+                    memo = Memo(
+                        message=form.cleaned_data["message"],
+                        status=form.cleaned_data["status"],
+                    )
+                    memo_list.append(memo)
+
+            objs = Memo.objects.bulk_create(memo_list)
+
+            messages.success(request, f"메모 {len(objs)}개를 저장했습니다.")
             return redirect("blog:memo_new")
 
     return render(
