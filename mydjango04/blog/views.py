@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.files import File
 from django.db.models import Q
+from django.forms import formset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -122,23 +123,26 @@ demo_form = FormView.as_view(
 
 
 def memo_new(request):
+    MemoFormSet = formset_factory(
+        form=MemoForm,
+        extra=3,
+    )
+
     if request.method == "GET":
-        form1 = MemoForm(prefix="form-0")
-        form2 = MemoForm(prefix="form-1")
+        formset = MemoFormSet()
     else:
-        form1 = MemoForm(prefix="form-0", data=request.POST, files=request.FILES)
-        form2 = MemoForm(prefix="form-1", data=request.POST, files=request.FILES)
-        if form1.is_valid() and form2.is_valid():
-            print("form1.cleaned_data :", form1.cleaned_data)
-            print("form2.cleaned_data :", form2.cleaned_data)
-            messages.success(request, "메모 2개를 입력받았습니다.")
+        formset = MemoFormSet(data=request.POST, files=request.FILES)
+        if formset.is_valid():
+            print("formset.cleaned_data :", formset.cleaned_data)
+            messages.success(
+                request, f"메모 {len(formset.cleaned_data)}개를 입력받았습니다."
+            )
             return redirect("blog:memo_new")
 
     return render(
         request,
         "blog/memo_form.html",
         {
-            "form1": form1,
-            "form2": form2,
+            "formset": formset,
         },
     )
