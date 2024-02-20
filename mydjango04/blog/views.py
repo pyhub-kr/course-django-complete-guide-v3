@@ -126,42 +126,42 @@ demo_form = FormView.as_view(
 
 @login_required
 def memo_new(request):
-    MemoFormSet = inlineformset_factory(
+    MemoFormSet = modelformset_factory(
         # parent_model=User,
-        parent_model=get_user_model(),
+        # parent_model=get_user_model(),
         model=Memo,
         form=MemoForm,
-        # extra=3,
-        # can_delete=True,
+        extra=3,
+        can_delete=True,
     )
 
-    instance = request.user
-    queryset = None  # Memo의 모든 레코드에 대한 수정폼
+    # instance = request.user
+    queryset = Memo.objects.filter(
+        author=request.user
+    )  # Memo의 모든 레코드에 대한 수정폼
     # queryset = Memo.objects.none()  # 수정폼 끄기
 
     if request.method == "GET":
-        formset = MemoFormSet(instance=instance, queryset=queryset)
+        formset = MemoFormSet(queryset=queryset)
     else:
-        formset = MemoFormSet(
-            data=request.POST, files=request.FILES, instance=instance, queryset=queryset
-        )
+        formset = MemoFormSet(data=request.POST, files=request.FILES, queryset=queryset)
         if formset.is_valid():
-            objs = formset.save()
+            # objs = formset.save()
 
-            # objs = formset.save(commit=False)
-            # for memo in objs:
-            #     # memo.user = request.user
-            #     memo.save()
-            # formset.save_m2m()
+            objs = formset.save(commit=False)
+            for memo in objs:
+                memo.author = request.user
+                memo.save()
+            formset.save_m2m()
 
             if objs:
                 messages.success(request, f"메모 {len(objs)}개를 저장했습니다.")
 
             if formset.deleted_objects:
-                # pk_list = [memo.pk for memo in formset.deleted_objects]
-                # Memo.objects.filter(pk__in=pk_list).delete()
+                pk_list = [memo.pk for memo in formset.deleted_objects]
+                Memo.objects.filter(pk__in=pk_list).delete()
                 messages.success(
-                    request, f"메모 {len(formset.deleted_object)}개를 삭제했습니다."
+                    request, f"메모 {len(formset.deleted_objects)}개를 삭제했습니다."
                 )
 
             return redirect("blog:memo_new")
