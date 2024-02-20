@@ -1,13 +1,15 @@
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.files import File
 from django.db.models import Q
-from django.forms import formset_factory, modelformset_factory
+from django.forms import formset_factory, modelformset_factory, inlineformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from vanilla import CreateView, ListView, DetailView, UpdateView, FormView
 
+from accounts.models import User
 from blog.forms import ReviewForm, DemoForm, MemoForm
 from blog.models import Post, Review, Memo
 
@@ -122,37 +124,45 @@ demo_form = FormView.as_view(
 )
 
 
+@login_required
 def memo_new(request):
-    MemoFormSet = modelformset_factory(
+    MemoFormSet = inlineformset_factory(
+        # parent_model=User,
+        parent_model=get_user_model(),
         model=Memo,
         form=MemoForm,
-        extra=3,
-        can_delete=True,
+        # extra=3,
+        # can_delete=True,
     )
 
+    instance = request.user
     queryset = None  # Memo의 모든 레코드에 대한 수정폼
     # queryset = Memo.objects.none()  # 수정폼 끄기
 
     if request.method == "GET":
-        formset = MemoFormSet(queryset=queryset)
+        formset = MemoFormSet(instance=instance, queryset=queryset)
     else:
-        formset = MemoFormSet(data=request.POST, files=request.FILES, queryset=queryset)
+        formset = MemoFormSet(
+            data=request.POST, files=request.FILES, instance=instance, queryset=queryset
+        )
         if formset.is_valid():
-            # objs = formset.save()
+            objs = formset.save()
 
-            objs = formset.save(commit=False)
-            for memo in objs:
-                # memo.user = request.user
-                memo.save()
-            formset.save_m2m()
+            # objs = formset.save(commit=False)
+            # for memo in objs:
+            #     # memo.user = request.user
+            #     memo.save()
+            # formset.save_m2m()
 
             if objs:
                 messages.success(request, f"메모 {len(objs)}개를 저장했습니다.")
 
             if formset.deleted_objects:
-                pk_list = [memo.pk for memo in formset.deleted_objects]
-                Memo.objects.filter(pk__in=pk_list).delete()
-                messages.success(request, f"메모 {len(pk_list)}개를 삭제했습니다.")
+                # pk_list = [memo.pk for memo in formset.deleted_objects]
+                # Memo.objects.filter(pk__in=pk_list).delete()
+                messages.success(
+                    request, f"메모 {len(formset.deleted_object)}개를 삭제했습니다."
+                )
 
             return redirect("blog:memo_new")
 
