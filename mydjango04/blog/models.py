@@ -257,12 +257,17 @@ class Enrollment(models.Model):
         ]
 
 
+class MemoGroup(models.Model):
+    name = models.CharField(max_length=100)
+
+
 class Memo(models.Model):
     class Status(models.TextChoices):
         PRIVATE = "V", "비공개"
         PUBLIC = "P", "공개"
 
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    group = models.ForeignKey(MemoGroup, on_delete=models.CASCADE)
     message = models.CharField(max_length=140)
     status = models.CharField(
         max_length=1, default=Status.PUBLIC, choices=Status.choices
