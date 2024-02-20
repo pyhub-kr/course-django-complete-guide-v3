@@ -123,18 +123,22 @@ demo_form = FormView.as_view(
 
 def memo_new(request):
     if request.method == "GET":
-        form = MemoForm()
+        form1 = MemoForm(prefix="form-0")
+        form2 = MemoForm(prefix="form-1")
     else:
-        form = MemoForm(data=request.POST, files=request.FILES)
-        if form.is_valid():
-            print("form.cleaned_data :", form.cleaned_data)
-            messages.success(request, "메모 1개를 입력받았습니다.")
+        form1 = MemoForm(prefix="form-0", data=request.POST, files=request.FILES)
+        form2 = MemoForm(prefix="form-1", data=request.POST, files=request.FILES)
+        if form1.is_valid() and form2.is_valid():
+            print("form1.cleaned_data :", form1.cleaned_data)
+            print("form2.cleaned_data :", form2.cleaned_data)
+            messages.success(request, "메모 2개를 입력받았습니다.")
             return redirect("blog:memo_new")
 
     return render(
         request,
         "blog/memo_form.html",
         {
-            "form": form,
+            "form1": form1,
+            "form2": form2,
         },
     )

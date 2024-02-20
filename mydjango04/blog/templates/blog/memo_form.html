@@ -6,10 +6,12 @@
     </ul>
 {% endif %}
 
-{{ form.media }}
+{{ form1.media }}
+{{ form2.media }}
 
 <form action="" method="post" novalidate>
     {% csrf_token %}
-    <table>{{ form.as_table }}</table>
+    <table>{{ form1.as_table }}</table>
+    <table>{{ form2.as_table }}</table>
     <input type="submit" />
 </form>
