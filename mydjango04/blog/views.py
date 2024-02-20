@@ -138,21 +138,21 @@ def memo_new(request):
     else:
         formset = MemoFormSet(data=request.POST, files=request.FILES, queryset=queryset)
         if formset.is_valid():
-            objs = formset.save()
+            # objs = formset.save()
 
-            # objs = formset.save(commit=False)
-            # for memo in objs:
-            #     # memo.user = request.user
-            #     memo.save()
-            # formset.save_m2m()
+            objs = formset.save(commit=False)
+            for memo in objs:
+                # memo.user = request.user
+                memo.save()
+            formset.save_m2m()
 
             if objs:
                 messages.success(request, f"메모 {len(objs)}개를 저장했습니다.")
 
             if formset.deleted_objects:
-                messages.success(
-                    request, f"메모 {len(formset.deleted_objects)}개를 삭제했습니다."
-                )
+                pk_list = [memo.pk for memo in formset.deleted_objects]
+                Memo.objects.filter(pk__in=pk_list).delete()
+                messages.success(request, f"메모 {len(pk_list)}개를 삭제했습니다.")
 
             return redirect("blog:memo_new")
 
