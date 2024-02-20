@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.files import File
 from django.db.models import Q
-from django.forms import formset_factory
+from django.forms import formset_factory, modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -123,29 +123,21 @@ demo_form = FormView.as_view(
 
 
 def memo_new(request):
-    MemoFormSet = formset_factory(
+    MemoFormSet = modelformset_factory(
+        model=Memo,
         form=MemoForm,
         extra=3,
     )
 
+    queryset = None  # Memo의 모든 레코드에 대한 수정폼
+    # queryset = Memo.objects.none()  # 수정폼 끄기
+
     if request.method == "GET":
-        formset = MemoFormSet()
+        formset = MemoFormSet(queryset=queryset)
     else:
-        formset = MemoFormSet(data=request.POST, files=request.FILES)
+        formset = MemoFormSet(data=request.POST, files=request.FILES, queryset=queryset)
         if formset.is_valid():
-            # print("formset.cleaned_data :", formset.cleaned_data)
-
-            memo_list = []
-            for form in formset:
-                if form.has_changed():
-                    memo = Memo(
-                        message=form.cleaned_data["message"],
-                        status=form.cleaned_data["status"],
-                    )
-                    memo_list.append(memo)
-
-            objs = Memo.objects.bulk_create(memo_list)
-
+            objs = formset.save()
             messages.success(request, f"메모 {len(objs)}개를 저장했습니다.")
             return redirect("blog:memo_new")
 
