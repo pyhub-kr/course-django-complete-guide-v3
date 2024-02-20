@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Row, Field
 from django import forms
 from django.core.validators import MinLengthValidator, MaxLengthValidator
+from django.db import models
 
 from core.crispy_bootstrap5_ext.layout import BorderedTabHolder
 from core.forms.widgets import HorizontalRadioSelect, StarRatingSelect
@@ -70,3 +71,15 @@ class DemoForm(forms.Form):
 
         if content and not summary:
             raise forms.ValidationError("본문에 대한 요약을 입력해주세요.")
+
+
+class MemoForm(forms.Form):
+    class Status(models.TextChoices):
+        PRIVATE = "V", "비공개"
+        PUBLIC = "P", "공개"
+
+    message = forms.CharField(
+        max_length=140,
+        widget=forms.TextInput(attrs={"placeholder": "메모를 입력하세요."}),
+    )
+    status = forms.ChoiceField(initial=Status.PUBLIC, choices=Status.choices)

@@ -255,3 +255,15 @@ class Enrollment(models.Model):
                 name="blog_enrollment_uniq",
             ),
         ]
+
+
+class Memo(models.Model):
+    class Status(models.TextChoices):
+        PRIVATE = "V", "비공개"
+        PUBLIC = "P", "공개"
+
+    message = models.CharField(max_length=140)
+    status = models.CharField(
+        max_length=1, default=Status.PUBLIC, choices=Status.choices
+    )
+    created_at = models.DateTimeField(auto_now_add=True)

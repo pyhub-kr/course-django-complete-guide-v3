@@ -3,9 +3,10 @@ from django.core.files import File
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from vanilla import CreateView, ListView, DetailView, UpdateView, FormView
 
-from blog.forms import ReviewForm, DemoForm
+from blog.forms import ReviewForm, DemoForm, MemoForm
 from blog.models import Post, Review
 
 
@@ -116,4 +117,11 @@ review_edit = UpdateView.as_view(
 demo_form = FormView.as_view(
     form_class=DemoForm,
     template_name="blog/demo_form.html",
+)
+
+
+memo_new = FormView.as_view(
+    form_class=MemoForm,
+    template_name="blog/memo_form.html",
+    success_url=reverse_lazy("blog:memo_new"),
 )

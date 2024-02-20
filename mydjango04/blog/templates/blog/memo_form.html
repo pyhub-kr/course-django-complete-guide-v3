@@ -1,0 +1,15 @@
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>[{{ message.tags }}] {{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{{ form.media }}
+
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    <table>{{ form.as_table }}</table>
+    <input type="submit" />
+</form>
