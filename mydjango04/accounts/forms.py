@@ -9,7 +9,19 @@ from core.forms.widgets import (
     DatePickerOptions,
     NaverMapPointInput,
 )
-from .models import Profile
+from .models import Profile, User
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name"]
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["address", "phone_number"]
 
 
 class ProfileForm(forms.ModelForm):
