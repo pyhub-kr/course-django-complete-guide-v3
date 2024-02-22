@@ -1,10 +1,13 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files.storage import default_storage
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from formtools.wizard.views import SessionWizardView
 from vanilla import UpdateView
 
-from accounts.forms import ProfileForm
+from accounts.forms import ProfileForm, UserForm, UserProfileForm
 from accounts.models import Profile
 
 
@@ -52,3 +55,27 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 
 profile_edit = ProfileUpdateView.as_view()
+
+
+class UserProfileWizardView(LoginRequiredMixin, SessionWizardView):
+    form_list = [UserProfileForm, UserForm]
+    template_name = "accounts/profile_wizard.html"
+    file_storage = default_storage
+
+    def get_form_instance(self, step):
+        if step == "0":
+            profile, __ = Profile.objects.get_or_create(user=self.request.user)
+            return profile
+        elif step == "1":
+            return self.request.user
+
+        return super().get_form_instance(step)
+
+    def done(self, form_list, form_dict, **kwargs):  # noqa
+        for form in form_list:
+            form.save()
+        messages.success(self.request, "프로필을 저장했습니다.")
+        return redirect("accounts:profile_wizard")
+
+
+profile_wizard = UserProfileWizardView.as_view()

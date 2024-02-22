@@ -1,0 +1,35 @@
+{# accounts/templates/accounts/profile_wizard.html #}
+
+<body>
+{% if messages %}
+    {% for message in messages %}
+        {{ message }}<br/>
+    {% endfor %}
+{% endif %}
+
+{{ wizard.form.media }}
+
+<p>{{ wizard.steps.count }}단계 중 {{ wizard.steps.step1 }}단계</p>
+
+<form action="" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    {# 마법사 관리 정보 - hidden: current_step #}
+    {{ wizard.management_form }}
+
+    <table>{{ wizard.form.as_table }}</table>
+
+    {% if wizard.steps.prev %}
+        <button name="wizard_goto_step" type="submit"
+                value="{{ wizard.steps.first }}">
+            처음 단계
+        </button>
+        <button name="wizard_goto_step" type="submit"
+                value="{{ wizard.steps.prev }}">
+            이전 단계
+        </button>
+    {% endif %}
+
+    <input type="submit" value="다음" />
+</form>
+</body>
