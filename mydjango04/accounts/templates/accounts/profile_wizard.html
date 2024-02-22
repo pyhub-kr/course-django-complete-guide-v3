@@ -17,7 +17,18 @@
     {# 마법사 관리 정보 - hidden: current_step #}
     {{ wizard.management_form }}
 
-    <table>{{ wizard.form.as_table }}</table>
+    {% if wizard.form.forms %}
+        {# formset 대응 #}
+        {{ wizard.form.management_form }}
+        {% for form in wizard.form.forms %}
+            <table>
+                {{ form.as_table }}
+            </table>
+        {% endfor %}
+    {% else %}
+        {# form 대응 #}
+        <table>{{ wizard.form.as_table }}</table>
+    {% endif %}
 
     {% if wizard.steps.prev %}
         <button name="wizard_goto_step" type="submit"
