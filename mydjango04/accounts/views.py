@@ -75,8 +75,19 @@ class UserProfileWizardView(LoginRequiredMixin, SessionWizardView):
         return super().get_form_instance(step)
 
     def done(self, form_list, form_dict, **kwargs):  # noqa
-        for form in form_list:
-            form.save()
+        # print("form_list :", form_list)
+        # print("form_dict :", form_dict)
+        # for form in form_list:
+        #     form.save()
+
+        # form_list[0].save()
+        # form_list[1].save()
+
+        user = form_dict["user_form"].save()
+        profile = form_dict["profile_form"].save(commit=False)
+        profile.user = user
+        profile.save()
+
         messages.success(self.request, "프로필을 저장했습니다.")
         return redirect("accounts:profile_wizard")
 
