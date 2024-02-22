@@ -57,13 +57,24 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 profile_edit = ProfileUpdateView.as_view()
 
 
+def check_is_profile_update(wizard_view: "UserProfileWizardView") -> bool:
+    cleaned_data = wizard_view.get_cleaned_data_for_step("user_form")
+    if cleaned_data is None:
+        return True
+    return cleaned_data.get("is_profile_update", False)
+
+
 class UserProfileWizardView(LoginRequiredMixin, SessionWizardView):
     form_list = [
-        ("profile_form", UserProfileForm),
         ("user_form", UserForm),
+        ("profile_form", UserProfileForm),
     ]
     template_name = "accounts/profile_wizard.html"
     file_storage = default_storage
+
+    condition_dict = {
+        "profile_form": check_is_profile_update,
+    }
 
     def get_form_instance(self, step):
         if step == "profile_form":
@@ -84,9 +95,11 @@ class UserProfileWizardView(LoginRequiredMixin, SessionWizardView):
         # form_list[1].save()
 
         user = form_dict["user_form"].save()
-        profile = form_dict["profile_form"].save(commit=False)
-        profile.user = user
-        profile.save()
+
+        if "profile_form" in form_dict:
+            profile = form_dict["profile_form"].save(commit=False)
+            profile.user = user
+            profile.save()
 
         messages.success(self.request, "프로필을 저장했습니다.")
         return redirect("accounts:profile_wizard")
