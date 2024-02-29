@@ -9,6 +9,7 @@ urlpatterns = [
     path(settings.ADMIN_PREFIX, admin.site.urls),
     path("accounts/", include("accounts.urls")),
     path("blog/", include("blog.urls")),
+    path("cafe/", include("cafe.urls")),
     path("core/", include("core.urls")),
     path("hottrack/", include("hottrack.urls")),
     path("shop/", include("shop.urls")),
