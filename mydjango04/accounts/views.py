@@ -1,7 +1,10 @@
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.storage import default_storage
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from formtools.wizard.views import SessionWizardView
@@ -106,3 +109,32 @@ class UserProfileWizardView(LoginRequiredMixin, SessionWizardView):
 
 
 profile_wizard = UserProfileWizardView.as_view()
+
+
+def login(request):
+    if request.method == "GET":
+        return render(request, "accounts/login_form.html")
+    else:
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+        if user is None:
+            return HttpResponse("인증 실패", status=400)
+
+        request.session["_auth_user_backend"] = user.backend
+        request.session["_auth_user_id"] = user.pk
+        request.session["_auth_user_hash"] = user.get_session_auth_hash()
+
+        next_url = (
+            request.POST.get("next")
+            or request.GET.get("next")
+            or settings.LOGIN_REDIRECT_URL
+        )
+        return redirect(next_url)
+
+
+def profile(request):
+    return HttpResponse(
+        f"username : {request.user.username}, {request.user.is_authenticated}"
+    )
