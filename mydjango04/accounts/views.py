@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from formtools.wizard.views import SessionWizardView
 from vanilla import UpdateView
 
-from accounts.forms import ProfileForm, UserForm, UserProfileForm
+from accounts.forms import ProfileForm, UserForm, UserProfileForm, SignupForm
 from accounts.models import Profile
 
 
@@ -151,4 +151,23 @@ login = LoginView.as_view()
 def profile(request):
     return HttpResponse(
         f"username : {request.user.username}, {request.user.is_authenticated}"
+    )
+
+
+def signup(request):
+    if request.method == "GET":
+        form = SignupForm()
+    else:
+        form = SignupForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            created_user = form.save()
+            # return redirect(settings.LOGIN_URL)  # "/accounts/login/"
+            return redirect("accounts:login")
+
+    return render(
+        request,
+        "accounts/signup_form.html",
+        {
+            "form": form,
+        },
     )

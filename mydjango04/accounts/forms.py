@@ -1,6 +1,7 @@
 import datetime
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 
 # from core.forms.fields import PhoneNumberField, DatePickerField
 from core.forms.widgets import (
@@ -65,3 +66,8 @@ class ProfileForm(forms.ModelForm):
             "location_point": NaverMapPointInput,
             "phone_number": PhoneNumberInput,
         }
+
+
+class SignupForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
