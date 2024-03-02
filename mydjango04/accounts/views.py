@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,7 +11,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from formtools.wizard.views import SessionWizardView
-from vanilla import UpdateView
+from vanilla import UpdateView, CreateView
 
 from accounts.forms import ProfileForm, UserForm, UserProfileForm, SignupForm
 from accounts.models import Profile
@@ -154,20 +155,36 @@ def profile(request):
     )
 
 
-def signup(request):
-    if request.method == "GET":
-        form = SignupForm()
-    else:
-        form = SignupForm(data=request.POST, files=request.FILES)
-        if form.is_valid():
-            created_user = form.save()
-            # return redirect(settings.LOGIN_URL)  # "/accounts/login/"
-            return redirect("accounts:login")
+# def signup(request):
+#     if request.method == "GET":
+#         form = SignupForm()
+#     else:
+#         form = SignupForm(data=request.POST, files=request.FILES)
+#         if form.is_valid():
+#             created_user = form.save()
+#             auth_login(request, created_user)
+#             # return redirect(settings.LOGIN_URL)  # "/accounts/login/"
+#             return redirect(settings.LOGIN_REDIRECT_URL)
+#
+#     return render(
+#         request,
+#         "accounts/signup_form.html",
+#         {
+#             "form": form,
+#         },
+#     )
 
-    return render(
-        request,
-        "accounts/signup_form.html",
-        {
-            "form": form,
-        },
-    )
+
+class SignupView(CreateView):
+    form_class = SignupForm
+    template_name = "accounts/signup_form.html"
+    success_url = settings.LOGIN_REDIRECT_URL
+
+    def form_valid(self, form) -> HttpResponse:
+        response = super().form_valid(form)
+        created_user = form.instance
+        auth_login(self.request, created_user)
+        return response
+
+
+signup = SignupView.as_view()
