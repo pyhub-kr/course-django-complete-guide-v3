@@ -5,7 +5,7 @@ from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.contrib.auth.views import LoginView as DjangoLoginView, LogoutView
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -216,22 +216,30 @@ class SignupView(CreateView):
 signup = SignupView.as_view()
 
 
-@csrf_protect
-@never_cache
-@require_POST  # auth.LogoutView에서는 장고 5.0부터 GET 요청을 통한 로그아웃을 지원하지 않습니다.
-def logout(request):
-    auth_logout(request)
+# @csrf_protect
+# @never_cache
+# @require_POST  # auth.LogoutView에서는 장고 5.0부터 GET 요청을 통한 로그아웃을 지원하지 않습니다.
+# def logout(request):
+#     auth_logout(request)
+#
+#     next_url = request.POST.get("next")
+#     if next_url:
+#         url_is_safe = url_has_allowed_host_and_scheme(
+#             url=next_url,
+#             allowed_hosts={request.get_host()},
+#             require_https=request.is_secure(),
+#         )
+#         if url_is_safe:
+#             return redirect(next_url)
+#
+#     return redirect(settings.LOGIN_URL)
+#
+#     # return render(request, "registration/logged_out.html")
 
-    next_url = request.POST.get("next")
-    if next_url:
-        url_is_safe = url_has_allowed_host_and_scheme(
-            url=next_url,
-            allowed_hosts={request.get_host()},
-            require_https=request.is_secure(),
-        )
-        if url_is_safe:
-            return redirect(next_url)
 
-    return redirect(settings.LOGIN_URL)
-
-    # return render(request, "registration/logged_out.html")
+logout = LogoutView.as_view(
+    # 템플릿 파일을 변경하시거나,
+    # template_name="registration/logged_out.html",
+    # next_page 인자를 지정하면, 최소한 템플릿 응답은 없습니다.
+    next_page=settings.LOGIN_URL,
+)
