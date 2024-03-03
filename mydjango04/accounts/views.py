@@ -10,6 +10,7 @@ from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.utils.http import url_has_allowed_host_and_scheme
 from formtools.wizard.views import SessionWizardView
 from vanilla import UpdateView, CreateView
 
@@ -164,14 +165,17 @@ def profile(request):
 #             created_user = form.save()
 #             auth_login(request, created_user)
 #
-#             next_url = (
-#                 request.POST.get("next")
-#                 or request.GET.get("next")
-#                 or settings.LOGIN_REDIRECT_URL
+#             next_url = request.POST.get("next") or request.GET.get("next")
+#             url_is_safe = url_has_allowed_host_and_scheme(
+#                 url=next_url,
+#                 allowed_hosts={request.get_host()},
+#                 require_https=request.is_secure(),
 #             )
+#             if url_is_safe is False:
+#                 next_url = ""
 #
 #             # return redirect(settings.LOGIN_URL)  # "/accounts/login/"
-#             return redirect(next_url)
+#             return redirect(next_url or settings.LOGIN_REDIRECT_URL)
 #
 #     return render(
 #         request,
@@ -196,7 +200,13 @@ class SignupView(CreateView):
     def get_success_url(self) -> str:
         next_url = self.request.POST.get("next") or self.request.GET.get("next")
         if next_url:
-            return next_url
+            url_is_safe = url_has_allowed_host_and_scheme(
+                url=next_url,
+                allowed_hosts={self.request.get_host()},
+                require_https=self.request.is_secure(),
+            )
+            if url_is_safe:
+                return next_url
         return super().get_success_url()
 
 
