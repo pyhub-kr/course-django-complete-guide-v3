@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -211,3 +211,19 @@ class SignupView(CreateView):
 
 
 signup = SignupView.as_view()
+
+
+def logout(request):
+    auth_logout(request)
+
+    next_url = request.GET.get("next")
+    if next_url:
+        url_is_safe = url_has_allowed_host_and_scheme(
+            url=next_url,
+            allowed_hosts={request.get_host()},
+            require_https=request.is_secure(),
+        )
+        if url_is_safe:
+            return redirect(next_url)
+
+    return render(request, "registration/logged_out.html")
