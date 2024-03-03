@@ -38,7 +38,13 @@
                             <li><a href="{% url 'accounts:signup' %}?next={{ request.path }}" class="text-white">회원가입</a></li>
                         {% else %}
                             <li><a href="{% url 'accounts:profile' %}" class="text-white">프로필</a></li>
-                            <li><a href="{% url 'accounts:logout' %}?next={{ request.path }}" class="text-white">로그아웃</a></li>
+                            <li>
+                                <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.path }}" />
+                                    <button type="submit" class="btn btn-link text-white p-0">로그아웃</button>
+                                </form>
+                            </li>
                         {% endif %}
                     </ul>
                 </div>

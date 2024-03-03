@@ -11,6 +11,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_POST
 from formtools.wizard.views import SessionWizardView
 from vanilla import UpdateView, CreateView
 
@@ -213,10 +216,13 @@ class SignupView(CreateView):
 signup = SignupView.as_view()
 
 
+@csrf_protect
+@never_cache
+@require_POST  # auth.LogoutView에서는 장고 5.0부터 GET 요청을 통한 로그아웃을 지원하지 않습니다.
 def logout(request):
     auth_logout(request)
 
-    next_url = request.GET.get("next")
+    next_url = request.POST.get("next")
     if next_url:
         url_is_safe = url_has_allowed_host_and_scheme(
             url=next_url,
