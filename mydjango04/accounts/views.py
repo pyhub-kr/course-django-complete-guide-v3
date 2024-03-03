@@ -226,4 +226,6 @@ def logout(request):
         if url_is_safe:
             return redirect(next_url)
 
-    return render(request, "registration/logged_out.html")
+    return redirect(settings.LOGIN_URL)
+
+    # return render(request, "registration/logged_out.html")
