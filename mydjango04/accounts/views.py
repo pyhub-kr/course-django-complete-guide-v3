@@ -163,8 +163,15 @@ def profile(request):
 #         if form.is_valid():
 #             created_user = form.save()
 #             auth_login(request, created_user)
+#
+#             next_url = (
+#                 request.POST.get("next")
+#                 or request.GET.get("next")
+#                 or settings.LOGIN_REDIRECT_URL
+#             )
+#
 #             # return redirect(settings.LOGIN_URL)  # "/accounts/login/"
-#             return redirect(settings.LOGIN_REDIRECT_URL)
+#             return redirect(next_url)
 #
 #     return render(
 #         request,
@@ -185,6 +192,12 @@ class SignupView(CreateView):
         created_user = form.instance
         auth_login(self.request, created_user)
         return response
+
+    def get_success_url(self) -> str:
+        next_url = self.request.POST.get("next") or self.request.GET.get("next")
+        if next_url:
+            return next_url
+        return super().get_success_url()
 
 
 signup = SignupView.as_view()
