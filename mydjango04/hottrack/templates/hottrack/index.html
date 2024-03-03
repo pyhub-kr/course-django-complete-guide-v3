@@ -34,11 +34,11 @@
                     <h4>계정</h4>
                     <ul class="list-unstyled">
                         {% if not user.is_authenticated %}
-                            <li><a href="{% url 'accounts:login' %}" class="text-white">로그인</a></li>
-                            <li><a href="{% url 'accounts:signup' %}" class="text-white">회원가입</a></li>
+                            <li><a href="{% url 'accounts:login' %}?next={{ request.path }}" class="text-white">로그인</a></li>
+                            <li><a href="{% url 'accounts:signup' %}?next={{ request.path }}" class="text-white">회원가입</a></li>
                         {% else %}
                             <li><a href="{% url 'accounts:profile' %}" class="text-white">프로필</a></li>
-                            <li><a href="{% url 'accounts:logout' %}" class="text-white">로그아웃</a></li>
+                            <li><a href="{% url 'accounts:logout' %}?next={{ request.path }}" class="text-white">로그아웃</a></li>
                         {% endif %}
                     </ul>
                 </div>
