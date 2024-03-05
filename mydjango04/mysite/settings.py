@@ -197,6 +197,7 @@ else:
         EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=False)
         EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
         EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
+        DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL")
     except ImproperlyConfigured as e:
         print("ERROR:", e, file=sys.stderr)
         EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

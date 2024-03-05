@@ -7,6 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as DjangoLoginView, LogoutView
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordResetForm as DjangoPasswordResetForm
+from django.contrib.auth.views import PasswordResetView as DjangoPasswordResetView
 from django.contrib.auth.views import PasswordChangeView as DjangoPasswordChangeView
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
@@ -298,31 +300,51 @@ class PasswordChangeView(DjangoPasswordChangeView):
 password_change = PasswordChangeView.as_view()
 
 
-@csrf_protect
-def password_reset(request):
-    if request.method == "GET":
-        form = PasswordResetForm()
-    else:
-        form = PasswordResetForm(data=request.POST)
-        if form.is_valid():
-            form.save(request)
-            messages.success(
-                request,
-                (
-                    "비밀번호 재설정 메일을 발송했습니다. 계정이 존재한다면 입력하신 이메일로 "
-                    "비밀번호 재설정 안내문을 확인하실 수 있습니다. "
-                    "만약 이메일을 받지 못했다면 등록하신 이메일을 다시 확인하시거나 스팸함을 확인해주세요."
-                ),
-            )
-            return redirect("accounts:password_reset")
+# @csrf_protect
+# def password_reset(request):
+#     if request.method == "GET":
+#         form = PasswordResetForm()
+#     else:
+#         form = PasswordResetForm(data=request.POST)
+#         if form.is_valid():
+#             form.save(request)
+#             messages.success(
+#                 request,
+#                 (
+#                     "비밀번호 재설정 메일을 발송했습니다. 계정이 존재한다면 입력하신 이메일로 "
+#                     "비밀번호 재설정 안내문을 확인하실 수 있습니다. "
+#                     "만약 이메일을 받지 못했다면 등록하신 이메일을 다시 확인하시거나 스팸함을 확인해주세요."
+#                 ),
+#             )
+#             return redirect("accounts:password_reset")
+#
+#     return render(
+#         request,
+#         "registration/password_reset_form.html",
+#         {
+#             "form": form,
+#         },
+#     )
 
-    return render(
-        request,
-        "registration/password_reset_form.html",
-        {
-            "form": form,
-        },
-    )
+
+class PasswordResetView(DjangoPasswordResetView):
+    email_template_name = "accounts/password_reset_email.html"
+    success_url = reverse_lazy("accounts:password_reset")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(
+            self.request,
+            (
+                "비밀번호 재설정 메일을 발송했습니다. 계정이 존재한다면 입력하신 이메일로 "
+                "비밀번호 재설정 안내문을 확인하실 수 있습니다. "
+                "만약 이메일을 받지 못했다면 등록하신 이메일을 다시 확인하시거나 스팸함을 확인해주세요."
+            ),
+        )
+        return response
+
+
+password_reset = PasswordResetView.as_view()
 
 
 # http://localhost:8000/accounts/reset/Mg/c3eiag-64391380463d3b96ed991cfa75aea681/
