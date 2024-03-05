@@ -2,6 +2,7 @@ import datetime
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.password_validation import validate_password
 
 # from core.forms.fields import PhoneNumberField, DatePickerField
 from core.forms.widgets import (
@@ -71,3 +72,37 @@ class ProfileForm(forms.ModelForm):
 class SignupForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
+
+
+class PasswordChangeForm(forms.Form):
+    old_password = forms.CharField(widget=forms.PasswordInput, strip=False)
+    new_password1 = forms.CharField(widget=forms.PasswordInput, strip=False)
+    new_password2 = forms.CharField(widget=forms.PasswordInput, strip=False)
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_old_password(self) -> str:
+        old_password = self.cleaned_data.get("old_password")
+        # 유저의 기존 암호와 같은 지 비교 !!!
+        if self.user.check_password(old_password) is False:
+            raise forms.ValidationError("기존 암호와 일치하지 않습니다.")
+        return old_password
+
+    def clean_new_password2(self) -> str:
+        password1 = self.cleaned_data.get("new_password1")
+        password2 = self.cleaned_data.get("new_password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("새로운 두 암호가 일치하지 않습니다.")
+
+        validate_password(password2, self.user)
+
+        return password2
+
+    def save(self, commit=True) -> User:
+        password = self.cleaned_data.get("new_password1")
+        self.user.set_password(password)
+        if commit:
+            self.user.save()
+        return self.user

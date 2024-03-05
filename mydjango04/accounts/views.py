@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, update_session_auth_hash
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -17,7 +17,13 @@ from django.views.decorators.http import require_POST
 from formtools.wizard.views import SessionWizardView
 from vanilla import UpdateView, CreateView
 
-from accounts.forms import ProfileForm, UserForm, UserProfileForm, SignupForm
+from accounts.forms import (
+    ProfileForm,
+    UserForm,
+    UserProfileForm,
+    SignupForm,
+    PasswordChangeForm,
+)
 from accounts.models import Profile
 
 
@@ -243,3 +249,24 @@ logout = LogoutView.as_view(
     # next_page 인자를 지정하면, 최소한 템플릿 응답은 없습니다.
     next_page=settings.LOGIN_URL,
 )
+
+
+@login_required
+def password_change(request):
+    if request.method == "GET":
+        form = PasswordChangeForm(request.user)
+    else:
+        form = PasswordChangeForm(request.user, data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, request.user)
+            messages.success(request, "암호를 변경했습니다.")
+            return redirect("accounts:profile")
+
+    return render(
+        request,
+        "accounts/password_change_form.html",
+        {
+            "form": form,
+        },
+    )
