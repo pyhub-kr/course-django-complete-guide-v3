@@ -5,14 +5,16 @@
   form#django-form .errorlist li { list-style-type: none; }
 </style>
 
-{{ form.media }}
+{{ profile_user_form.media }}
+{{ profile_form.media }}
 
 <h2>프로필 수정 폼</h2>
 
 <form id="django-form" action="" method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     <table>
-        {{ form.as_table }}
+        {{ profile_user_form.as_table }}
+        {{ profile_form.as_table }}
     </table>
     <input type="submit" />
 </form>

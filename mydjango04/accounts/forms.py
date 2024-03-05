@@ -33,6 +33,21 @@ class UserProfileForm(forms.ModelForm):
         fields = ["address", "phone_number", "photo"]
 
 
+class ProfileUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["email"]
+
+    def clean_email(self) -> str:
+        email = self.cleaned_data.get("email")
+        if email:
+            qs = self._meta.model.objects.filter(email__iexact=email)
+            qs = qs.exclude(pk=self.instance.pk)
+            if qs.exists():
+                raise forms.ValidationError("이미 등록된 이메일입니다.")
+        return email
+
+
 class ProfileForm(forms.ModelForm):
     # mydate = DatePickerField(
     #     min_value=lambda: datetime.date.today(),

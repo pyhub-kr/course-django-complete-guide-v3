@@ -24,55 +24,70 @@ from accounts.forms import (
     UserForm,
     UserProfileForm,
     SignupForm,
+    ProfileUserForm,
     # PasswordChangeForm,
 )
 from accounts.models import Profile
 
 
-# @login_required
-# def profile_edit(request):
-#     try:
-#         instance = request.user.profile
-#     except Profile.DoesNotExist:
-#         instance = None
+@login_required
+def profile_edit(request):
+    try:
+        instance = request.user.profile
+    except Profile.DoesNotExist:
+        instance = None
+
+    if request.method == "GET":
+        profile_user_form = ProfileUserForm(
+            prefix="profile-user", instance=request.user
+        )
+        profile_form = ProfileForm(prefix="profile", instance=instance)
+    else:
+        profile_user_form = ProfileUserForm(
+            prefix="profile-user",
+            data=request.POST,
+            files=request.FILES,
+            instance=request.user,
+        )
+        profile_form = ProfileForm(
+            prefix="profile", data=request.POST, files=request.FILES, instance=instance
+        )
+        if profile_user_form.is_valid() and profile_form.is_valid():
+            profile_user_form.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            return redirect("accounts:profile_edit")
+
+    return render(
+        request,
+        "accounts/profile_form.html",
+        {
+            "profile_user_form": profile_user_form,
+            "profile_form": profile_form,
+        },
+    )
+
+
+# class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+#     model = Profile
+#     form_class = ProfileForm
+#     success_url = reverse_lazy("accounts:profile_edit")
 #
-#     if request.method == "GET":
-#         form = ProfileForm(instance=instance)
-#     else:
-#         form = ProfileForm(data=request.POST, files=request.FILES, instance=instance)
-#         if form.is_valid():
-#             profile = form.save(commit=False)
-#             profile.user = request.user
-#             profile.save()
-#             return redirect("accounts:profile_edit")
+#     def get_object(self):
+#         try:
+#             return self.request.user.profile
+#         except Profile.DoesNotExist:
+#             return None
 #
-#     return render(
-#         request,
-#         "accounts/profile_form.html",
-#         {
-#             "form": form,
-#         },
-#     )
-
-
-class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-    model = Profile
-    form_class = ProfileForm
-    success_url = reverse_lazy("accounts:profile_edit")
-
-    def get_object(self):
-        try:
-            return self.request.user.profile
-        except Profile.DoesNotExist:
-            return None
-
-    def form_valid(self, form):
-        profile = form.save(commit=False)
-        profile.user = self.request.user
-        return super().form_valid(form)
-
-
-profile_edit = ProfileUpdateView.as_view()
+#     def form_valid(self, form):
+#         profile = form.save(commit=False)
+#         profile.user = self.request.user
+#         return super().form_valid(form)
+#
+#
+# profile_edit = ProfileUpdateView.as_view()
 
 
 def check_is_profile_update(wizard_view: "UserProfileWizardView") -> bool:
