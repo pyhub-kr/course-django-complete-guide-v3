@@ -356,36 +356,57 @@ def password_reset_confirm(request, uidb64, token):
     user = get_object_or_404(User, pk=uid)
 
     context_data = {}
+    reset_url_token = "set-password"
 
-    if default_token_generator.check_token(user, token) is False:
-        validlink = False  # token 검증에 실패하면 비밀번호 입력없이 오류 응답
-    else:
-        validlink = True  # token 검증에 실패하면 재설정할 비밀번호를 입력받습니다.
-
-        # 폼 처리 (GET/POST)
-        if request.method == "GET":
-            form = SetPasswordForm(user=user)
+    if token != reset_url_token:
+        if default_token_generator.check_token(user, token):
+            request.session["_password_reset_token"] = token
+            redirect_url = request.path.replace(token, reset_url_token)
+            return redirect(redirect_url)
         else:
-            form = SetPasswordForm(user=user, data=request.POST)
-            if form.is_valid():
-                form.save()
-                # 암호 재설정 후, 자동 로그인
-                # auth_login(request, user)
+            # 토큰이 유효하지 않은 경우, 암호 재설정 링크가 유효하지 않다는 메시지를 노출합니다.
+            return render(
+                request,
+                "registration/password_reset_confirm.html",
+                {"validlink": False},
+            )
+    else:
+        session_token = request.session.get("_password_reset_token")
 
-                # 암호 재설정 후에 자동 로그인을 수행하고자 할 때
-                post_reset_login = True
-                if post_reset_login:
-                    auth_login(request, user)
-                    messages.success(
-                        request, "암호를 재설정했으며, 자동 로그인 처리되었습니다."
-                    )
-                    return redirect(settings.LOGIN_REDIRECT_URL)
-                else:
-                    messages.success(request, "암호를 재설정했습니다. 로그인해주세요.")
-                    return redirect(settings.LOGIN_URL)
+        if default_token_generator.check_token(user, session_token) is False:
+            validlink = False  # token 검증에 실패하면 비밀번호 입력없이 오류 응답
+        else:
+            validlink = True  # token 검증에 실패하면 재설정할 비밀번호를 입력받습니다.
 
-        context_data["form"] = form
+            # 폼 처리 (GET/POST)
+            if request.method == "GET":
+                form = SetPasswordForm(user=user)
+            else:
+                form = SetPasswordForm(user=user, data=request.POST)
+                if form.is_valid():
+                    form.save()
 
-    context_data["validlink"] = validlink
+                    del request.session["_password_reset_token"]  # 세션에서 토큰 삭제
 
-    return render(request, "registration/password_reset_confirm.html", context_data)
+                    # 암호 재설정 후, 자동 로그인
+                    # auth_login(request, user)
+
+                    # 암호 재설정 후에 자동 로그인을 수행하고자 할 때
+                    post_reset_login = True
+                    if post_reset_login:
+                        auth_login(request, user)
+                        messages.success(
+                            request, "암호를 재설정했으며, 자동 로그인 처리되었습니다."
+                        )
+                        return redirect(settings.LOGIN_REDIRECT_URL)
+                    else:
+                        messages.success(
+                            request, "암호를 재설정했습니다. 로그인해주세요."
+                        )
+                        return redirect(settings.LOGIN_URL)
+
+            context_data["form"] = form
+
+        context_data["validlink"] = validlink
+
+        return render(request, "registration/password_reset_confirm.html", context_data)
