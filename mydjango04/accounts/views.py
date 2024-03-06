@@ -3,8 +3,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, update_session_auth_hash
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView as DjangoLoginView, LogoutView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import PasswordResetForm as DjangoPasswordResetForm
@@ -12,9 +13,9 @@ from django.contrib.auth.views import PasswordResetView as DjangoPasswordResetVi
 from django.contrib.auth.views import PasswordChangeView as DjangoPasswordChangeView
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.http import url_has_allowed_host_and_scheme, urlsafe_base64_decode
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
@@ -30,7 +31,7 @@ from accounts.forms import (
     PasswordResetForm,
     # PasswordChangeForm,
 )
-from accounts.models import Profile
+from accounts.models import Profile, User
 
 
 @login_required
@@ -347,6 +348,44 @@ class PasswordResetView(DjangoPasswordResetView):
 password_reset = PasswordResetView.as_view()
 
 
-# http://localhost:8000/accounts/reset/Mg/c3eiag-64391380463d3b96ed991cfa75aea681/
+# http://localhost:8000/accounts/reset/Mg/c3gazp-ed8c96e920b7e4dd458df1145b4ec7d4/
+
+
 def password_reset_confirm(request, uidb64, token):
-    return HttpResponse("비밀번호 재설정을 요청하셨습니다.")
+    uid = urlsafe_base64_decode(uidb64).decode()
+    user = get_object_or_404(User, pk=uid)
+
+    context_data = {}
+
+    if default_token_generator.check_token(user, token) is False:
+        validlink = False  # token 검증에 실패하면 비밀번호 입력없이 오류 응답
+    else:
+        validlink = True  # token 검증에 실패하면 재설정할 비밀번호를 입력받습니다.
+
+        # 폼 처리 (GET/POST)
+        if request.method == "GET":
+            form = SetPasswordForm(user=user)
+        else:
+            form = SetPasswordForm(user=user, data=request.POST)
+            if form.is_valid():
+                form.save()
+                # 암호 재설정 후, 자동 로그인
+                # auth_login(request, user)
+
+                # 암호 재설정 후에 자동 로그인을 수행하고자 할 때
+                post_reset_login = True
+                if post_reset_login:
+                    auth_login(request, user)
+                    messages.success(
+                        request, "암호를 재설정했으며, 자동 로그인 처리되었습니다."
+                    )
+                    return redirect(settings.LOGIN_REDIRECT_URL)
+                else:
+                    messages.success(request, "암호를 재설정했습니다. 로그인해주세요.")
+                    return redirect(settings.LOGIN_URL)
+
+        context_data["form"] = form
+
+    context_data["validlink"] = validlink
+
+    return render(request, "registration/password_reset_confirm.html", context_data)
