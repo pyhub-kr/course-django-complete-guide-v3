@@ -1,12 +1,27 @@
 import datetime
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission, Group
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from core.model_fields import DatePickerField
+
+
+def group_add_perm(self, perm_name: str) -> None:
+    group = self
+    app_label, codename = perm_name.split(".", 1)
+    permission = Permission.objects.get(
+        content_type__app_label=app_label,
+        codename=codename,
+    )
+    # 그룹 퍼미션 목록에 추가
+    group.permissions.add(permission)
+
+
+# Group 클래스에 add_perm 메서드 추가하기
+setattr(Group, "add_perm", group_add_perm)
 
 
 class User(AbstractUser):
@@ -30,6 +45,23 @@ class User(AbstractUser):
         related_name="following_set",
         related_query_name="following",
     )
+
+    def add_perm(self, perm_name: str) -> None:
+        # perm_name 예시 : "blog.add_post"
+
+        user = self
+
+        # app_label = "blog"
+        # codename = "add_post"
+        app_label, codename = perm_name.split(".", 1)
+
+        # app_label과 codename으로 Permission 조회
+        permission = Permission.objects.get(
+            content_type__app_label=app_label,
+            codename=codename,
+        )
+        # 유저 퍼미션 목록에 추가
+        user.user_permissions.add(permission)
 
 
 @receiver(post_save, sender=User)
@@ -76,7 +108,8 @@ class Profile(models.Model):
         blank=True,
         validators=[
             RegexValidator(
-                r"^01\d[ -]?\d{4}[ -]?\d{4}$", message="휴대폰 번호 포맷으로 입력해주세요."
+                r"^01\d[ -]?\d{4}[ -]?\d{4}$",
+                message="휴대폰 번호 포맷으로 입력해주세요.",
             ),
         ],
     )
