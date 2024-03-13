@@ -1,0 +1,10 @@
+{# blog/templates/blog/_tag_form.html : HTML 레이아웃없이 컨텐츠로만 구성 #}
+
+{% load django_bootstrap5 %}
+
+<form action="{% url 'blog:tag_new' %}" method="post" autocomplete="off"
+      novalidate>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" class="btn btn-primary"/>
+</form>

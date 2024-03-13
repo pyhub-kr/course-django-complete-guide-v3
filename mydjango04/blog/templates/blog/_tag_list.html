@@ -1,0 +1,7 @@
+{# blog/templates/blog/_tag_list.html : HTML 레이아웃없이 컨텐츠로만 구성 #}
+
+<div class="list-group">
+{% for tag in tag_list %}
+    <div class="list-group-item">{{ tag.name }}</div>
+{% endfor %}
+</div>

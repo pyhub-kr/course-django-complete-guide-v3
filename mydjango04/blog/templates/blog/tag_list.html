@@ -1,0 +1,11 @@
+{# blog/templates/blog/tag_list.html #}
+{% extends "blog/base.html" %}
+
+{% block title %}태그 목록{% endblock %}
+
+{% block content %}
+    <h2>태그 목록</h2>
+    {% include "blog/_tag_list.html" %}
+    <hr/>
+    <a href="{% url 'blog:tag_new' %}">새 태그</a>
+{% endblock %}

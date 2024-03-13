@@ -8,7 +8,7 @@ from django.db import models
 
 from core.crispy_bootstrap5_ext.layout import BorderedTabHolder
 from core.forms.widgets import HorizontalRadioSelect, StarRatingSelect
-from .models import Review, Memo
+from .models import Review, Memo, Tag
 
 
 class ReviewForm(forms.ModelForm):
@@ -77,3 +77,9 @@ class MemoForm(forms.ModelForm):
     class Meta:
         model = Memo
         fields = ["message", "status"]
+
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ["name"]
