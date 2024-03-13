@@ -205,3 +205,7 @@ def tag_new(request):
             "form": form,
         },
     )
+
+
+def test(request):
+    return render(request, "blog/test.html")
