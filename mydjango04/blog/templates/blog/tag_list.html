@@ -5,7 +5,17 @@
 
 {% block content %}
     <h2>태그 목록</h2>
-    {% include "blog/_tag_list.html" %}
+
+    <button class="btn btn-primary my-3"
+            hx-get="{% url 'blog:tag_list' %}"
+            hx-target="#tag-list-container"
+            hx-swap="innerHTML transition:true"
+    >새로고침
+    </button>
+
+    <div id="tag-list-container">
+        {% include "blog/_tag_list.html" %}
+    </div>
     <hr/>
     <a href="{% url 'blog:tag_new' %}">새 태그</a>
 {% endblock %}
