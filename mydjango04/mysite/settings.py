@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django.forms",
     "django_bootstrap5",
     "django_extensions",
+    "django_htmx",
     "crispy_forms",
     "crispy_bootstrap5",
     "formtools",
@@ -82,6 +83,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 if DEBUG:

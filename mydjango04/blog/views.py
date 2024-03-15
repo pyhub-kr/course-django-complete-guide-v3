@@ -177,8 +177,9 @@ def tag_list(request):
     if query:
         tag_qs = tag_qs.filter(name__icontains=query)
 
-    is_htmx = request.META.get("HTTP_HX_REQUEST") == "true"
-    if is_htmx:
+    # is_htmx = bool(request.htmx)  # request.META.get("HTTP_HX_REQUEST") == "true"
+    # if is_htmx:
+    if request.htmx:
         template_name = "blog/_tag_list.html"
     else:
         template_name = "blog/tag_list.html"
