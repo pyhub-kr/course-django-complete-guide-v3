@@ -24,5 +24,6 @@ urlpatterns = [
     path("memogroup/<int:group_pk>/form/", views.memo_form, name="memo_form"),
     path("tags/", views.tag_list, name="tag_list"),
     path("tags/new/", views.tag_new, name="tag_new"),
+    path("tags/<int:pk>/delete/", views.tag_delete, name="tag_delete"),
     path("test/", views.test, name="test"),
 ]

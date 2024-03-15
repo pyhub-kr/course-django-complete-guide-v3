@@ -7,6 +7,7 @@ from django.forms import formset_factory, modelformset_factory, inlineformset_fa
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_http_methods
 from vanilla import CreateView, ListView, DetailView, UpdateView, FormView
 
 from accounts.models import User
@@ -212,6 +213,13 @@ def tag_new(request):
             "form": form,
         },
     )
+
+
+@require_http_methods(["DELETE"])
+def tag_delete(request, pk):
+    tag = get_object_or_404(Tag, pk=pk)
+    tag.delete()
+    return HttpResponse("")
 
 
 def test(request):

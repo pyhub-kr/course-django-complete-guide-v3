@@ -2,6 +2,14 @@
 
 <div class="list-group">
 {% for tag in tag_list %}
-    <div class="list-group-item">{{ tag.name }}</div>
+    <div class="list-group-item"
+         style="cursor: pointer;"
+         hx-trigger="click"
+         hx-confirm="{{ tag.name }} 태그를 삭제하시겠습니까?"
+         hx-delete="{% url 'blog:tag_delete' tag.pk %}"
+         hx-swap="delete"
+    >
+        {{ tag.name }}
+    </div>
 {% endfor %}
 </div>
