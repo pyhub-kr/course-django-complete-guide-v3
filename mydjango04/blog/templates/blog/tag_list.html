@@ -6,6 +6,8 @@
 {% block content %}
     <h2>태그 목록</h2>
 
+    <div hx-get="{% url 'blog:tag_new' %}" hx-trigger="load" hx-get-with-timestamp></div>
+
     <button class="btn btn-primary my-3"
             hx-get="{% url 'blog:tag_list' %}"
             hx-target="#tag-list-container"
