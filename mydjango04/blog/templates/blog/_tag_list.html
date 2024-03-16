@@ -1,6 +1,6 @@
 {# blog/templates/blog/_tag_list.html : HTML 레이아웃없이 컨텐츠로만 구성 #}
 
-<div class="list-group">
+
 {% for tag in tag_list %}
     <div class="list-group-item"
          style="cursor: pointer;"
@@ -11,5 +11,21 @@
     >
         {{ tag.name }}
     </div>
+
+    {% if forloop.last %}
+        {% if page_obj.has_next %}
+            <div class="list-group-item list-group-item-action active text-center"
+                 style="cursor: pointer;"
+                 hx-get="{% url 'blog:tag_list' %}?page={{ page_obj.next_page_number }}"
+                 hx-trigger="click once"
+                 hx-swap="outerHTML transition:true">
+                다음
+            </div>
+        {% else %}
+            <div class="list-group-item list-group-item-action text-center">
+                페이지 끝 입니다.
+            </div>
+        {% endif %}
+    {% endif %}
+
 {% endfor %}
-</div>

@@ -14,18 +14,16 @@
     <button class="btn btn-primary my-3"
             hx-get="{% url 'blog:tag_list' %}?page={{ request.GET.page|default:1 }}"
             hx-get-with-timestamp
-            hx-target="#tag-list-container"
+            hx-target="#tag-list-container .list-group"
             hx-trigger="click, refresh-tag-list from:body"
             hx-swap="innerHTML transition:true"
     >새로고침
     </button>
 
     <div id="tag-list-container">
-        {% include "blog/_tag_list.html" %}
-    </div>
-
-    <div class="my-3">
-        {% bootstrap_pagination page_obj %}
+        <div class="list-group">
+            {% include "blog/_tag_list.html" %}
+        </div>
     </div>
 
     <hr/>
