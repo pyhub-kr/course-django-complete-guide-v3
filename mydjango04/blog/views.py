@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
+from django_htmx.http import HttpResponseClientRefresh, trigger_client_event
 from vanilla import CreateView, ListView, DetailView, UpdateView, FormView
 
 from accounts.models import User
@@ -204,13 +205,18 @@ def tag_new(request):
             messages.success(request, "태그를 저장했습니다.")
             if request.htmx:
                 form = TagForm()
-                return render(
+                response = render(
                     request,
                     "blog/_tag_form.html",
                     {
                         "form": form,
                     },
                 )
+                # response["HX-Refresh"] = "true"
+                # HttpResponseClientRefresh
+                # response["HX-Trigger"] = "refresh-tag-list"
+                response = trigger_client_event(response, "refresh-tag-list")
+                return response
             else:
                 return redirect("blog:tag_list")
 
