@@ -2,7 +2,12 @@
 
 {% load django_bootstrap5 %}
 
-<form action="{% url 'blog:tag_new' %}" method="post" autocomplete="off"
+{% bootstrap_messages %}
+
+<form hx-post="{% url 'blog:tag_new' %}"
+      hx-trigger="submit once"
+      hx-swap="outerHTML"
+      autocomplete="off"
       novalidate>
     {% csrf_token %}
     {% bootstrap_form form %}

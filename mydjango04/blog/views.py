@@ -202,7 +202,17 @@ def tag_new(request):
         if form.is_valid():
             form.save()
             messages.success(request, "태그를 저장했습니다.")
-            return redirect("blog:tag_list")
+            if request.htmx:
+                form = TagForm()
+                return render(
+                    request,
+                    "blog/_tag_form.html",
+                    {
+                        "form": form,
+                    },
+                )
+            else:
+                return redirect("blog:tag_list")
 
     if request.htmx:
         template_name = "blog/_tag_form.html"
