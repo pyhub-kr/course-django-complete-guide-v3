@@ -14,12 +14,11 @@
 
     {% if forloop.last %}
         {% if page_obj.has_next %}
-            <div class="list-group-item list-group-item-action active text-center"
-                 style="cursor: pointer;"
+            <div class="list-group-item list-group-item-action text-center"
                  hx-get="{% url 'blog:tag_list' %}?page={{ page_obj.next_page_number }}"
-                 hx-trigger="click once"
+                 hx-trigger="revealed"
                  hx-swap="outerHTML transition:true">
-                다음
+                로딩 중 ...
             </div>
         {% else %}
             <div class="list-group-item list-group-item-action text-center">
