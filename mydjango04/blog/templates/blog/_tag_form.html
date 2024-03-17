@@ -4,7 +4,8 @@
 
 {% bootstrap_messages %}
 
-<form hx-post="{% url 'blog:tag_new' %}"
+<form class="border my-3 p-3"
+      hx-post="{{ request.get_full_path }}"
       hx-trigger="submit once"
       hx-swap="outerHTML"
       autocomplete="off"
