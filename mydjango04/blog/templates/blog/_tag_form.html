@@ -13,4 +13,12 @@
     {% csrf_token %}
     {% bootstrap_form form %}
     {# <input type="submit" class="btn btn-primary"/> #}
+
+    <button class="btn btn-primary btn-sm">저장</button>
+    <button class="btn btn-warning btn-sm"
+            hx-get="{{ cancel_url|default:request.get_full_path }}"
+            hx-target="closest form"
+            hx-swap="outerHTML">
+        취소
+    </button>
 </form>

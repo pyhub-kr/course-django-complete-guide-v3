@@ -2,28 +2,7 @@
 
 
 {% for tag in tag_list %}
-    <div class="list-group-item d-flex justify-content-between align-items-center">
-        <div
-                style="cursor: pointer;"
-                hx-get="{% url 'blog:tag_edit' tag.pk %}"
-                hx-trigger="click"
-                hx-target="closest .list-group-item"
-                hx-swap="outerHTML"
-        >
-            {{ tag.name }}
-        </div>
-        <span
-                class="text-danger"
-                style="cursor: pointer;"
-                hx-trigger="click"
-                hx-confirm="{{ tag.name }} 태그를 삭제하시겠습니까?"
-                hx-delete="{% url 'blog:tag_delete' tag.pk %}"
-                hx-target="closest .list-group-item"
-                hx-swap="delete"
-        >
-            X
-        </span>
-    </div>
+    {% include "blog/_tag_list_item.html" %}
 
     {% if forloop.last %}
         {% if page_obj.has_next %}

@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.forms import formset_factory, modelformset_factory, inlineformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRefresh, trigger_client_event
 from vanilla import CreateView, ListView, DetailView, UpdateView, FormView
@@ -221,8 +221,10 @@ tag_list = TagListView.as_view()
 def tag_new(request, pk=None):
     if pk:
         instance = get_object_or_404(Tag, pk=pk)
+        tag_list_item_url = reverse("blog:tag_list_item", args=[pk])
     else:
         instance = None
+        tag_list_item_url = None
 
     if request.method == "GET":
         form = TagForm(instance=instance)
@@ -232,19 +234,22 @@ def tag_new(request, pk=None):
             form.save()
             messages.success(request, "태그를 저장했습니다.")
             if request.htmx:
-                form = TagForm()
-                response = render(
-                    request,
-                    "blog/_tag_form.html",
-                    {
-                        "form": form,
-                    },
-                )
-                # response["HX-Refresh"] = "true"
-                # HttpResponseClientRefresh
-                # response["HX-Trigger"] = "refresh-tag-list"
-                response = trigger_client_event(response, "refresh-tag-list")
-                return response
+                if tag_list_item_url:
+                    return redirect(tag_list_item_url)
+                else:
+                    form = TagForm()
+                    response = render(
+                        request,
+                        "blog/_tag_form.html",
+                        {
+                            "form": form,
+                        },
+                    )
+                    # response["HX-Refresh"] = "true"
+                    # HttpResponseClientRefresh
+                    # response["HX-Trigger"] = "refresh-tag-list"
+                    response = trigger_client_event(response, "refresh-tag-list")
+                    return response
             else:
                 return redirect("blog:tag_list")
 
@@ -258,12 +263,18 @@ def tag_new(request, pk=None):
         template_name,
         {
             "form": form,
+            "cancel_url": tag_list_item_url,
         },
     )
 
 
 def tag_edit(request, pk):
     return tag_new(request, pk)
+
+
+def tag_list_item(request, pk):
+    tag = get_object_or_404(Tag, pk=pk)
+    return render(request, "blog/_tag_list_item.html", {"tag": tag})
 
 
 @require_http_methods(["DELETE"])
