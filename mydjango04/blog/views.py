@@ -218,6 +218,7 @@ class TagListView(ListView):
 tag_list = TagListView.as_view()
 
 
+@login_required
 def tag_new(request, pk=None):
     if pk:
         instance = get_object_or_404(Tag, pk=pk)

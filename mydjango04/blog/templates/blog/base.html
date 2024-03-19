@@ -12,6 +12,7 @@
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 <main style="width: 400px; margin: 1em;">
+    <h1>유저: {{ request.user }}</h1>
     {% block content %}{% endblock %}
 </main>
 <script>
