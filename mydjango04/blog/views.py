@@ -14,6 +14,7 @@ from vanilla import CreateView, ListView, DetailView, UpdateView, FormView
 from accounts.models import User
 from blog.forms import ReviewForm, DemoForm, MemoForm, TagForm
 from blog.models import Post, Review, Memo, MemoGroup, Tag
+from core.decorators import login_required_hx
 
 
 @login_required
@@ -218,7 +219,7 @@ class TagListView(ListView):
 tag_list = TagListView.as_view()
 
 
-@login_required
+@login_required_hx
 def tag_new(request, pk=None):
     if pk:
         instance = get_object_or_404(Tag, pk=pk)
