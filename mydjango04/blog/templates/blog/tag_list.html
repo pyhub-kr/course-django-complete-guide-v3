@@ -20,14 +20,25 @@
     >새로고침
     </button>
 
-    <input type="text" class="form-control my-3"
-           name="query"
-           hx-get="{% url 'blog:tag_list' %}"
-           hx-get-with-timestamp
-           hx-trigger="keyup[target.value.length===0 || target.value.length>=2] changed delay:400ms"
-           hx-target="#tag-list-container .list-group"
-           hx-swap="innerHTML transition:true"
-    />
+    <div class="position-relative">
+        <input type="text" name="query" class="form-control my-3"
+               hx-get="{% url 'blog:tag_list' %}"
+               hx-get-with-timestamp
+               hx-trigger="keyup[target.value.length === 0 || target.value.length >= 2] changed delay:400ms"
+               hx-target="#tag-list-container .list-group"
+               hx-swap="innerHTML transition:true"
+               hx-indicator="#tag-list-query-indicator"
+        />
+
+        {# indicator가 사용될 때에는 .htmx-request가 적용됩니다. #}
+        <div id="tag-list-query-indicator" class="htmx-indicator">
+            {# ref: https://getbootstrap.com/docs/5.3/components/spinners/#growing-spinner #}
+            <div class="spinner-grow text-primary"
+                 style="width: 20px; height: 20px; position: absolute; top: 50%; margin-top: -10px; right: 10px;">
+            </div>
+        </div>
+    </div>
+
 
     <div id="tag-list-container">
         <div class="list-group">
