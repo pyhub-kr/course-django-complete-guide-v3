@@ -2,7 +2,7 @@
 
 {% load django_bootstrap5 %}
 
-{% include "_messages_as_toast.html" %}
+{% include "core/_messages_as_event.html" %}
 
 <form class="border my-3 p-3"
       hx-post="{{ request.get_full_path }}"
