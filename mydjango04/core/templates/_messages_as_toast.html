@@ -27,11 +27,9 @@
     <script>
       (function () {
         const toast_container = document.currentScript.previousElementSibling;
-        document.addEventListener("DOMContentLoaded", function () {
-          toast_container.querySelectorAll(".toast").forEach(function (el) {
-            const toast = new bootstrap.Toast(el);
-            toast.show();
-          });
+        toast_container.querySelectorAll(".toast").forEach(function (el) {
+          const toast = new bootstrap.Toast(el);
+          toast.show();
         });
       })();
     </script>
