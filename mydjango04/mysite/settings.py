@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "formtools",
     "widget_tweaks",
+    "template_partials",
     "accounts",
     "blog",
     "core",

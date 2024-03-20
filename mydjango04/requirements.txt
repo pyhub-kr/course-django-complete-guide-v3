@@ -10,6 +10,7 @@ django-crispy-forms==2.1
 crispy-bootstrap5==2023.10
 django-widget-tweaks==1.5.0
 django-formtools==2.5.1
+django-template-partials==23.4
 
 requests==2.31.0
 pillow==10.1.0
