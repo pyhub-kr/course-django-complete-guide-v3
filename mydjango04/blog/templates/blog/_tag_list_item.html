@@ -6,8 +6,8 @@
             style="cursor: pointer;"
             hx-get="{% url 'blog:tag_edit' tag.pk %}"
             hx-trigger="click"
-            hx-target="closest .list-group-item"
-            hx-swap="outerHTML"
+            hx-target="#modal-container"
+            hx-swap="innerHTML"
     >
         {{ tag.name }}
     </div>

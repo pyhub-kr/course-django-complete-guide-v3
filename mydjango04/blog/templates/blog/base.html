@@ -15,6 +15,10 @@
     <h1>유저: {{ request.user }}</h1>
     {% block content %}{% endblock %}
 </main>
+
+{# Modal이 위치할 요소를 먼저 정의합니다. #}
+<div id="modal-container"></div>
+
 <script>
 document.body.addEventListener('htmx:configRequest', function (event) {
   const htmxElement = event.detail.elt;

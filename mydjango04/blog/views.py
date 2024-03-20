@@ -223,10 +223,8 @@ tag_list = TagListView.as_view()
 def tag_new(request, pk=None):
     if pk:
         instance = get_object_or_404(Tag, pk=pk)
-        tag_list_item_url = reverse("blog:tag_list_item", args=[pk])
     else:
         instance = None
-        tag_list_item_url = None
 
     if request.method == "GET":
         form = TagForm(instance=instance)
@@ -235,37 +233,15 @@ def tag_new(request, pk=None):
         if form.is_valid():
             form.save()
             messages.success(request, "태그를 저장했습니다.")
-            if request.htmx:
-                if tag_list_item_url:
-                    return redirect(tag_list_item_url)
-                else:
-                    form = TagForm()
-                    response = render(
-                        request,
-                        "blog/_tag_form.html",
-                        {
-                            "form": form,
-                        },
-                    )
-                    # response["HX-Refresh"] = "true"
-                    # HttpResponseClientRefresh
-                    # response["HX-Trigger"] = "refresh-tag-list"
-                    response = trigger_client_event(response, "refresh-tag-list")
-                    return response
-            else:
-                return redirect("blog:tag_list")
-
-    if request.htmx:
-        template_name = "blog/_tag_form.html"
-    else:
-        template_name = "blog/tag_form.html"
+            response = render(request, "core/_messages_as_event.html")
+            response = trigger_client_event(response, "refresh-tag-list")
+            return response
 
     return render(
         request,
-        template_name,
+        "blog/_tag_form.html",
         {
             "form": form,
-            "cancel_url": tag_list_item_url,
         },
     )
 

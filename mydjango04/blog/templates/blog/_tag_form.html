@@ -1,24 +1,62 @@
 {# blog/templates/blog/_tag_form.html : HTML 레이아웃없이 컨텐츠로만 구성 #}
 
-{% load django_bootstrap5 %}
+{% load django_bootstrap5 partials %}
 
 {% include "core/_messages_as_event.html" %}
 
-<form class="border my-3 p-3"
-      hx-post="{{ request.get_full_path }}"
-      hx-trigger="submit once"
-      hx-swap="outerHTML"
-      autocomplete="off"
-      novalidate>
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {# <input type="submit" class="btn btn-primary"/> #}
+{% partialdef tag-form %}
+    <form hx-post="{{ request.get_full_path }}"
+          hx-trigger="submit once"
+          hx-swap="outerHTML"
+          autocomplete="off"
+          novalidate>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {# <input type="submit" class="btn btn-primary"/> #}
+    </form>
+{% endpartialdef %}
 
-    <button class="btn btn-primary btn-sm">저장</button>
-    <button class="btn btn-warning btn-sm"
-            hx-get="{{ cancel_url|default:request.get_full_path }}"
-            hx-target="closest form"
-            hx-swap="outerHTML">
-        취소
-    </button>
-</form>
+{% if request.method == "POST" %}
+    {% partial tag-form %}
+{% else %}
+    <div class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {% if not form.instance.pk %}태그 생성{% else %}태그 수정{% endif %}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% partial tag-form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      (function () {
+        const modalEl = document.currentScript.previousElementSibling;
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+
+        {# 저장 버튼을 클릭하면, form submit 이벤트를 발생시킵니다. #}
+        modalEl.querySelector("button[type=submit]").onclick = () => {
+          const formEl = modalEl.querySelector("form");
+          htmx.trigger(formEl, "submit");
+        };
+
+        {# refresh-tag-list 이벤트를 받으면 모달창을 닫습니다. #}
+        document.body.addEventListener("refresh-tag-list", function () {
+          modal.hide();
+        });
+      })();
+    </script>
+{% endif %}
+

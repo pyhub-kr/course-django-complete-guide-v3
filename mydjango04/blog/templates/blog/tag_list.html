@@ -7,9 +7,16 @@
 {% block content %}
     <h2>태그 목록</h2>
 
-    <div hx-get="{% url 'blog:tag_new' %}"
-         hx-get-with-timestamp
-         hx-trigger="load"></div>
+    <button class="btn btn-primary"
+            hx-get="{% url 'blog:tag_new' %}"
+            hx-get-with-timestamp
+            hx-trigger="click"
+            hx-target="#modal-container"
+            hx-swap="innerHTML"
+    >
+        새 태그
+    </button>
+
 
     <button class="btn btn-primary my-3"
             hx-get="{% url 'blog:tag_list' %}?page={{ request.GET.page|default:1 }}"
