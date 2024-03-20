@@ -30,7 +30,7 @@ def login_required_hx(
             if isinstance(response, HttpResponseRedirect):
                 resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
 
-                if request.htmx in resolved_login_url in response.url:
+                if request.htmx and resolved_login_url in response.url:
                     # /accounts/login/?next=/blog/tags/new/%3F_%3D1710826915601
                     # next_url: str = response.url
                     # request.htmx.current_url
