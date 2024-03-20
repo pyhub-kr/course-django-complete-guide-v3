@@ -3,9 +3,11 @@
 from functools import wraps
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse, ParseResult
 
+from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required as django_login_required
 from django.http import HttpResponseRedirect
+from django.shortcuts import resolve_url
 from django_htmx.http import HttpResponseClientRedirect
 
 
@@ -26,7 +28,9 @@ def login_required_hx(
             response = decorated_view_func(request, *args, **kwargs)
 
             if isinstance(response, HttpResponseRedirect):
-                if request.htmx:
+                resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+
+                if request.htmx in resolved_login_url in response.url:
                     # /accounts/login/?next=/blog/tags/new/%3F_%3D1710826915601
                     # next_url: str = response.url
                     # request.htmx.current_url
