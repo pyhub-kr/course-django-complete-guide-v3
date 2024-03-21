@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "template_partials",
     "accounts",
     "blog",
+    "components",
     "core",
     "core.crispy_bootstrap5_ext",
     "hottrack",
