@@ -9,6 +9,16 @@
 </head>
 <body>
 
+<div>
+    {% include "components-pure/hello-world.html" with name="파이썬" %}
+
+    {% with name="장고" %}
+        {% include "components-pure/hello-world.html" %}
+    {% endwith %}
+
+    {% include "components-pure/hello-world.html" %}
+</div>
+
 <button
         hx-get="{% url 'blog:tag_list' %}"
         hx-trigger="click"

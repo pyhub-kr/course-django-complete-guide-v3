@@ -1,0 +1,5 @@
+/* components/static/components-pure/hello-world.css */
+
+.hello-world-component { display: inline-block; border: 1px dashed #ccc; padding: 10px; }
+.hello-world-component h1 { cursor: pointer; color: blue; margin: 0; }
+.hello-world-component h1:hover { color: red; }

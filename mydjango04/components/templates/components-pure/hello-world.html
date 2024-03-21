@@ -1,0 +1,11 @@
+{# components/templates/components-pure/hello-world.html #}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'components-pure/hello-world.css' %}">
+
+<div class="hello-world-component">
+    <h1>Hello - {{ name|default:"익명" }}</h1>
+</div>
+
+<script src="{% static 'components-pure/hello-world.js' %}"></script>
