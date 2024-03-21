@@ -1,14 +1,24 @@
 {# blog/templates/blog/test.html #}
 
+{% load component_tags %}
+
 <!doctype html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8"/>
     <title>htmx</title>
+    {% component_css_dependencies %}
     <script src="https://unpkg.com/htmx.org@1.9.10/dist/htmx.min.js"></script>
 </head>
 <body>
 
+<div>
+    {% component "hello-world" name="파이썬" %}{% endcomponent %}
+    {% component "hello-world" name="장고" %}{% endcomponent %}
+    {% component "hello-world" %}{% endcomponent %}
+</div>
+
+{% comment %}
 <div>
     {% include "components-pure/hello-world.html" with name="파이썬" %}
 
@@ -18,6 +28,7 @@
 
     {% include "components-pure/hello-world.html" %}
 </div>
+{% endcomment %}
 
 <button
         hx-get="{% url 'blog:tag_list' %}"
@@ -29,6 +40,8 @@
 </button>
 
 <div id="tag-list-container"></div>
+
+{% component_js_dependencies %}
 
 </body>
 </html>
