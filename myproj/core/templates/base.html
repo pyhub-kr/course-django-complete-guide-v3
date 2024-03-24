@@ -14,7 +14,7 @@
         <script src="{% static 'htmx/1.9.11/htmx.min.js' %}"></script>
     {% endif %}
 </head>
-<body>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
     <h1>장고 프로젝트</h1>
 
