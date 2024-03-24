@@ -1,6 +1,6 @@
 {# blog/templates/blog/base.html #}
 
-{% load django_bootstrap5 static %}
+{% load component_tags django_bootstrap5 static %}
 
 <!doctype html>
 <html lang="ko">
@@ -8,6 +8,7 @@
     <meta charset="UTF-8"/>
     <title>{% block title %}{% endblock %}</title>
     {% bootstrap_css %}
+    {% component_css_dependencies %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
@@ -30,6 +31,7 @@ document.body.addEventListener('htmx:configRequest', function (event) {
 });
 </script>
 {% bootstrap_javascript %}
+{% component_js_dependencies %}
 <script src="{% static 'core/toast-messages.js' %}"></script>
 {% include "core/_messages_as_event.html" %}
 {% block extra-script %}{% endblock %}
