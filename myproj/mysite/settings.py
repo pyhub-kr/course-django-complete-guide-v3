@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third apps
+    "crispy_forms",
+    "crispy_bootstrap5",
     "django_extensions",
     "django_htmx",
     "template_partials",
@@ -160,3 +162,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
 
 INTERNAL_IPS = env.list("INTERNAL_IPS", default=["127.0.0.1"])
+
+
+# django-crispy-forms
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
