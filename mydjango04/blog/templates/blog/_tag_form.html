@@ -19,7 +19,7 @@
 {% if request.method == "POST" %}
     {% partial tag-form %}
 {% else %}
-    {% component "modal-form" %}
+    {% component "modal-form" id="tag-form" %}
         {% fill "modal-title" %}
             {% if not form.instance.pk %}태그 생성{% else %}태그 수정{% endif %}
         {% endfill %}

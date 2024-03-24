@@ -1,6 +1,7 @@
 {% load component_tags %}
 
-<div class="modal fade modal-form-component" tabindex="-1">
+<div {% if id %}id="{{ id }}"{% endif %}
+    class="modal fade modal-form-component" tabindex="-1">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
