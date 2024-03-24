@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # third apps
     "django_extensions",
+    "template_partials",
     # local apps
     "core",
 ]
