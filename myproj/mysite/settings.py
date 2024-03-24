@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "django_htmx",
     "template_partials",
     # local apps
+    "accounts",
     "core",
 ]
 
