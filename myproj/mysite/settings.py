@@ -10,22 +10,37 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import sys
 from pathlib import Path
+from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+env = Env()
+
+ENV_PATH = BASE_DIR / ".env"
+if ENV_PATH.exists():
+    with ENV_PATH.open(encoding="utf-8") as f:
+        env.read_env(f, overwrite=True)
+else:
+    print("not found:", ENV_PATH, file=sys.stderr)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-dn^kymsy5h(e&jtgba0r#jh1v6!9gao1e2#g!5#76b)5=dh2s)"
+SECRET_KEY = env.str(
+    "SECRET_KEY",
+    default="django-insecure-dn^kymsy5h(e&jtgba0r#jh1v6!9gao1e2#g!5#76b)5=dh2s)",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 
 # Application definition
@@ -39,6 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third apps
+    "django_extensions",
     # local apps
     "core",
 ]
@@ -117,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = env.str("LANGUAGE_CODE", default="ko-kr")
 
 TIME_ZONE = "UTC"
 
@@ -140,4 +156,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # django-debug-toolbar
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
 
-INTERNAL_IPS = ["127.0.0.1"]
+INTERNAL_IPS = env.list("INTERNAL_IPS", default=["127.0.0.1"])
