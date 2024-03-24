@@ -1,0 +1,12 @@
+{% if messages %}
+    {% for message in messages %}
+        <script>
+          (function () {
+            const tag = "{{ message.level_tag }}";
+            const message = "{{ message }}"
+            /* body 요소에 toast-message 이벤트를 보냅니다. */
+            htmx.trigger(document.body, 'toast-message', {message: message, tag: tag});
+          })();
+        </script>
+    {% endfor %}
+{% endif %}
