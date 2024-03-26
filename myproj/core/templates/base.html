@@ -29,17 +29,21 @@
             <ul class="nav">
                 {% if not user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="{% url 'accounts:login' %}" class="nav-link link-body-emphasis px-2">로그인</a>
+                        {% url 'accounts:login' as login_url %}
+                        <a href="{{ login_url }}{% if login_url != request.path %}?next={{ request.path }}{% endif %}"
+                           class="nav-link link-body-emphasis px-2">
+                            로그인
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'accounts:signup' %}" class="nav-link link-body-emphasis px-2">회원가입</a>
+                        <a href="{% url 'accounts:signup' %}?next={{ request.path }}" class="nav-link link-body-emphasis px-2">회원가입</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <a href="{% url 'accounts:profile' %}" class="nav-link link-body-emphasis px-2">프로필</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'accounts:logout' %}" class="nav-link link-body-emphasis px-2">로그아웃</a>
+                        <a href="{% url 'accounts:logout' %}?next={{ request.path }}" class="nav-link link-body-emphasis px-2">로그아웃</a>
                     </li>
                 {% endif %}
             </ul>

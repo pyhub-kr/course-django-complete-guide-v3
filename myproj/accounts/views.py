@@ -6,6 +6,7 @@ from django.contrib.auth.views import LogoutView as DjangoLogoutView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.generic import CreateView
 
 from accounts.forms import LoginForm, SignupForm
@@ -28,6 +29,18 @@ class SignupView(CreateView):
                 return HttpResponseRedirect(redirect_to)
 
         return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        next_url = self.request.POST.get("next") or self.request.GET.get("next")
+        if next_url:
+            is_safe = url_has_allowed_host_and_scheme(
+                url=next_url,
+                allowed_hosts={self.request.get_host()},
+                require_https=self.request.is_secure(),
+            )
+            if is_safe:
+                return next_url
+        return super().get_success_url()
 
     def form_valid(self, form):
         response = super().form_valid(form)
