@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import sys
 from pathlib import Path
+
+from django.core.exceptions import ImproperlyConfigured
 from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -141,6 +143,29 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+
+# Email
+# https://docs.djangoproject.com/en/4.2/topics/email/#smtp-backend
+# https://github.com/pyhub-kr/course-django-complete-guide-v3/commit/880ec443d1bebc3ca52b7ffff15769173e0bea97
+# (장고 기본 기능) 메일 발송 테스트: python manage.py sendtestemail 수신자_이메일
+
+EMAIL_HOST = env.str("EMAIL_HOST", default=None)
+
+if DEBUG and EMAIL_HOST is None:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    try:
+        EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+        EMAIL_PORT = env.int("EMAIL_PORT")
+        EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
+        EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=False)
+        EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
+        EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
+        DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL")
+    except ImproperlyConfigured as e:
+        print("ERROR:", e, file=sys.stderr)
+        EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 # Internationalization
