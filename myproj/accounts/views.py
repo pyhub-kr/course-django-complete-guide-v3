@@ -18,6 +18,8 @@ class SignupView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        user: User = self.object
+        user.send_welcome_email()
         messages.success(self.request, "회원가입을 환영합니다. ;-)")
         return response
 
