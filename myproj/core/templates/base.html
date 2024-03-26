@@ -8,17 +8,48 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>장고 프로젝트</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/5.3.3/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'bootstrap/5.3.3/css/bootstrap.min.css' %}"/>
     {% component_css_dependencies %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-<h1>장고 프로젝트</h1>
+<header>
+    {# refs: https://getbootstrap.com/docs/5.3/examples/headers/ #}
+    <nav class="py-2 bg-body-tertiary border-bottom">
+        <div class="container d-flex flex-wrap">
+            <ul class="nav me-auto">
+                <li class="nav-item">
+                    <a href="{% url 'core:root' %}"
+                       class="nav-link link-body-emphasis px-2 active"
+                       aria-current="page">
+                        장고 프로젝트
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a href="#" class="nav-link link-body-emphasis px-2">로그인</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link link-body-emphasis px-2">회원가입</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
-{% block content %}{% endblock %}
+<main>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</main>
 
-<hr/>
-&copy; 파이썬 사랑방
+{# refs: https://getbootstrap.com/docs/5.3/examples/album/ #}
+<footer class="text-body-secondary py-5">
+    <div class="container">
+        <p class="mb-0">&copy; 2024. 파이썬 사랑방.</p>
+    </div>
+</footer>
 
 {% if debug %}
     <script src="{% static 'htmx/1.9.11/htmx.js' %}"></script>
