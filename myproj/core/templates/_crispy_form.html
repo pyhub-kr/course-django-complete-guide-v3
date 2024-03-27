@@ -1,0 +1,16 @@
+{% load crispy_forms_tags %}
+
+<div class="row py-5">
+    <div class="col-sm-8 offset-sm-2">
+        <div class="card">
+            {% if form_title %}
+                <div class="card-header">
+                    {{ form_title }}
+                </div>
+            {% endif %}
+            <div class="card-body">
+                {% crispy form form.helper %}
+            </div>
+        </div>
+    </div>
+</div>

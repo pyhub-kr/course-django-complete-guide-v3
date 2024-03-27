@@ -32,8 +32,15 @@
             </form>
 
             <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2">로그인</button>
-                <button type="button" class="btn btn-warning">회원가입</button>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'accounts:login' %}"
+                       class="btn btn-outline-light me-2">로그인</a>
+                    <a href="#" class="btn btn-warning">회원가입</a>
+                {% else %}
+                    <a href="#"
+                       class="btn btn-outline-light me-2">프로필</a>
+                    <a href="#" class="btn btn-warning">로그아웃</a>
+                {% endif %}
             </div>
         </div>
     </div>
