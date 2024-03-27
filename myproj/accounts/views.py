@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -6,10 +8,10 @@ from django.contrib.auth.views import LogoutView as DjangoLogoutView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 
-from accounts.forms import LoginForm, SignupForm
-from accounts.models import User
+from accounts.forms import LoginForm, SignupForm, ProfileForm
+from accounts.models import User, Profile
 from accounts.utils import send_welcome_email
 
 
@@ -74,3 +76,27 @@ logout = LogoutView.as_view()
 @login_required
 def profile(request):
     return render(request, "accounts/profile.html")
+
+
+class ProfileUpdateView(UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = "crispy_form.html"
+    extra_context = {"form_title": "프로필 수정"}
+    success_url = reverse_lazy("accounts:profile")
+
+    def get_object(self, queryset=None) -> Optional[Profile]:
+        try:
+            return self.request.user.profile
+        except Profile.DoesNotExist:
+            return None
+
+    def form_valid(self, form):
+        profile = form.save(commit=False)
+        profile.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, "프로필을 저장했습니다.")
+        return response
+
+
+profile_edit = ProfileUpdateView.as_view()

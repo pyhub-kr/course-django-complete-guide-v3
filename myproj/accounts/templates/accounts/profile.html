@@ -2,4 +2,15 @@
 
 {% block content %}
     <h2>{{ user.username }}'s 프로필</h2>
+
+    {% if user.profile.avatar %}
+        <img src="{{ user.profile.avatar.url }}"
+             alt="{{ user }}'s avatar"
+             class="rounded-circle img-fluid"
+             style="max-width: 25%;"
+        />
+    {% endif %}
+
+    <hr />
+    <a href="{% url 'accounts:profile_edit' %}">프로필 수정</a>
 {% endblock %}
