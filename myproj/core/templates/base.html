@@ -8,17 +8,48 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>장고 프로젝트</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/5.3.3/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'bootstrap/5.3.3/css/bootstrap.min.css' %}"/>
     {% component_css_dependencies %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-<h1>장고 프로젝트</h1>
+<header class="p-3 text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                장고 프로젝트
+            </a>
 
-{% block content %}{% endblock %}
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
+            </ul>
 
-<hr/>
-&copy; 파이썬 사랑방
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search"
+                       class="form-control form-control-dark text-bg-dark"
+                       placeholder="Search..."
+                       aria-label="Search">
+            </form>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-outline-light me-2">로그인</button>
+                <button type="button" class="btn btn-warning">회원가입</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="py-5">
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+<footer class="text-body-secondary py-5">
+    <div class="container">
+        &copy; 파이썬 사랑방
+    </div>
+</footer>
 
 {% if debug %}
     <script src="{% static 'htmx/1.9.11/htmx.js' %}"></script>
