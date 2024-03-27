@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
+from django.db import models
 from django.template.loader import render_to_string
 
 
@@ -19,3 +20,8 @@ class User(AbstractUser):
         sender_email = settings.DEFAULT_FROM_EMAIL
         # TODO: celery, django-mailer 등을 통해 다른 프로세스를 통해 이메일 발송
         send_mail(subject, content, sender_email, [self.email], fail_silently=False)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(blank=True)

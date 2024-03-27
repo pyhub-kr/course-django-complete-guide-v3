@@ -9,7 +9,11 @@
                 </h5>
             {% endif %}
             <div class="card-body">
-                {% crispy form form.helper %}
+                {% if form.helper %}
+                    {% crispy form form.helper %}
+                {% else %}
+                    {% crispy form %}
+                {% endif %}
             </div>
         </div>
     </div>

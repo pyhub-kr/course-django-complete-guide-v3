@@ -2,8 +2,9 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
+from django.forms import ModelForm
 
-from accounts.models import User
+from accounts.models import User, Profile
 
 
 class SignupForm(UserCreationForm):
@@ -45,3 +46,14 @@ class LoginForm(AuthenticationForm):
         "password",
     )
     helper.add_input(Submit("submit", "로그인", css_class="w-100"))
+
+
+class ProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["avatar"]
+
+    helper = FormHelper()
+    helper.attrs = {"novalidate": True}
+    helper.layout = Layout("avatar")
+    helper.add_input(Submit("submit", "저장하기", css_class="w-100"))
