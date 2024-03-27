@@ -40,7 +40,14 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a href="{% url 'accounts:profile' %}" class="nav-link link-body-emphasis px-2">프로필</a>
+                        <a href="{% url 'accounts:profile' %}" class="nav-link link-body-emphasis px-2">
+                            {% if user.profile and user.profile.avatar %}
+                                <img src="{{ user.profile.avatar.url }}" alt="{{ user }}'s avatar"
+                                     class="rounded-circle" style="width: 32px; height: 32px;"
+                                />
+                            {% endif %}
+                            프로필
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'accounts:logout' %}?next={{ request.path }}" class="nav-link link-body-emphasis px-2">로그아웃</a>
