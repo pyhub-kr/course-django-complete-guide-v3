@@ -8,6 +8,7 @@ from django.views.generic import CreateView
 
 from accounts.forms import LoginForm, SignupForm
 from accounts.models import User
+from accounts.utils import send_welcome_email
 
 
 class SignupView(CreateView):
@@ -22,6 +23,10 @@ class SignupView(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, "회원가입을 환영합니다. ;-)")
+
+        user = self.object
+        send_welcome_email(user, fail_silently=True)
+
         return response
 
 
