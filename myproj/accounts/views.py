@@ -1,4 +1,6 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.shortcuts import render
 
 from accounts.forms import LoginForm
 
@@ -12,3 +14,8 @@ class LoginView(DjangoLoginView):
 
 
 login = LoginView.as_view()
+
+
+@login_required
+def profile(request):
+    return render(request, "accounts/profile.html")
