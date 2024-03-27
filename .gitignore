@@ -8,3 +8,4 @@ mediafiles
 .DS_Store
 .python-version
 draft_models.py
+*.swp
