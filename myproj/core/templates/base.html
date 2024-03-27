@@ -50,7 +50,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'accounts:logout' %}?next={{ request.path }}" class="nav-link link-body-emphasis px-2">로그아웃</a>
+                        <a href="#"
+                           hx-post="{% url 'accounts:logout' %}?next={{ request.path }}"
+                           hx-target="body"
+                           {# https://htmx.org/attributes/hx-push-url/ #}
+                           hx-push-url="true"
+                           class="nav-link link-body-emphasis px-2">
+                            로그아웃
+                        </a>
                     </li>
                 {% endif %}
             </ul>
