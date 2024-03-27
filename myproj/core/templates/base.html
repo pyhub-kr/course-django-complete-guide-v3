@@ -33,14 +33,15 @@
 
             <div class="text-end">
                 {% if not user.is_authenticated %}
-                    <a href="{% url 'accounts:login' %}"
+                    {% url 'accounts:login' as login_url %}
+                    <a href="{{ login_url }}{% if login_url != request.path %}?next={{ request.path }}{% endif %}"
                        class="btn btn-outline-light me-2">로그인</a>
-                    <a href="{% url 'accounts:signup' %}"
+                    <a href="{% url 'accounts:signup' %}?next={{ request.path }}"
                        class="btn btn-warning">회원가입</a>
                 {% else %}
                     <a href="{% url 'accounts:profile' %}"
                        class="btn btn-outline-light me-2">프로필</a>
-                    <a hx-post="{% url 'accounts:logout' %}"
+                    <a hx-post="{% url 'accounts:logout' %}?next={{ request.path }}"
                        hx-target="body"
                        hx-push-url="true"
                        class="btn btn-warning">로그아웃</a>
