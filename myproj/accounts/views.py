@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.contrib.auth.views import LoginView as DjangoLoginView, RedirectURLMixin
 from django.contrib.auth.views import LogoutView as DjangoLogoutView
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -12,7 +12,7 @@ from accounts.models import User
 from accounts.utils import send_welcome_email
 
 
-class SignupView(CreateView):
+class SignupView(RedirectURLMixin, CreateView):
     model = User
     form_class = SignupForm
     template_name = "crispy_form.html"
