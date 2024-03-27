@@ -1,7 +1,12 @@
+import os
+
+from PIL import Image
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
+from django.core.files import File
+from django.core.files.base import ContentFile
 from django.forms import ModelForm
 
 from accounts.models import User, Profile
@@ -46,3 +51,19 @@ class ProfileForm(ModelForm):
     helper.attrs = {"novalidate": True}
     helper.layout = Layout("avatar")
     helper.add_input(Submit("submit", "저장", css_class="w-100"))
+
+    def clean_avatar(self):
+        avatar_file: File = self.cleaned_data.get("avatar")
+        if avatar_file:
+            img = Image.open(avatar_file)
+            MAX_SIZE = (512, 512)
+            img.thumbnail(MAX_SIZE)
+            img = img.convert("RGB")
+
+            thumb_name = os.path.splitext(avatar_file.name)[0] + ".jpg"
+            thumb_file = ContentFile(b"", name=thumb_name)
+            img.save(thumb_file, format="jpeg")
+
+            return thumb_file
+
+        return avatar_file
