@@ -39,7 +39,9 @@
                 {% else %}
                     <a href="{% url 'accounts:profile' %}"
                        class="btn btn-outline-light me-2">프로필</a>
-                    <a href="{% url 'accounts:logout' %}"
+                    <a hx-post="{% url 'accounts:logout' %}"
+                       hx-target="body"
+                       hx-push-url="true"
                        class="btn btn-warning">로그아웃</a>
                 {% endif %}
             </div>
