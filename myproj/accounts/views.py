@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.contrib.auth.views import LogoutView as DjangoLogoutView
@@ -18,13 +19,16 @@ class SignupView(CreateView):
     extra_context = {
         "form_title": "회원가입",
     }
-    success_url = reverse_lazy("accounts:login")
+    success_url = reverse_lazy("accounts:profile")
 
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, "회원가입을 환영합니다. ;-)")
 
         user = self.object
+        auth_login(self.request, user)
+        messages.success(self.request, "회원가입과 동시에 로그인 지원 !")
+
         send_welcome_email(user, fail_silently=True)
 
         return response
