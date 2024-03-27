@@ -3,6 +3,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView as DjangoLoginView, RedirectURLMixin
 from django.contrib.auth.views import LogoutView as DjangoLogoutView
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -21,6 +22,15 @@ class SignupView(RedirectURLMixin, CreateView):
     }
     success_url = reverse_lazy("accounts:profile")
 
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            redirect_to = self.success_url
+            if redirect_to != request.path:
+                messages.warning(request, "로그인 유저는 회원가입할 수 없습니다.")
+                return HttpResponseRedirect(redirect_to)
+        response = super().dispatch(request, *args, **kwargs)
+        return response
+
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, "회원가입을 환영합니다. ;-)")
@@ -38,6 +48,7 @@ signup = SignupView.as_view()
 
 
 class LoginView(DjangoLoginView):
+    redirect_authenticated_user = True
     form_class = LoginForm
     template_name = "crispy_form.html"
     extra_context = {
