@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load partials %}
 
 {% block content %}
     <div class="row">
@@ -7,19 +8,22 @@
             {# https://icons.getbootstrap.com/ #}
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
+                    {% url 'blog:index' as link_url %}
+                    <a href="{{ link_url }}" class="nav-link {% if link_url == request.path %}active{% endif %}">
                         <i class="bi bi-messenger me-2"></i>
                         타임라인
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    {% url 'blog:friend_list' as link_url %}
+                    <a href="{{ link_url }}" class="nav-link {% if link_url == request.path %}active{% endif %}">
                         <i class="bi bi-person me-2"></i>
                         친구
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    {% url 'blog:new_friend_list' as link_url %}
+                    <a href="{{ link_url }}" class="nav-link {% if link_url == request.path %}active{% endif %}">
                         <i class="bi bi-person-add me-2"></i>
                         팔로잉 찾기
                     </a>
