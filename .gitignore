@@ -7,4 +7,5 @@ staticfiles
 mediafiles
 .DS_Store
 .python-version
+.tool-versions
 draft_models.py
