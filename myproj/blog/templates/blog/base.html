@@ -1,1 +1,35 @@
 {% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-2">
+            {# https://getbootstrap.com/docs/5.3/examples/sidebars/ #}
+            {# https://icons.getbootstrap.com/ #}
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" aria-current="page">
+                        <i class="bi bi-messenger me-2"></i>
+                        타임라인
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i class="bi bi-person me-2"></i>
+                        친구
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i class="bi bi-person-add me-2"></i>
+                        팔로잉 찾기
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-10">
+            {% block blog-content %}
+            {% endblock %}
+
+        </div>
+    </div>
+{% endblock %}
