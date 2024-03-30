@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "accounts",
     "blog",
     "core",
+    "shop",
 ]
 
 if DEBUG:
