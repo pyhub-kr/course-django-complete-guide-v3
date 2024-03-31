@@ -1,0 +1,39 @@
+{% load uuid_tags %}
+
+{% generate_uuid4 "carousel-" 8 as random_id %}
+
+{# refs: https://getbootstrap.com/docs/5.3/components/carousel/#how-it-works #}
+
+{# class => slide : 슬라이드 효과. 지정하지 않으면 끊어진 듯한 전환 #}
+{# swipe 지원은 기본에서 되는 데, 터치 디바이스만 ;;;. 마우스에서는 swipe가 안 됨. #}
+
+<div class="carousel-component carousel slide"
+     id="{{ random_id }}"
+     {# data-bs-touch="true" #}
+     {# data-bs-ride="carousel" : 자동 넘김 #}
+>
+    <div class="carousel-indicators">
+        {% for img_url in img_url_list %}
+            <button type="button"
+                    class="{% if forloop.first %}active{% endif %}"
+                    data-bs-target="#{{ random_id }}"
+                    data-bs-slide-to="{{ forloop.counter0 }}"
+                    aria-current="true" aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
+    </div>
+    <div class="carousel-inner">
+        {% for img_url in img_url_list %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ img_url }}" class="d-block w-100" alt=""/>
+            </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#{{ random_id }}" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#{{ random_id }}" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
