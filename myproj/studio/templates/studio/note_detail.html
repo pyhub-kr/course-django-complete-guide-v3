@@ -26,5 +26,6 @@
 
     <div class="my-3">
         <a href="{% url 'studio:index' %}" class="btn btn-primary">목록으로</a>
+        <a href="{% url 'studio:note_edit' note.pk %}" class="btn btn-success">수정하기</a>
     </div>
 {% endblock %}

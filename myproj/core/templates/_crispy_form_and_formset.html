@@ -1,0 +1,26 @@
+{% load crispy_forms_tags %}
+
+<form {% if form_action %}action="{{ form_action }}"{% endif %} method="post"
+      {% if form.is_multipart or formset.is_multipart %}enctype="multipart/form-data"{% endif %}
+>
+    <div class="row py-5">
+        <div class="col-sm-8 offset-sm-2">
+            <div class="card">
+                {% if form_title %}
+                    <div class="card-header">
+                        {{ form_title }}
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    {% crispy form form.helper %}
+                    {% crispy formset formset.helper %}
+                </div>
+                <div class="card-footer">
+                    <input type="submit" class="btn btn-primary w-100"
+                           {% if form_submit_label %}value="{{ form_submit_label }}"{% endif %}
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

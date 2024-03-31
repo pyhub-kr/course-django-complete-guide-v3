@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% include "_crispy_form_and_formset.html" with form=form formset=formset form_title=form_title form_submit_label=form_submit_label %}
+{% endblock %}
