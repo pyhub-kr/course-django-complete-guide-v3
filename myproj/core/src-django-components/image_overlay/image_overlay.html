@@ -1,0 +1,18 @@
+{% load component_tags %}
+
+<div class="{{ class }}">
+    <a class="d-block image-overlay-component overflow-hidden rounded"
+       {% if_filled "link" %}href="{% slot "link" %}{% endslot %}"{% endif_filled %}
+       {% if link %}href="{{ link }}"{% endif %}
+       {% if target %}target="{{ target }}"{% endif %}
+    >
+        <img src="{% slot "img-src" %}{% endslot %}" class="img-fluid" alt=""/>
+        {% if_filled "text" %}
+            <div class="overlay">
+                <div class="text">
+                    {% slot "text" %}{% endslot %}
+                </div>
+            </div>
+        {% endif_filled %}
+    </a>
+</div>
