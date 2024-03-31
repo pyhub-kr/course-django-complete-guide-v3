@@ -6,6 +6,7 @@ from PIL import Image
 from django.core.files import File
 from django.core.files.base import ContentFile
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import force_str
 from django_lifecycle import hook
@@ -19,6 +20,12 @@ class Note(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-pk"]
+
+    def get_absolute_url(self) -> str:
+        return reverse("studio:note_detail", args=[self.pk])
 
 
 def uuid_name_upload_to(instance: models.Model, filename: str) -> str:

@@ -2,19 +2,19 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 
 from studio.forms import NoteForm
 from studio.models import Note, Photo
 
 
 def index(request):
-    note_list = range(100)
+    note_qs = Note.objects.all().select_related("author").prefetch_related("photo_set")
     return render(
         request,
         "studio/index.html",
         {
-            "note_list": note_list,
+            "note_list": note_qs,
         },
     )
 
@@ -27,6 +27,7 @@ class NoteCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("studio:index")
 
     def form_valid(self, form):
+        # get_success_url 내의 format 문자열 조합을 위해 필요
         self.object = form.save(commit=False)
 
         note = self.object
@@ -42,3 +43,10 @@ class NoteCreateView(LoginRequiredMixin, CreateView):
 
 
 note_new = NoteCreateView.as_view()
+
+
+class NoteDetailView(DetailView):
+    model = Note
+
+
+note_detail = NoteDetailView.as_view()

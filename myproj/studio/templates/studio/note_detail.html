@@ -1,0 +1,23 @@
+{% extends "studio/base.html" %}
+
+{% block studio-content %}
+    <div class="card">
+        <div class="card-header">
+            {{ note.title }}
+        </div>
+        <div class="card-body">
+            {{ note.content|linebreaks }}
+
+            <hr/>
+
+            {% for photo in note.photo_set.all %}
+                <img src="{{ photo.image.url }}"
+                     alt="Note #{{ note.pk }}'s Photo"
+                     class="img-fluid {% if not forloop.last %}mb-3{% endif %}"
+                />
+            {% endfor %}
+        </div>
+    </div>
+
+    <a href="{% url 'studio:index' %}" class="btn btn-primary">목록으로</a>
+{% endblock %}
