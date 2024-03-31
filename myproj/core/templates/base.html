@@ -15,8 +15,9 @@
     <link rel="stylesheet" href="{% static 'bootstarp-icons/1.11.3/font/bootstrap-icons.min.css' %}"/>
 
     {% component_css_dependencies %}
+    {% block extra-head %}{% endblock %}
 </head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' data-bs-theme="dark">
 
 <header class="p-3 text-bg-dark">
     <div class="container">
@@ -27,13 +28,8 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li>
-                    <a href="{% url 'blog:index' %}" class="nav-link px-2 text-white">
-                        블로그
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'shop:index' %}" class="nav-link px-2 text-white">
-                        배달
+                    <a href="{% url 'studio:index' %}" class="nav-link px-2 text-white">
+                        여행 기록
                     </a>
                 </li>
             </ul>

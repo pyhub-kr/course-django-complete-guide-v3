@@ -1,7 +1,31 @@
 {% extends "studio/base.html" %}
+{% load static component_tags %}
 
 {% block studio-content %}
-    studio/index.html
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <h2>I'm <span>Jenny Wilson</span> a Professional Photographer from New York City</h2>
+                <p>Blanditiis praesentium aliquam illum tempore incidunt debitis dolorem magni est deserunt sed qui
+                    libero. Qui voluptas amet.</p>
+                <a href="#" class="btn btn-sm btn-primary">
+                    <i class="bi bi-person-add"></i>
+                    팔로잉
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% for note in note_list %}
+                {% component "image-overlay" class="col-xl-3 col-lg-4 col-md-6 mt-4" target="_blank" %}
+                    {% fill "link" %}https://naver.com{% endfill %}
+                    {% fill "img-src" %}
+                        {% static "bootstrap-themes/photo-folio/img/gallery/gallery-1.jpg" %}{% endfill %}
+                    {% fill "text" %}사진 작가: 홍길동<br>작품 설명: 자연과 하나되는 순간{% endfill %}
+                {% endcomponent %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
-
-
