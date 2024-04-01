@@ -1,0 +1,26 @@
+{% extends "studio/base.html" %}
+{% load static component_tags %}
+
+{% block studio-content %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                {% if author.profile.avatar %}
+                    <img src="{{ author.profile.avatar.url }}" class="rounded-circle"
+                         alt="{{ author.username }}'s Avatar"
+                         style="width: 128px;"
+                    />
+                {% endif %}
+
+                <h2 class="my-3">@{{ author.username }}</h2>
+
+                <a href="#" class="btn btn-sm btn-primary">
+                    <i class="bi bi-person-add"></i>
+                    팔로잉
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% include "studio/_note_list.html" %}
+{% endblock %}

@@ -2,38 +2,5 @@
 {% load static component_tags %}
 
 {% block studio-content %}
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-6 text-center">
-                <h2>I'm <span>Jenny Wilson</span> a Professional Photographer from New York City</h2>
-                <p>Blanditiis praesentium aliquam illum tempore incidunt debitis dolorem magni est deserunt sed qui
-                    libero. Qui voluptas amet.</p>
-                <a href="#" class="btn btn-sm btn-primary">
-                    <i class="bi bi-person-add"></i>
-                    팔로잉
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            {% for note in note_list %}
-                {# target="_blank" #}
-                {% component "image-overlay" class="col-xl-3 col-lg-4 col-md-6 mt-4" %}
-                    {% fill "link" %}{{ note.get_absolute_url }}{% endfill %}
-                    {# first를 사용하면, 캐시를 사용할 수 없습니다. #}
-                    {% fill "img-src" %}{{ note.photo_set.all.0.image.url }}{% endfill %}
-                    {% fill "text" %}
-                        {{ note.title }}<br/>by {{ note.author.username }}
-                        <small class="d-block mt-3 text-muted">
-                            {% for name in note.tags.all %}
-                                #{{ name }}
-                            {% endfor %}
-                        </small>
-                    {% endfill %}
-                {% endcomponent %}
-            {% endfor %}
-        </div>
-    </div>
+    {% include "studio/_note_list.html" %}
 {% endblock %}

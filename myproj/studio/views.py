@@ -13,6 +13,7 @@ from django.views.generic import (
 )
 from django_htmx.http import trigger_client_event
 
+from accounts.models import User
 from core.decorators import login_required_hx
 from studio.forms import (
     NoteCreateForm,
@@ -36,6 +37,24 @@ def index(request):
         request,
         "studio/index.html",
         {
+            "note_list": note_qs,
+        },
+    )
+
+
+def user_page(request, username):
+    author = get_object_or_404(User, is_active=True, username=username)
+
+    note_qs = (
+        Note.objects.filter(author=author)
+        .select_related("author")
+        .prefetch_related("photo_set", "tags")
+    )
+    return render(
+        request,
+        "studio/user_page.html",
+        {
+            "author": author,
             "note_list": note_qs,
         },
     )
