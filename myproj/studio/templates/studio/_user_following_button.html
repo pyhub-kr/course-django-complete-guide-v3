@@ -1,3 +1,4 @@
+{% include "_messages_as_event.html" %}
 
 {% if is_follower %}
     <a href="{% url 'studio:user_unfollow' author.username %}"
@@ -16,5 +17,3 @@
         팔로잉 하기
     </a>
 {% endif %}
-
-

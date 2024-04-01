@@ -5,6 +5,8 @@ app_name = "studio"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("following-users/", views.following_users, name="following_users"),
+    path("discover-users/", views.discover_users, name="discover_users"),
     path("@<username>/", views.user_page, name="user_page"),
     path(
         "@<username>/follow/",

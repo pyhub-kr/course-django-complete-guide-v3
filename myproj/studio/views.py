@@ -50,6 +50,38 @@ def index(request):
     )
 
 
+@login_required
+def following_users(request):
+    user: User = request.user
+    user_qs = user.following_user_set.exclude(id__in=[user.pk]).select_related(
+        "profile"
+    )
+    return render(
+        request,
+        "studio/user_list.html",
+        {
+            "user_list": user_qs,
+            "button_type": "unfollow",
+        },
+    )
+
+
+@login_required
+def discover_users(request):
+    user: User = request.user
+    user_qs = User.objects.exclude(id__in=user.following_user_set.all()).select_related(
+        "profile"
+    )
+    return render(
+        request,
+        "studio/user_list.html",
+        {
+            "user_list": user_qs,
+            "button_type": "following",
+        },
+    )
+
+
 def user_page(request, username):
     author = get_object_or_404(User, is_active=True, username=username)
 
@@ -84,8 +116,10 @@ def user_follow(request, username, action: Literal["follow", "unfollow"]):
     from_user: User = request.user
     to_user = get_object_or_404(User, is_active=True, username=username)
     if action == "follow":
+        messages.success(request, f"{username}님을 팔로잉했습니다.")
         from_user.follow(to_user)
     else:
+        messages.success(request, f"{username}님을 언팔했습니다.")
         from_user.unfollow(to_user)
 
     if request.htmx:

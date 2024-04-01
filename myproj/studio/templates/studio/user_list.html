@@ -1,0 +1,51 @@
+{% extends "studio/base.html" %}
+
+{% block studio-content %}
+    <div class="row">
+        {% for user in user_list %}
+            <div class="col-xl-3 col-lg-4 col-md-6 mt-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <div class="d-flex flex-row align-items-center gap-2">
+                            {% if user.profile.avatar %}
+                                <img src="{{ request.user.profile.avatar.url }}"
+                                     alt=""
+                                     style="width: 32px; height: 32px;"
+                                     class="rounded-circle"
+                                />
+                            {% else %}
+                                <i class="bi bi-person-circle" style="font-size: 1.6rem;"></i>
+                            {% endif %}
+                            <a href="{% url 'studio:user_page' user.username %}"
+                               style="text-decoration: none; color: inherit;">
+                                {{ user.username }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body" style="font-size: 0.8rem;">
+                        {% if user.profile.bio %}
+                            {{ user.profile.bio|linebreaks }}
+                        {% else %}
+                            <span class="text-muted">자기 소개가 없어요.</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer text-end">
+                        {% if button_type == "following" %}
+                            <a href="{% url 'studio:user_follow' user.username %}"
+                               class="btn btn-secondary btn-sm">
+                                <i class="bi bi-plus-circle-fill"></i>
+                                팔로잉하기
+                            </a>
+                        {% else %}
+                            <a href="{% url 'studio:user_follow' user.username %}"
+                               class="btn btn-primary btn-sm">
+                                <i class="bi bi-dash-circle-fill"></i>
+                                언팔하기
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
