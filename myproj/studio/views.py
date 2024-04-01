@@ -117,7 +117,9 @@ class NoteDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         note = self.object
-        context_data["comment_list"] = note.comment_set.all()
+        context_data["comment_list"] = note.comment_set.select_related(
+            "author__profile"
+        )
         return context_data
 
 
@@ -129,7 +131,9 @@ class CommentListView(ListView):
 
     def get_queryset(self) -> QuerySet[Comment]:
         note_pk = self.kwargs["note_pk"]
-        return Comment.objects.filter(note__pk=note_pk)
+        return Comment.objects.filter(note__pk=note_pk).select_related(
+            "author__profile"
+        )
 
 
 comment_list = CommentListView.as_view()
