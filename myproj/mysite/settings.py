@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "django_components",
     "django_extensions",
     "django_htmx",
+    "taggit",
     "template_partials",
     # local apps
     "accounts",
@@ -212,6 +213,12 @@ INTERNAL_IPS = env.list("INTERNAL_IPS", default=["127.0.0.1"])
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# django-taggit
+
+# 대소문자를 구별하지 않기 : __iexact를 통해 태그 존재여부 체크
+TAGGIT_CASE_INSENSITIVE = env.bool("TAGGIT_CASE_INSENSITIVE", default=True)
 
 
 # Email

@@ -11,3 +11,6 @@ django-lifecycle==1.2.3
 
 # https://django-compressor.readthedocs.io/en/latest/quickstart.html#optional-dependencies
 django-compressor==4.4
+
+# https://github.com/jazzband/django-taggit
+django-taggit==5.0.1
