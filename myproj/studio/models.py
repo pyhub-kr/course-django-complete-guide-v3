@@ -80,3 +80,12 @@ class Photo(models.Model):
         Photo.objects.bulk_create(photo_list)
 
         return photo_list
+
+
+class Comment(models.Model):
+    note = models.ForeignKey(Note, on_delete=models.CASCADE)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

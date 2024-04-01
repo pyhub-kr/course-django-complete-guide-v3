@@ -2,14 +2,18 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView
+from django_htmx.http import trigger_client_event
 
+from core.decorators import login_required_hx
 from studio.forms import (
     NoteCreateForm,
     PhotoUpdateFormSet,
     NoteUpdateForm,
+    CommentForm,
 )
-from studio.models import Note, Photo
+from studio.models import Note, Photo, Comment
 
 
 def index(request):
@@ -111,3 +115,31 @@ class NoteDetailView(DetailView):
 
 
 note_detail = NoteDetailView.as_view()
+
+
+# 함수 장식자로도 클래스 기반 뷰에 적용 가능
+
+
+@method_decorator(login_required_hx, name="dispatch")
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "studio/_comment_form.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.note = get_object_or_404(Note, pk=kwargs["note_pk"])  # noqa
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.note = self.note
+        comment.author = self.request.user
+        comment.save()
+
+        messages.success(self.request, "태그를 저장했습니다.")
+        response = render(self.request, "_messages_as_event.html")
+        response = trigger_client_event(response, "refresh-comment-list")
+        return response
+
+
+comment_new = CommentCreateView.as_view()

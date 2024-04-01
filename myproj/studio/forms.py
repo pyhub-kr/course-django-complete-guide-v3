@@ -3,7 +3,7 @@ from crispy_forms.layout import Layout, Submit
 from django import forms
 from django.forms import inlineformset_factory
 
-from studio.models import Note, Photo
+from studio.models import Note, Photo, Comment
 
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -80,3 +80,14 @@ PhotoUpdateFormSet = inlineformset_factory(
 )
 PhotoUpdateFormSet.helper = FormHelper()
 PhotoUpdateFormSet.helper.form_tag = False
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["message"]
+
+    helper = FormHelper()
+    helper.attrs = {"novalidate": True}
+    helper.layout = Layout("message")
+    # helper.add_input(Submit("submit", "저장하기", css_class="w-100"))

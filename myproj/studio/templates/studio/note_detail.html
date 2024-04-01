@@ -30,4 +30,12 @@
         <a href="{% url 'studio:index' %}" class="btn btn-primary">목록으로</a>
         <a href="{% url 'studio:note_edit' note.pk %}" class="btn btn-success">수정하기</a>
     </div>
+
+    <div class="my-3">
+        <button hx-get="{% url 'studio:comment_new' note.pk %}"
+                hx-get-with-timestamp
+                hx-target="body"
+                hx-swap="beforeend"  {# body 내용 끝에 추가 #}
+           class="btn btn-primary">댓글 작성하기</button>
+    </div>
 {% endblock %}
