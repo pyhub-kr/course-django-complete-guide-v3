@@ -9,22 +9,32 @@
  * not be registered until a user has explicitly activated a control or indicator.
  */
 
-(function() {
+(function () {
   observeNodeInsertion(".carousel-component", carouselEl => {
     const carousel = new bootstrap.Carousel(carouselEl);
 
     /* Desktop에서는 swipe가 동작하지 않아서, 직접 swipe 구현 */
 
     let mouseStartX = 0;
+    let mouseStartY = 0;
     carouselEl.addEventListener("mousedown", (e) => {
       mouseStartX = e.screenX;
+      mouseStartY = e.screenY;
       document.body.style.cursor = 'grabbing';
     });
 
     carouselEl.addEventListener("mouseup", (e) => {
       const mouseEndX = e.screenX;
-      if(mouseStartX < mouseEndX) carousel.next();
-      else carousel.prev();
+      const mouseEndY = e.screenY;
+
+      const deltaX = Math.abs(mouseEndX - mouseStartX);
+      const deltaY = Math.abs(mouseEndY - mouseStartY);
+
+      if (deltaX > deltaY) {
+        if (mouseStartX < mouseEndX) carousel.next();
+        else if (mouseStartX > mouseEndX) carousel.prev();
+      }
+
       document.body.style.cursor = 'default';
     });
   });
