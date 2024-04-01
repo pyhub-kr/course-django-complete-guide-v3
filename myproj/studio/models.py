@@ -23,12 +23,27 @@ class Note(LifecycleModelMixin, models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = TaggableManager()
+    like_user_set = models.ManyToManyField(
+        User, related_name="liked_note_set", blank=True
+    )
 
     class Meta:
         ordering = ["-pk"]
 
     def get_absolute_url(self) -> str:
         return reverse("studio:note_detail", args=[self.pk])
+
+    def is_liked(self, user: User) -> bool:
+        return self.like_user_set.filter(id=user.id).exists()
+
+    def like(self, user: User) -> None:
+        self.like_user_set.add(user)
+
+    def cancel(self, user: User) -> None:
+        self.like_user_set.remove(user)
+
+    def likes_count(self) -> int:
+        return self.like_user_set.count()
 
     @hook(AFTER_SAVE, when="content", has_changed=True)
     def on_saved(self):

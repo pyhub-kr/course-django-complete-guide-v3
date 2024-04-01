@@ -9,6 +9,18 @@ urlpatterns = [
     path("notes/new/", views.note_new, name="note_new"),
     path("notes/<int:pk>/", views.note_detail, name="note_detail"),
     path("notes/<int:pk>/edit/", views.note_edit, name="note_edit"),
+    path(
+        "notes/<int:pk>/like/",
+        views.note_like,
+        name="note_like",
+        kwargs={"action": "like"},
+    ),
+    path(
+        "notes/<int:pk>/like/cancel/",
+        views.note_like,
+        name="note_like_cancel",
+        kwargs={"action": "cancel"},
+    ),
     path("notes/<int:note_pk>/comments/", views.comment_list, name="comment_list"),
     path("notes/<int:note_pk>/comments/new/", views.comment_new, name="comment_new"),
     path(

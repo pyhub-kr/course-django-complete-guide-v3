@@ -1,0 +1,18 @@
+
+{% if is_liked %}
+    <a href="{% url 'studio:note_like_cancel' note.pk %}"
+       hx-post="{% url 'studio:note_like_cancel' note.pk %}"
+       hx-swap="outerHTML"
+       class="btn btn-warning">
+        <i class="bi bi-heart-fill me-2"></i>
+        {{ count }}
+    </a>
+{% else %}
+    <a href="{% url 'studio:note_like' note.pk %}"
+       hx-post="{% url 'studio:note_like' note.pk %}"
+       hx-swap="outerHTML"
+       class="btn btn-warning">
+        <i class="bi bi-heart me-2"></i>
+        {{ count }}
+    </a>
+{% endif %}

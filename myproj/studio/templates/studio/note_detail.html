@@ -26,9 +26,12 @@
         </div>
     </div>
 
-    <div class="my-3">
+    <div class="my-3 d-flex flex-row gap-3">
         <a href="{% url 'studio:index' %}" class="btn btn-primary">목록으로</a>
         <a href="{% url 'studio:note_edit' note.pk %}" class="btn btn-success">수정하기</a>
+
+        {# 비로그인 상태에서는 클릭하면 로그인 페이지로 이동합니다. #}
+        {% include "studio/_note_like_button.html" with note=note is_liked=like_button.is_liked count=like_button.count only %}
     </div>
 
     <div class="my-3">

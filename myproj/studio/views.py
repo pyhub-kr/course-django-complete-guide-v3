@@ -136,12 +136,38 @@ def note_edit(request, pk):
     )
 
 
+@login_required_hx
+def note_like(request, pk, action):
+    note = get_object_or_404(Note, pk=pk)
+    if action == "like":
+        note.like(request.user)
+    else:
+        note.cancel(request.user)
+
+    if request.htmx:
+        return render(
+            request,
+            "studio/_note_like_button.html",
+            {
+                "note": note,
+                "is_liked": note.is_liked(request.user),
+                "count": note.likes_count(),
+            },
+        )
+        return
+    return redirect(note)
+
+
 class NoteDetailView(DetailView):
     model = Note
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         note = self.object
+        context_data["like_button"] = {
+            "is_liked": note.is_liked(self.request.user),
+            "count": note.likes_count(),
+        }
         context_data["comment_list"] = note.comment_set.select_related(
             "author__profile"
         )
