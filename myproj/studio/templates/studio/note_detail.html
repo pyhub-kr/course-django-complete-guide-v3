@@ -36,6 +36,20 @@
                 hx-get-with-timestamp
                 hx-target="body"
                 hx-swap="beforeend"  {# body 내용 끝에 추가 #}
-           class="btn btn-primary">댓글 작성하기</button>
+                class="btn btn-primary w-100">댓글 작성하기
+        </button>
+    </div>
+
+    <div id="comment-list">
+        {% include "studio/_comment_list.html" %}
+    </div>
+
+    <div class="my-3">
+        <button hx-get="{% url 'studio:comment_list' note.pk %}"
+                hx-get-with-timestamp
+                hx-trigger="click, refresh-comment-list from:body"
+                hx-target="#comment-list"
+                class="btn btn-primary w-100">댓글 새로고침
+        </button>
     </div>
 {% endblock %}

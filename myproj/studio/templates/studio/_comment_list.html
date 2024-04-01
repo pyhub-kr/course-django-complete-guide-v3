@@ -1,0 +1,30 @@
+{% load i18n %}
+
+{% for comment in comment_list %}
+    {# refs: https://bbbootstrap.com/snippets/bootstrap-5-user-comment-section-template-46707409 #}
+    <div class="d-flex flex-row p-3">
+        <img src="{{ comment.author.profile.avatar.url }}"
+             width="60" height="60"
+             class="rounded-circle me-3"
+             alt="{{ comment.author }}'s Avatar"/>
+
+        <div class="w-100">
+            <div class="d-flex flex-row align-items-center">
+                <span class="me-3">{{ comment.author.username }}</span>
+                {# <small class="badge text-bg-primary me-3">Top Comment</small> #}
+                {% language "en-us" %}
+                    <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+                {% endlanguage %}
+            </div>
+
+            <div class="mb-1">
+                {{ comment.message|linebreaks }}
+            </div>
+
+            <div class="d-flex flex-row">
+                <span class="wish"><i class="bi bi-heart me-2"></i>0</span>
+                {# <span class="ms-3"><i class="bi bi-wechat me-2"></i>Reply</span> #}
+            </div>
+        </div>
+    </div>
+{% endfor %}

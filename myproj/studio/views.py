@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, ListView
 from django_htmx.http import trigger_client_event
 
 from core.decorators import login_required_hx
@@ -113,8 +114,25 @@ def note_edit(request, pk):
 class NoteDetailView(DetailView):
     model = Note
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        note = self.object
+        context_data["comment_list"] = note.comment_set.all()
+        return context_data
+
 
 note_detail = NoteDetailView.as_view()
+
+
+class CommentListView(ListView):
+    template_name = "studio/_comment_list.html"
+
+    def get_queryset(self) -> QuerySet[Comment]:
+        note_pk = self.kwargs["note_pk"]
+        return Comment.objects.filter(note__pk=note_pk)
+
+
+comment_list = CommentListView.as_view()
 
 
 # 함수 장식자로도 클래스 기반 뷰에 적용 가능
