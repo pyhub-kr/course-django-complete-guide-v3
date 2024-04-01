@@ -9,4 +9,5 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(blank=True)
-    url = models.URLField(blank=True)
+    # url = models.URLField(blank=True)
+
