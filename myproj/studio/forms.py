@@ -90,4 +90,5 @@ class CommentForm(forms.ModelForm):
     helper = FormHelper()
     helper.attrs = {"novalidate": True}
     helper.layout = Layout("message")
+    helper.label_class = "d-none"
     # helper.add_input(Submit("submit", "저장하기", css_class="w-100"))
