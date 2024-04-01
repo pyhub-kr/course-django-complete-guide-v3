@@ -84,10 +84,14 @@
 {% compress js %}
     {% component_js_dependencies %}
     <script src="{% static 'htmx/ext/hx-get-with-timestamp.js' %}"></script>
+    <script src="{% static 'observe-node-insertion.js' %}"></script>
+    <script src="{% static 'hashtag-linkify.js' %}"></script>
     <script src="{% static "toast-messages.js" %}"></script>
 {% endcompress %}
 
 {% include "_messages_as_event.html" %}
+
+{% block extra-script %}{% endblock %}
 
 </body>
 </html>

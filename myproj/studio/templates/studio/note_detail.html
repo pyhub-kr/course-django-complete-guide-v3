@@ -10,7 +10,9 @@
             {% component "carousel" note.photo_set.all attr_name="image.url" %}{% endcomponent %}
 
             <hr/>
-            {{ note.content|linebreaks }}
+            <div data-hashtag-linkify="{% url 'studio:index' %}?tag=">
+                {{ note.content|linebreaks }}
+            </div>
 
             {% comment %}
             <hr/>
