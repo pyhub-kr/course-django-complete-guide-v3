@@ -12,5 +12,20 @@
 (function() {
   observeNodeInsertion(".carousel-component", carouselEl => {
     const carousel = new bootstrap.Carousel(carouselEl);
+
+    /* Desktop에서는 swipe가 동작하지 않아서, 직접 swipe 구현 */
+
+    let mouseStartX = 0;
+    carouselEl.addEventListener("mousedown", (e) => {
+      mouseStartX = e.screenX;
+      document.body.style.cursor = 'grabbing';
+    });
+
+    carouselEl.addEventListener("mouseup", (e) => {
+      const mouseEndX = e.screenX;
+      if(mouseStartX < mouseEndX) carousel.next();
+      else carousel.prev();
+      document.body.style.cursor = 'default';
+    });
   });
 })();

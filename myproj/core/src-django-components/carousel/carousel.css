@@ -4,7 +4,8 @@
     border-radius: 50%;
 }
 
-/*.carousel-component img {*/
-/*    user-select: none;*/
-/*    pointer-events: none;*/
-/*}*/
+/* no drag */
+.carousel-component img {
+    user-select: none;
+    pointer-events: none;
+}
