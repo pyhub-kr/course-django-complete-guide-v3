@@ -45,11 +45,11 @@ class LoginForm(AuthenticationForm):
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        fields = ["avatar"]
+        fields = ["avatar", "bio", "url"]
 
     helper = FormHelper()
     helper.attrs = {"novalidate": True}
-    helper.layout = Layout("avatar")
+    helper.layout = Layout("avatar", "bio", "url")
     helper.add_input(Submit("submit", "저장", css_class="w-100"))
 
     def clean_avatar(self):

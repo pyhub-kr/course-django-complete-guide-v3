@@ -9,8 +9,15 @@
              class="rounded-circle img-fluid"
              style="max-width: 25%;"
         />
+    {% else %}
+        <div class="alert alert-warning">등록된 아바타 이미지가 없습니다.</div>
     {% endif %}
 
-    <hr />
-    <a href="{% url 'accounts:profile_edit' %}">프로필 수정</a>
+    <ul>
+        <li>SNS : {{ user.profile.url|default:"미등록" }}</li>
+        <li>소개 : {{ user.profile.bio|default:"미등록" }}</li>
+    </ul>
+
+    <hr/>
+    <a href="{% url 'accounts:profile_edit' %}" class="btn btn-primary btn-sm">프로필 수정</a>
 {% endblock %}

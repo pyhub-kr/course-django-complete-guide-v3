@@ -22,8 +22,12 @@ class User(AbstractUser):
     def follower_count(self) -> int:
         return self.follower_user_set.count()
 
+    class Meta:
+        ordering = ["-pk"]
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(blank=True)
-    # url = models.URLField(blank=True)
+    bio = models.TextField(blank=True, verbose_name="간단한 소개")
+    url = models.URLField(blank=True, verbose_name="SNS 주소")
