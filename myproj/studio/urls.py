@@ -10,4 +10,9 @@ urlpatterns = [
     path("notes/<int:pk>/edit/", views.note_edit, name="note_edit"),
     path("notes/<int:note_pk>/comments/", views.comment_list, name="comment_list"),
     path("notes/<int:note_pk>/comments/new/", views.comment_new, name="comment_new"),
+    path(
+        "notes/<int:note_pk>/comments/<int:pk>/new/",
+        views.comment_edit,
+        name="comment_edit",
+    ),
 ]

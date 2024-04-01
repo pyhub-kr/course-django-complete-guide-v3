@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django_htmx.http import trigger_client_event
 
 from core.decorators import login_required_hx
@@ -165,3 +165,26 @@ class CommentCreateView(CreateView):
 
 
 comment_new = CommentCreateView.as_view()
+
+
+@method_decorator(login_required_hx, name="dispatch")
+class CommentUpdateView(UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "studio/_comment_form.html"
+
+    def get_queryset(self):
+        note_pk = self.kwargs["note_pk"]
+        qs = super().get_queryset()
+        qs = qs.filter(note__pk=note_pk, author=self.request.user)
+        return qs
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, "태그를 저장했습니다.")
+        response = render(self.request, "_messages_as_event.html")
+        response = trigger_client_event(response, "refresh-comment-list")
+        return response
+
+
+comment_edit = CommentUpdateView.as_view()
