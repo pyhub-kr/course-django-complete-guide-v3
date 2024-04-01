@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django_components.safer_staticfiles",
     # third apps
+    "compressor",
     "crispy_forms",
     "crispy_bootstrap5",
     "django_components",
@@ -165,10 +166,27 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 STATICFILES_DIRS = [
     BASE_DIR / "core" / "src-django-components",
 ]
 
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+)
+
+
+# django-compressor
+# https://django-compressor.readthedocs.io/en/stable/settings.html
+
+COMPRESS_ENABLED = env.bool("COMPRESS_ENABLED", default=True)
+# 오프라인 압축
+# COMPRESS_OFFLINE 설정을 사용하면, 배포 전에 정적 파일을 압축하고 결과를 저장할 수 있습니다.
+# 이는 배포 과정을 간소화하고, 서버 부하를 줄이며, 프로덕션 환경에서의 성능을 보장합니다.
+COMPRESS_OFFLINE = env.bool("COMPRESS_OFFLINE", default=False)
 
 # Media files
 

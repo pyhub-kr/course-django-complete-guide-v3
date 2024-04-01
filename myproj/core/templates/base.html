@@ -1,4 +1,4 @@
-{% load component_tags static %}
+{% load component_tags compress static %}
 
 <!doctype html>
 <html lang="ko">
@@ -14,7 +14,9 @@
     {# <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" /> #}
     <link rel="stylesheet" href="{% static 'bootstarp-icons/1.11.3/font/bootstrap-icons.min.css' %}"/>
 
-    {% component_css_dependencies %}
+    {% compress css %}
+        {% component_css_dependencies %}
+    {% endcompress %}
     {% block extra-head %}{% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' data-bs-theme="dark">
@@ -79,9 +81,11 @@
     <script src="{% static 'htmx/1.9.11/htmx.min.js' %}"></script>
 {% endif %}
 <script src="{% static 'bootstrap/5.3.3/js/bootstrap.min.js' %}"></script>
-{% component_js_dependencies %}
-<script src="{% static 'htmx/ext/hx-get-with-timestamp.js' %}"></script>
-<script src="{% static "toast-messages.js" %}"></script>
+{% compress js %}
+    {% component_js_dependencies %}
+    <script src="{% static 'htmx/ext/hx-get-with-timestamp.js' %}"></script>
+    <script src="{% static "toast-messages.js" %}"></script>
+{% endcompress %}
 
 {% include "_messages_as_event.html" %}
 
