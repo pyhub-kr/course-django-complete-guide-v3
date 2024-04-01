@@ -14,10 +14,7 @@
 
                 <h2 class="my-3">@{{ author.username }}</h2>
 
-                <a href="#" class="btn btn-sm btn-primary">
-                    <i class="bi bi-person-add"></i>
-                    팔로잉
-                </a>
+                {% include "studio/_user_following_button.html" with author=author is_follower=follower_button.is_follower follower_count=follower_button.follower_count only %}
             </div>
         </div>
     </div>

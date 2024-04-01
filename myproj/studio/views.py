@@ -1,3 +1,5 @@
+from typing import Literal
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -50,14 +52,48 @@ def user_page(request, username):
         .select_related("author")
         .prefetch_related("photo_set", "tags")
     )
+
+    if request.user.is_authenticated:
+        user: User = request.user
+        is_follower = user.is_follower(author)
+    else:
+        is_follower = False
+
     return render(
         request,
         "studio/user_page.html",
         {
             "author": author,
             "note_list": note_qs,
+            "follower_button": {
+                "is_follower": is_follower,
+                "follower_count": author.follower_count(),
+            },
         },
     )
+
+
+@login_required_hx
+def user_follow(request, username, action: Literal["follow", "unfollow"]):
+    from_user: User = request.user
+    to_user = get_object_or_404(User, is_active=True, username=username)
+    if action == "follow":
+        from_user.follow(to_user)
+    else:
+        from_user.unfollow(to_user)
+
+    if request.htmx:
+        return render(
+            request,
+            "studio/_user_following_button.html",
+            {
+                "author": to_user,
+                "is_follower": from_user.is_follower(to_user),
+                "follower_count": to_user.follower_count(),
+            },
+        )
+
+    return redirect("studio:user_page", username)
 
 
 class NoteCreateView(LoginRequiredMixin, CreateView):
@@ -137,7 +173,7 @@ def note_edit(request, pk):
 
 
 @login_required_hx
-def note_like(request, pk, action):
+def note_like(request, pk, action: Literal["like", "cancel"]):
     note = get_object_or_404(Note, pk=pk)
     if action == "like":
         note.like(request.user)

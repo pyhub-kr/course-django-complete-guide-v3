@@ -1,0 +1,20 @@
+
+{% if is_follower %}
+    <a href="{% url 'studio:user_unfollow' author.username %}"
+       hx-post="{% url 'studio:user_unfollow' author.username %}"
+       hx-swap="outerHTML"
+       class="btn btn-sm btn-primary">
+        <i class="bi bi-person-check-fill"></i>
+        팔로잉
+    </a>
+{% else %}
+    <a href="{% url 'studio:user_follow' author.username %}"
+       hx-post="{% url 'studio:user_follow' author.username %}"
+       hx-swap="outerHTML"
+       class="btn btn-sm btn-secondary">
+        <i class="bi bi-person-add"></i>
+        팔로잉 하기
+    </a>
+{% endif %}
+
+
