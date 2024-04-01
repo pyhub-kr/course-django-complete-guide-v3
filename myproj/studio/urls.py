@@ -11,8 +11,13 @@ urlpatterns = [
     path("notes/<int:note_pk>/comments/", views.comment_list, name="comment_list"),
     path("notes/<int:note_pk>/comments/new/", views.comment_new, name="comment_new"),
     path(
-        "notes/<int:note_pk>/comments/<int:pk>/new/",
+        "notes/<int:note_pk>/comments/<int:pk>/edit/",
         views.comment_edit,
         name="comment_edit",
+    ),
+    path(
+        "notes/<int:note_pk>/comments/<int:pk>/delete/",
+        views.comment_delete,
+        name="comment_delete",
     ),
 ]

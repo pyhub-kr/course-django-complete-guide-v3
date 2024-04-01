@@ -31,6 +31,12 @@
                    hx-target="body"
                    hx-swap="beforeend"  {# body 내용 끝에 추가 #}
                    class="ms-3 text-white text-decoration-none"><i class="bi bi-pencil"></i> 수정하기</a>
+
+                <a href="#"
+                   hx-post="{% url 'studio:comment_delete' comment.note.pk comment.pk %}"
+                   hx-confirm="Are you sure?"
+                   hx-swap="none"
+                   class="ms-3 text-white text-decoration-none"><i class="bi bi-trash"></i> 삭제하기</a>
             </div>
         </div>
     </div>
