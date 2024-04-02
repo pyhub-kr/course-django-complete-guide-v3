@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "django_components",
     "django_extensions",
     "django_htmx",
+    "taggit",
     "template_partials",
     # local apps
     "accounts",
@@ -192,6 +193,12 @@ INTERNAL_IPS = env.list("INTERNAL_IPS", default=["127.0.0.1"])
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# django-taggit
+# https://django-taggit.readthedocs.io/en/latest/getting_started.html
+
+TAGGIT_CASE_INSENSITIVE = env.bool("TAGGIT_CASE_INSENSITIVE", default=True)
 
 
 # Email

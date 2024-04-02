@@ -1,3 +1,4 @@
+import re
 from io import BytesIO
 from os.path import splitext
 from typing import List
@@ -10,23 +11,30 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import force_str
-from django_lifecycle import LifecycleModelMixin, hook, BEFORE_UPDATE
+from django_lifecycle import LifecycleModelMixin, hook, BEFORE_UPDATE, AFTER_SAVE
+from taggit.managers import TaggableManager
 
 from accounts.models import User
 
 
-class Note(models.Model):
+class Note(LifecycleModelMixin, models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    tags = TaggableManager()
 
     class Meta:
         ordering = ["-pk"]
 
     def get_absolute_url(self) -> str:
         return reverse("photolog:note_detail", args=[self.pk])
+
+    @hook(AFTER_SAVE, when="content", has_changed=True)
+    def on_content_saved(self):
+        hashtags: List[str] = re.findall(r"#(\w+)", self.content)
+        self.tags.set(hashtags, clear=True)
 
 
 def uuid_name_upload_to(instance: models.Model, filename: str) -> str:
