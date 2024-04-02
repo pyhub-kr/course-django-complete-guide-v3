@@ -1,0 +1,19 @@
+{% load component_tags %}
+
+<div class="image-overlay-component {{ class }}">
+    <a {% if href %}href="{{ href }}"{% endif %}
+       {% if target %}target="{{ target }}"{% endif %}
+    >
+        <div class="ratio ratio-1x1">
+            <img src="{% slot "img-src" %}{% endslot %}"
+                 class="object-fit-cover border rounded" alt=""/>
+        </div>
+        {% if_filled "text" %}
+            <div class="overlay p-3">
+                <div class="text">
+                    {% slot "text" %}{% endslot %}
+                </div>
+            </div>
+        {% endif_filled %}
+    </a>
+</div>

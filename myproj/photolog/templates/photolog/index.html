@@ -1,24 +1,17 @@
 {% extends "photolog/base.html" %}
+{% load component_tags %}
 
 {% block photolog-content %}
     <div class="container">
         <div class="row">
             {% for note in note_list %}
-                <div class="col-xl-3 col-lg-4 col-md-6 mt-4">
-                    <div class="card">
-                        <div class="card-header">
-                            {{ note.title }}
-                            by {{ note.author.username }}
-                        </div>
-                        <div class="card-body">
-                            {% for photo in note.photo_set.all %}
-                                <img src="{{ photo.image.url }}"
-                                     class="img-fluid"
-                                     alt="" />
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
+                {% component "image-overlay" href="/" target="_blank" class="col-xl-3 col-lg-4 col-md-6 mt-4" %}
+                    {% fill "img-src" %}{{ note.photo_set.all.0.image.url }}{% endfill %}
+                    {% fill "text" %}
+                            {{ note.title }}<br/>
+                            <small>by {{ note.author.username }}</small>
+                    {% endfill %}
+                {% endcomponent %}
             {% endfor %}
         </div>
     </div>
