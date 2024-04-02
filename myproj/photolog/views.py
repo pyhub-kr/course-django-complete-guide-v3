@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView
 from django_htmx.http import trigger_client_event
 
 from core.decorators import login_required_hx
@@ -116,6 +116,14 @@ class NoteDetailView(DetailView):
 
 
 note_detail = NoteDetailView.as_view()
+
+
+class CommentListView(ListView):
+    model = Comment
+    template_name = "photolog/_comment_list.html"
+
+
+comment_list = CommentListView.as_view()
 
 
 @method_decorator(login_required_hx, name="dispatch")

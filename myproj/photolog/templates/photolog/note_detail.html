@@ -53,29 +53,16 @@
        class="btn btn-primary w-100"
     >댓글 쓰기</a>
 
-    <div class="my-3">
+    <div id="comment-list" class="my-3">
         {% with comment_list=note.comment_set.all %}
-            {% for comment in comment_list %}
-                <div class="d-flex flex-row p-3">
-                    {% if comment.author.profile.avatar %}
-                        <img src="{{ comment.author.profile.avatar.url }}"
-                             class="rounded-circle me-3"
-                             style="width: 60px; height: 60px;"
-                             alt="{{ comment.author.username }}'s Avatar">
-                    {% endif %}
-                    <div class="w-100">
-                        <div class="d-flex flex-row align-items-center gap-3">
-                            <span>{{ comment.author.username }}</span>
-                            {% language "en-us" %}
-                                {{ comment.created_at|timesince }} ago
-                            {% endlanguage %}
-                        </div>
-                        <div>
-                            {{ comment.message }}
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+            {% include "photolog/_comment_list.html" with comment_list=comment_list only %}
         {% endwith %}
     </div>
+
+    <a href="#"
+       hx-get="{% url 'photolog:comment_list' note.pk %}"
+       hx-get-with-timestamp
+       hx-trigger="click, refresh-comment-list from:body"
+       hx-target="#comment-list"
+       class="btn btn-primary w-100">댓글 새로고침</a>
 {% endblock %}
