@@ -3,6 +3,7 @@ from typing import Literal
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -27,7 +28,13 @@ from photolog.models import Note, Photo, Comment
 
 
 def index(request):
-    note_qs = Note.objects.all()
+    if not request.user.is_authenticated:
+        note_qs = Note.objects.all()
+    else:
+        user: User = request.user
+        note_qs = Note.objects.filter(
+            Q(author=user) | Q(author__in=user.following_user_set.all())
+        )
 
     tag_name = request.GET.get("tag", "").strip()
     if tag_name:
