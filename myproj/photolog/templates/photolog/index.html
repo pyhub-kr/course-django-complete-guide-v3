@@ -11,6 +11,13 @@
                     {% fill "text" %}
                             {{ note.title }}<br/>
                             <small>by {{ note.author.username }}</small>
+                            <small class="d-block mt-3 text-muted">
+                                {% for tag in note.tags.all %}
+                                    {% if forloop.counter0 < 5 %}
+                                        #{{ tag.name }}
+                                    {% endif %}
+                                {% endfor %}
+                            </small>
                     {% endfill %}
                 {% endcomponent %}
             {% endfor %}

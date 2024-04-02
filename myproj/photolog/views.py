@@ -10,7 +10,14 @@ from photolog.models import Note, Photo
 
 
 def index(request):
-    note_qs = Note.objects.all().select_related("author").prefetch_related("photo_set")
+    note_qs = Note.objects.all()
+
+    tag_name = request.GET.get("tag", "").strip()
+    if tag_name:
+        note_qs = note_qs.filter(tags__name__in=[tag_name])
+
+    note_qs = note_qs.select_related("author").prefetch_related("photo_set", "tags")
+
     return render(
         request,
         "photolog/index.html",
