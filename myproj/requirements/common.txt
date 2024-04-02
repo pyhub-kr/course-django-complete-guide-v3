@@ -7,3 +7,4 @@ django-crispy-forms==2.1
 crispy-bootstrap5==2024.2
 django_components==0.61
 pillow==10.2.0
+django-lifecycle==1.2.3
