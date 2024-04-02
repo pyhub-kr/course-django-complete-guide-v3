@@ -47,7 +47,7 @@ class Photo(LifecycleModelMixin, models.Model):
                 pil_image = pil_image.convert("RGB")
 
             io = BytesIO()
-            pil_image.save(io, format="jpeg")
+            pil_image.save(io, format="jpeg", quality=60)
             io.seek(0)
 
             thumb_name = splitext(self.image.name)[0] + ".jpg"
