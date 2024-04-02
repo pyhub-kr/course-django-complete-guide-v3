@@ -54,9 +54,7 @@
     >댓글 쓰기</a>
 
     <div id="comment-list" class="my-3">
-        {% with comment_list=note.comment_set.all %}
-            {% include "photolog/_comment_list.html" with comment_list=comment_list only %}
-        {% endwith %}
+        {% include "photolog/_comment_list.html" with comment_list=comment_list only %}
     </div>
 
     <a href="#"
