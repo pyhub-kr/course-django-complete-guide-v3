@@ -42,4 +42,14 @@
             <a href="{% url 'photolog:note_edit' note.pk %}" class="btn btn-success">수정하기</a>
         {% endif %}
     </div>
+
+    <hr />
+
+    <a href="{% url 'photolog:comment_new' note.pk %}"
+       hx-get="{% url 'photolog:comment_new' note.pk %}"
+       hx-with-timestamp
+       hx-target="body"
+       hx-swap="beforeend"  {# body 끝에 추가 #}
+       class="btn btn-primary w-100"
+    >댓글 쓰기</a>
 {% endblock %}

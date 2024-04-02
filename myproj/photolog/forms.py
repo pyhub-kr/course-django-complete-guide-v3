@@ -5,8 +5,9 @@ from crispy_forms.layout import Layout, Submit
 from django import forms
 from django.core.files import File
 from django.forms import inlineformset_factory
+from django.http import HttpRequest
 
-from .models import Note, Photo
+from .models import Note, Photo, Comment
 
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -79,3 +80,24 @@ PhotoUpdateFormSet = inlineformset_factory(
 )
 PhotoUpdateFormSet.helper = FormHelper()
 PhotoUpdateFormSet.helper.form_tag = False
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["message"]
+
+    def __init__(self, request: HttpRequest, *args, **kwargs):
+        self.request = request
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.attrs = {
+            "hx-post": self.request.get_full_path(),
+            "hx-trigger": "submit once",
+            "hx-swap": "outerHTML",
+            "autocomplete": "off",
+            "novalidate": True,
+        }
+        self.helper.layout = Layout("message")
+        self.helper.label_class = "d-none"

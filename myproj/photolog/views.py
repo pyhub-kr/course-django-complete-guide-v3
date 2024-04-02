@@ -3,10 +3,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView
+from django_htmx.http import trigger_client_event
 
-from photolog.forms import NoteCreateForm, PhotoUpdateFormSet, NoteUpdateForm
-from photolog.models import Note, Photo
+from core.decorators import login_required_hx
+from photolog.forms import (
+    NoteCreateForm,
+    PhotoUpdateFormSet,
+    NoteUpdateForm,
+    CommentForm,
+)
+from photolog.models import Note, Photo, Comment
 
 
 def index(request):
@@ -108,3 +116,36 @@ class NoteDetailView(DetailView):
 
 
 note_detail = NoteDetailView.as_view()
+
+
+@method_decorator(login_required_hx, name="dispatch")
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "photolog/_comment_form.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        note_pk = self.kwargs["note_pk"]
+        self.note = get_object_or_404(Note, pk=note_pk)  # noqa
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request
+        return kwargs
+
+    def form_valid(self, form):  # 유효성 검사가 끝나고 나서 호출
+        comment = form.save(commit=False)
+        comment.author = self.request.user
+        comment.note = self.note
+        comment.save()
+
+        messages.success(self.request, "태그를 저장했습니다.")
+
+        response = render(self.request, "_messages_as_event.html")
+        response = trigger_client_event(response, "refresh-comment-list")
+
+        return response
+
+
+comment_new = CommentCreateView.as_view()
