@@ -5,6 +5,8 @@ app_name = "photolog"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("users/following/", views.following_user_list, name="following_user_list"),
+    path("users/discover/", views.discover_user_list, name="discover_user_list"),
     path("@<username>/", views.user_page, name="user_page"),
     path(
         "@<username>/follow/",
