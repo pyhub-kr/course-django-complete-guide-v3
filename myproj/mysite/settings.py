@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     # local apps
     "accounts",
     "core",
+    "photolog",
 ]
 
 if DEBUG:
