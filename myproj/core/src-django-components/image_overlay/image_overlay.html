@@ -2,6 +2,7 @@
 
 <div class="image-overlay-component {{ class }}">
     <a {% if href %}href="{{ href }}"{% endif %}
+       {% if_filled "href" %}href="{% slot "href" %}{% endslot %}"{% endif_filled %}
        {% if target %}target="{{ target }}"{% endif %}
     >
         <div class="ratio ratio-1x1">

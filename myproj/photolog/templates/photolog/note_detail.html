@@ -1,0 +1,45 @@
+{% extends "photolog/base.html" %}
+{% load i18n %}
+
+{% block photolog-content %}
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex flex-row gap-2">
+                {% if note.author.profile.avatar %}
+                    <img src="{{ note.author.profile.avatar.url }}"
+                         class="rounded-circle"
+                         style="width: 40px; height: 40px;"
+                         alt="" />
+                {% endif %}
+                <div class="w-100">
+                    <div class="d-flex flex-column">
+                        <span>{{ note.author.username }}</span>
+                        {% language "en-us" %}
+                            <span>{{ note.created_at|timesince }} ago</span>
+                        {% endlanguage %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>{{ note.title }}</h4>
+                    <div>
+                        {{ note.content|linebreaks }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    {% for photo in note.photo_set.all %}
+                        <img src="{{ photo.image.url }}" class="img-fluid"
+                             alt="" />
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-3">
+        <a href="{% url 'photolog:index' %}" class="btn btn-primary">타임라인</a>
+    </div>
+{% endblock %}
