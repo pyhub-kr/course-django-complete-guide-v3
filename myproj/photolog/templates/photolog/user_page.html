@@ -1,0 +1,21 @@
+{% extends "photolog/base.html" %}
+{% load component_tags %}
+
+{% block photolog-content %}
+    <div class="d-flex flex-column align-items-center gap-2 py-5 text-center">
+        {% if author.profile.avatar %}
+            <img src="{{ author.profile.avatar.url }}"
+                 class="rounded-circle"
+                 style="width: 128px;"
+                 alt="{{ author.username }}'s Avatar" />
+        {% endif %}
+
+        <h2>@{{ author.username }}</h2>
+
+        <a href="#" class="btn btn-sm btn-primary">
+            팔로잉
+        </a>
+    </div>
+
+    {% include "photolog/_note_list.html" with note_list=note_list %}
+{% endblock %}

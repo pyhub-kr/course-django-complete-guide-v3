@@ -1,0 +1,23 @@
+{% load component_tags %}
+
+<div class="container">
+    <div class="row">
+        {% for note in note_list %}
+            {% component "image-overlay" class="col-xl-3 col-lg-4 col-md-6 mt-4" %}
+                {% fill "href" %}{% url 'photolog:note_detail' note.pk %}{% endfill %}
+                {% fill "img-src" %}{{ note.photo_set.all.0.image.url }}{% endfill %}
+                {% fill "text" %}
+                    {{ note.title }}<br/>
+                    <small>by {{ note.author.username }}</small>
+                    <small class="d-block mt-3 text-muted">
+                        {% for tag in note.tags.all %}
+                            {% if forloop.counter0 < 5 %}
+                                #{{ tag.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </small>
+                {% endfill %}
+            {% endcomponent %}
+        {% endfor %}
+    </div>
+</div>

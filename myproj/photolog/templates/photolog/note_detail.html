@@ -13,7 +13,11 @@
                 {% endif %}
                 <div class="w-100">
                     <div class="d-flex flex-column">
-                        <span>{{ note.author.username }}</span>
+                        <a href="{% url 'photolog:user_page' note.author.username %}"
+                           class="text-white text-decoration-none"
+                        >
+                            {{ note.author.username }}
+                        </a>
                         {% language "en-us" %}
                             <span>{{ note.created_at|timesince }} ago</span>
                         {% endlanguage %}

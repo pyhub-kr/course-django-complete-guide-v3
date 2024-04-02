@@ -10,7 +10,9 @@
         {% endif %}
         <div class="w-100">
             <div class="d-flex flex-row align-items-center gap-3">
-                <span>{{ comment.author.username }}</span>
+                <a href="{% url 'photolog:user_page' comment.author.username %}"
+                   class="text-white text-decoration-none"
+                >{{ comment.author.username }}</a>
                 {% language "en-us" %}
                     {{ comment.created_at|timesince }} ago
                 {% endlanguage %}
