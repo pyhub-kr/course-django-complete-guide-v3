@@ -78,5 +78,14 @@
 
 {% include "_messages_as_event.html" %}
 
+<script>
+    document.body.addEventListener("htmx:responseError", event => {
+      console.error("HTMX 요청 에러:", event.detail);
+      const message = event.detail.error;
+      const tag = "error";
+      htmx.trigger(document.body, "toast-message", { message, tag });
+    });
+</script>
+
 </body>
 </html>
