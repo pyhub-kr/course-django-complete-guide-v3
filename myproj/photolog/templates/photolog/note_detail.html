@@ -38,5 +38,8 @@
 
     <div class="my-3">
         <a href="{% url 'photolog:index' %}" class="btn btn-primary">타임라인</a>
+        {% if request.user == note.author %}
+            <a href="{% url 'photolog:note_edit' note.pk %}" class="btn btn-success">수정하기</a>
+        {% endif %}
     </div>
 {% endblock %}
