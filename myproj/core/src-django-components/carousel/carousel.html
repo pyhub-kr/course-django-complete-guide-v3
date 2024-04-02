@@ -1,0 +1,32 @@
+{% load uuid_tags %}
+
+{% generate_uuid4 prefix="carousel-" length=8 as random_id %}
+
+<div id="{{ random_id }}" class="carousel-component carousel slide">
+    <div class="carousel-indicators">
+        {% for img_url in img_url_list %}
+            <button type="button"
+                    data-bs-target="#{{ random_id }}"
+                    data-bs-slide-to="{{ forloop.counter0 }}"
+                    {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                    aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
+    </div>
+
+    <div class="carousel-inner">
+        {% for img_url in img_url_list %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ img_url }}" class="d-block w-100" alt=""/>
+            </div>
+        {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#{{ random_id }}" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#{{ random_id }}" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
