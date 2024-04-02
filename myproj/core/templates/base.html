@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap/5.3.3/css/bootstrap.min.css' %}"/>
     {% component_css_dependencies %}
 </head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' data-bs-theme="dark">
 
 <header class="p-3 text-bg-dark">
     <div class="container">
@@ -21,6 +21,7 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{% url 'photolog:index' %}" class="nav-link px-2 text-white">타임라인</a></li>
                 <li><a href="{% url 'photolog:note_new' %}" class="nav-link px-2 text-white">새 기록</a></li>
             </ul>
 

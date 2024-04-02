@@ -21,6 +21,9 @@ class Note(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["-pk"]
+
 
 def uuid_name_upload_to(instance: models.Model, filename: str) -> str:
     app_label = instance.__class__._meta.app_label

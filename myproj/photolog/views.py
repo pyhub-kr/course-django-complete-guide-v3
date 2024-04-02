@@ -9,7 +9,14 @@ from photolog.models import Note, Photo
 
 
 def index(request):
-    return render(request, "photolog/index.html")
+    note_qs = Note.objects.all().select_related("author").prefetch_related("photo_set")
+    return render(
+        request,
+        "photolog/index.html",
+        {
+            "note_list": note_qs,
+        },
+    )
 
 
 class NoteCreateView(LoginRequiredMixin, CreateView):
