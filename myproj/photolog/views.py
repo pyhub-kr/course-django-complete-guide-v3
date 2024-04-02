@@ -4,7 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView, UpdateView, ListView
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    UpdateView,
+    ListView,
+    DeleteView,
+)
 from django_htmx.http import trigger_client_event
 
 from core.decorators import login_required_hx
@@ -202,3 +208,27 @@ class CommentUpdateView(UpdateView):
 
 
 comment_edit = CommentUpdateView.as_view()
+
+
+@method_decorator(login_required_hx, name="dispatch")
+class CommentDeleteView(DeleteView):
+    model = Comment
+
+    def get_queryset(self):
+        note_pk = self.kwargs["note_pk"]
+        qs = super().get_queryset()
+        qs = qs.filter(note__pk=note_pk, author=self.request.user)
+        return qs
+
+    def form_valid(self, form):
+        self.object.delete()
+
+        messages.success(self.request, "댓글을 삭제했습니다.")
+
+        response = render(self.request, "_messages_as_event.html")
+        response = trigger_client_event(response, "refresh-comment-list")
+
+        return response
+
+
+comment_delete = CommentDeleteView.as_view()
