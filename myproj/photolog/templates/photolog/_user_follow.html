@@ -1,0 +1,26 @@
+{% if request.user.username != username %}
+    {% if not request.user.is_authenticated %}
+        <a href="{% url 'accounts:login' %}?next={{ request.path }}"
+           class="btn btn-sm btn-secondary">
+            <i class="bi bi-person-add"></i>
+            팔로잉 하기
+        </a>
+    {% else %}
+        {% if is_follower %}
+            <button hx-post="{% url 'photolog:user_unfollow' username %}"
+                    hx-swap="outerHTML"
+                    class="btn btn-sm btn-primary">
+                <i class="bi bi-person-check-fill"></i>
+                팔로잉 중
+            </button>
+        {% else %}
+            <button hx-post="{% url 'photolog:user_follow' username %}"
+                    hx-swap="outerHTML"
+                    class="btn btn-sm btn-secondary">
+                <i class="bi bi-person-add"></i>
+                팔로잉 하기
+            </button>
+        {% endif %}
+
+    {% endif %}
+{% endif %}

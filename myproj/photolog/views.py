@@ -1,3 +1,5 @@
+from typing import Literal
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -54,6 +56,31 @@ def user_page(request, username):
         {
             "author": author,
             "note_list": note_qs,
+        },
+    )
+
+
+@login_required_hx
+def user_follow(request, username, action: Literal["follow", "unfollow"]):
+    from_user: User = request.user
+    to_user = get_object_or_404(User, is_active=True, username=username)
+
+    if request.method == "GET":
+        is_follower = from_user.is_follower(to_user)
+    else:
+        if action == "follow":
+            from_user.follow(to_user)
+            is_follower = True
+        else:
+            from_user.unfollow(to_user)
+            is_follower = False
+
+    return render(
+        request,
+        "photolog/_user_follow.html",
+        {
+            "is_follower": is_follower,
+            "username": username,
         },
     )
 
