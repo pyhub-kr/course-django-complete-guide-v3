@@ -54,7 +54,7 @@
     >댓글 쓰기</a>
 
     <div id="comment-list" class="my-3">
-        {% include "photolog/_comment_list.html" with comment_list=comment_list only %}
+        {% include "photolog/_comment_list.html" with user=request.user comment_list=comment_list only %}
     </div>
 
     <a href="#"
