@@ -15,8 +15,8 @@
 
     <div class="carousel-inner">
         {% for img_url in img_url_list %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{{ img_url }}" class="d-block w-100" alt=""/>
+            <div class="carousel-item ratio ratio-1x1 {% if forloop.first %}active{% endif %}">
+                <img src="{{ img_url }}" class="d-block w-100 object-fit-cover" alt=""/>
             </div>
         {% endfor %}
     </div>
