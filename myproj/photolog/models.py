@@ -95,3 +95,11 @@ class Photo(LifecycleModelMixin, models.Model):
             if image_width > 1024 or image_extension not in (".jpg", ".jpeg"):
                 thumb_file = self.make_thumb(self.image.file, 1024, 1024, 80)
                 self.image.save(thumb_file.name, thumb_file, save=False)
+
+
+class Comment(models.Model):
+    note = models.ForeignKey(Note, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
