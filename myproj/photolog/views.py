@@ -172,3 +172,33 @@ class CommentCreateView(CreateView):
 
 
 comment_new = CommentCreateView.as_view()
+
+
+@method_decorator(login_required_hx, name="dispatch")
+class CommentUpdateView(UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "photolog/_comment_form.html"
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(author=self.request.user)
+        return qs
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request
+        return kwargs
+
+    def form_valid(self, form):  # 유효성 검사가 끝나고 나서 호출
+        form.save()
+
+        messages.success(self.request, "태그를 저장했습니다.")
+
+        response = render(self.request, "_messages_as_event.html")
+        response = trigger_client_event(response, "refresh-comment-list")
+
+        return response
+
+
+comment_edit = CommentUpdateView.as_view()

@@ -15,8 +15,18 @@
                     {{ comment.created_at|timesince }} ago
                 {% endlanguage %}
             </div>
-            <div>
+            <div class="mb-1">
                 {{ comment.message }}
+            </div>
+            <div class="d-flex flex-row">
+                <a href="#"
+                   hx-get="{% url 'photolog:comment_edit' comment.note.pk comment.pk %}"
+                   hx-get-with-timestamp
+                   hx-target="body"
+                   hx-swap="beforeend"  {# body 내용 끝에 추가 #}
+                   class="text-white text-decoration-none">
+                    수정하기
+                </a>
             </div>
         </div>
     </div>
