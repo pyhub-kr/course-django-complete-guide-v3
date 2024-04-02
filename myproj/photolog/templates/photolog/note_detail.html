@@ -52,4 +52,30 @@
        hx-swap="beforeend"  {# body 끝에 추가 #}
        class="btn btn-primary w-100"
     >댓글 쓰기</a>
+
+    <div class="my-3">
+        {% with comment_list=note.comment_set.all %}
+            {% for comment in comment_list %}
+                <div class="d-flex flex-row p-3">
+                    {% if comment.author.profile.avatar %}
+                        <img src="{{ comment.author.profile.avatar.url }}"
+                             class="rounded-circle me-3"
+                             style="width: 60px; height: 60px;"
+                             alt="{{ comment.author.username }}'s Avatar">
+                    {% endif %}
+                    <div class="w-100">
+                        <div class="d-flex flex-row align-items-center gap-3">
+                            <span>{{ comment.author.username }}</span>
+                            {% language "en-us" %}
+                                {{ comment.created_at|timesince }} ago
+                            {% endlanguage %}
+                        </div>
+                        <div>
+                            {{ comment.message }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endwith %}
+    </div>
 {% endblock %}
