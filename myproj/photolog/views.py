@@ -122,6 +122,12 @@ class CommentListView(ListView):
     model = Comment
     template_name = "photolog/_comment_list.html"
 
+    def get_queryset(self):
+        note_pk = self.kwargs["note_pk"]
+        qs = super().get_queryset()
+        qs = qs.filter(note__pk=note_pk)
+        return qs
+
 
 comment_list = CommentListView.as_view()
 
