@@ -16,8 +16,15 @@
     }[tag] || "btn-close-white";
   }
 
-  const html = `<div class="toast-container position-fixed top-0 end-0 p-3"></div>`
-  document.body.insertAdjacentHTML('beforeend', html);
+  function getToastContainer() {
+    let toastContainer = document.querySelector(".toast-container");
+    if(!toastContainer) {
+      const html = `<div class="toast-container position-fixed top-0 end-0 p-3"></div>`
+      document.body.insertAdjacentHTML('beforeend', html);
+      toastContainer = document.querySelector(".toast-container");
+    }
+    return toastContainer;
+  }
 
   /* body 요소에서 toast-message 이벤트를 처리합니다. */
   document.body.addEventListener("toast-message", function (e) {
@@ -34,7 +41,7 @@
       </div>
   `;
 
-    const container = document.querySelector(".toast-container");
+    const container = getToastContainer();
     container.insertAdjacentHTML('afterbegin', html);
 
     const toastEl = container.querySelector('.toast:first-child');
