@@ -56,6 +56,40 @@ def index(request):
     )
 
 
+@login_required
+def following_user_list(request):
+    user: User = request.user
+    user_qs = user.following_user_set.exclude(id__in=[user.pk]).select_related(
+        "profile"
+    )
+    return render(
+        request,
+        "photolog/user_list.html",
+        {
+            "user_list": user_qs,
+            "is_follower": True,
+        },
+    )
+
+
+@login_required
+def discover_user_list(request):
+    user: User = request.user
+    user_qs = (
+        User.objects.exclude(id__in=[user.pk])
+        .exclude(id__in=user.following_user_set.all())
+        .select_related("profile")
+    )
+    return render(
+        request,
+        "photolog/user_list.html",
+        {
+            "user_list": user_qs,
+            "is_follower": False,
+        },
+    )
+
+
 def user_page(request, username):
     author = get_object_or_404(User, is_active=True, username=username)
 
