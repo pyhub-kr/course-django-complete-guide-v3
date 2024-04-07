@@ -36,6 +36,10 @@ def index(request):
             Q(author=user) | Q(author__in=user.following_user_set.all())
         )
 
+    query = request.GET.get("query", "").strip()
+    if query:
+        note_qs = note_qs.filter(Q(title__icontains=query) | Q(author__username=query))
+
     tag_name = request.GET.get("tag", "").strip()
     if tag_name:
         note_qs = note_qs.filter(tags__name__in=[tag_name])
@@ -47,6 +51,7 @@ def index(request):
         "photolog/index.html",
         {
             "note_list": note_qs,
+            "query": query,
         },
     )
 
