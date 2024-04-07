@@ -40,14 +40,18 @@
                 지난/다음 달 context data를 지원
             </div>
             <div class="btn-group d-flex w-100">
-                <a href="{% url 'hottrack:song_archive_month' previous_month.year previous_month.month %}"
-                   class="btn btn-primary">
-                    지난 달
-                </a>
-                <a href="{% url 'hottrack:song_archive_month' next_month.year next_month.month %}"
-                   class="btn btn-primary">
-                    다음 달
-                </a>
+                {% if previous_month %}
+                    <a href="{% url 'hottrack:song_archive_month' previous_month.year previous_month.month %}"
+                       class="btn btn-primary">
+                        지난 달
+                    </a>
+                {% endif %}
+                {% if next_month %}
+                    <a href="{% url 'hottrack:song_archive_month' next_month.year next_month.month %}"
+                       class="btn btn-primary">
+                        다음 달
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>
