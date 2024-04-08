@@ -33,7 +33,8 @@
                     <a href="#"
                        hx-post="{% url 'photolog:comment_delete' comment.note.pk comment.pk %}"
                        hx-confirm="Are you sure?"
-                       hx-swap="none"
+                       hx-target="body"
+                       hx-swap="beforeend"  {# body 내용 끝에 추가 #}
                        class="text-white text-decoration-none"
                     >
                         삭제하기
