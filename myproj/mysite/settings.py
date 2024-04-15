@@ -229,3 +229,21 @@ else:
     except ImproperlyConfigured as e:
         print("ERROR:", e, file=sys.stderr)
         EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# sentry
+
+SENTRY_DSN = env.str("SENTRY_DSN", default="")
+if SENTRY_DSN:
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE", default=1.0),
+        # Set profiles_sample_rate to 1.0 to profile 100%
+        # of sampled transactions.
+        # We recommend adjusting this value in production.
+        profiles_sample_rate=env.float("SENTRY_PROFILES_SAMPLE_RATE", default=1.0),
+    )
