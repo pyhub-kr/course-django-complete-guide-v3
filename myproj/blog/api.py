@@ -7,7 +7,7 @@ from .serializers import PostSerializer, PostListSerializer, PostDetailSerialize
 
 
 def post_list(request: HttpRequest) -> HttpResponse:
-    post_qs = Post.objects.all()
+    post_qs = Post.objects.all().select_related("author")
 
     serializer = PostListSerializer(instance=post_qs, many=True)
     list_data: ReturnList = serializer.data
