@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from accounts.models import User
-from .models import Post
+from .models import Post, Comment
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -12,6 +12,12 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "username", "email", "name"]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ["id", "message"]
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -30,7 +36,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
 class PostDetailSerializer(serializers.ModelSerializer):
     author = AuthorSerializer()
-    comment_list = serializers.StringRelatedField(source="comment_set", many=True)
+    comment_list = CommentSerializer(source="comment_set", many=True)
 
     class Meta:
         model = Post
