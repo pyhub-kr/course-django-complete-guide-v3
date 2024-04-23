@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf8"/>
+    <title>Melon 2023-12-04</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-4">Melon 2023-12-04</h1>
+    <ol id="song-list" class="space-y-4"></ol>
+</div>
+
+<script>
+  (async function () {
+    const res = await fetch('https://pyhub.kr/melon/20231204.json');
+    const songList = await res.json();
+    const html = songList.map(song => {
+      return `
+        <li class="flex items-center p-4 bg-white rounded-lg shadow">
+          <img src="${song.커버이미지_주소}" alt="${song.곡명}" class="x-12 h-12 mr-4 rounded" />
+          <div>
+            <h2 class="text-lg font-bold">${song.곡명}</h2>
+            <p class="text-gray-500">${song.좋아요}</p>
+          </div>
+        </li>
+      `;
+    }).join("");
+    document.querySelector("#song-list").innerHTML = html;
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf8"/>
+    <title>Melon 2023-12-04</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.16/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-4">Melon 2023-12-04</h1>
+    <ol id="song-list" class="space-y-4"></ol>
+</div>
+
+<script type="text/babel">
+  function App() {
+    const [songList, setSongList] = React.useState([]);
+
+    React.useEffect(() => {
+      async function fetchSongList() {
+        const res = await fetch('https://pyhub.kr/melon/20231204.json');
+        setSongList(await res.json());
+      }
+
+      fetchSongList();
+    }, []);
+
+    return (
+      <>
+        {songList.map(song => (
+          <li key={song.곡일련번호} class="flex items-center p-4 bg-white rounded-lg shadow">
+            <img src={song.커버이미지_주소} alt={song.곡명} class="w-12 h-12 mr-4 rounded"/>
+            <div>
+              <h2 class="text-lg font-bold">{song.곡명}</h2>
+              <p class="text-gray-500">좋아요: {song.좋아요}</p>
+            </div>
+          </li>
+        ))}
+      </>
+    );
+  }
+
+  ReactDOM.render(
+    <App/>,
+    document.querySelector('#song-list')
+  );
+</script>
+</body>
+</html>
