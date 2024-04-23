@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from rest_framework import serializers
 from accounts.models import User
 from .models import Post, Comment
@@ -33,6 +34,10 @@ class PostListSerializer(serializers.ModelSerializer):
         model = Post
         fields = ["id", "title", "author"]
 
+    @staticmethod
+    def get_optimized_queryset() -> QuerySet[Post]:
+        return Post.objects.all().only("id", "title", "author").select_related("author")
+
 
 class PostDetailSerializer(serializers.ModelSerializer):
     author = AuthorSerializer()
@@ -41,3 +46,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ["id", "title", "content", "author", "comment_list"]
+
+    @staticmethod
+    def get_optimized_queryset() -> QuerySet[Post]:
+        return Post.objects.all()
