@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     "template_partials",
     # local apps
     "accounts",
+    "blog",
     "core",
     "photolog",
 ]
