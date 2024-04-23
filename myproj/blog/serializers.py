@@ -30,7 +30,8 @@ class PostListSerializer(serializers.ModelSerializer):
 
 class PostDetailSerializer(serializers.ModelSerializer):
     author = AuthorSerializer()
+    comment_list = serializers.StringRelatedField(source="comment_set", many=True)
 
     class Meta:
         model = Post
-        fields = ["id", "title", "content", "author"]
+        fields = ["id", "title", "content", "author", "comment_list"]
