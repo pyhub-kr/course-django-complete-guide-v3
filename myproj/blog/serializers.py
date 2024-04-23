@@ -9,7 +9,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class PostListSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField()
+    author = serializers.CharField(source="author.username")
 
     class Meta:
         model = Post
@@ -17,7 +17,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField()
+    author = serializers.CharField(source="author.username")
 
     class Meta:
         model = Post
