@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "django_components",
     "django_extensions",
     "django_htmx",
+    "rest_framework",
     "taggit",
     "template_partials",
     # local apps
@@ -257,3 +258,15 @@ COMPONENTS = {
     # 0.67 미만 버전과 동일한 동작을 맞추기 위한 설정 (강의에서는 0.61 버전)
     "slot_context_behavior": "allow_override",  # 디폴트: "prefer_root"
 }
+
+
+# djangorestframework
+# https://www.django-rest-framework.org
+
+# REST_FRAMEWORK = {
+#     # Use Django's standard `django.contrib.auth` permissions,
+#     # or allow read-only access for unauthenticated users.
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny',
+#     ]
+# }
