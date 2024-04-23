@@ -1,5 +1,17 @@
 from rest_framework import serializers
+from accounts.models import User
 from .models import Post
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
+    def get_name(self, user) -> str:
+        return f"{user.last_name} {user.first_name}".strip()
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "name"]
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -9,7 +21,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class PostListSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source="author.username")
+    author = AuthorSerializer()
 
     class Meta:
         model = Post
@@ -17,7 +29,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source="author.username")
+    author = AuthorSerializer()
 
     class Meta:
         model = Post
