@@ -9,12 +9,16 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class PostListSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField()
+
     class Meta:
         model = Post
         fields = ["id", "title", "author"]
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField()
+
     class Meta:
         model = Post
         fields = ["id", "title", "content", "author"]
