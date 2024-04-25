@@ -15,7 +15,8 @@ class PandasXlsxRenderer(BaseRenderer):
 
     def render(self, data, accepted_media_type=None, renderer_context=None) -> BytesIO:
         io = BytesIO()
-        df = pd.DataFrame(data)
+        df = pd.json_normalize(data)  # 중첩된 데이터를 평평하게 만들어줍니다.
+        # df = pd.DataFrame(data)
         df.to_excel(io)  # noqa
         io.seek(0)
         return io
