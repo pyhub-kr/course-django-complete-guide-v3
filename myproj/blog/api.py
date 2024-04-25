@@ -6,6 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.utils.serializer_helpers import ReturnList, ReturnDict
 
+from core.mixins import JSONResponseWrapperMixin
 from .models import Post
 from .serializers import PostSerializer, PostListSerializer, PostDetailSerializer
 
@@ -20,23 +21,9 @@ from .serializers import PostSerializer, PostListSerializer, PostDetailSerialize
 #     return Response(list_data)
 
 
-class PostListAPIView(ListAPIView):
+class PostListAPIView(JSONResponseWrapperMixin, ListAPIView):
     queryset = PostListSerializer.get_optimized_queryset()
     serializer_class = PostListSerializer
-
-    def list(self, request: Request, *args, **kwargs):
-        response: Response = super().list(request, *args, **kwargs)
-
-        if isinstance(request.accepted_renderer, (JSONRenderer, BrowsableAPIRenderer)):
-            response.data = ReturnDict(
-                {
-                    "ok": True,
-                    "result": response.data,  # ReturnList
-                },
-                serializer=response.data.serializer,
-            )
-
-        return response
 
 
 post_list = PostListAPIView.as_view()
@@ -52,23 +39,9 @@ post_list = PostListAPIView.as_view()
 #     return Response(detail_data)
 
 
-class PostRetrieveAPIView(RetrieveAPIView):
+class PostRetrieveAPIView(JSONResponseWrapperMixin, RetrieveAPIView):
     queryset = PostDetailSerializer.get_optimized_queryset()
     serializer_class = PostDetailSerializer
-
-    def retrieve(self, request: Request, *args, **kwargs):
-        response: Response = super().retrieve(request, *args, **kwargs)
-
-        if isinstance(request.accepted_renderer, (JSONRenderer, BrowsableAPIRenderer)):
-            response.data = ReturnDict(
-                {
-                    "ok": True,
-                    "result": response.data,  # ReturnDict
-                },
-                serializer=response.data.serializer,
-            )
-
-        return response
 
 
 post_detail = PostRetrieveAPIView.as_view()
