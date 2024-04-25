@@ -10,8 +10,8 @@ GET https://naver.com
 
 ### 실패하는 form-urlencoded 요청
 
-POST {{BASE_URL}}/api/new/
-Authorization: Basic 유저명 암호
+POST {{BASE_URL}}/blog/api/new/
+Authorization: Basic baghyeonu baghyeonu
 Content-Type: application/x-www-form-urlencoded
 
 title = 샘플+제목 &
@@ -22,8 +22,8 @@ content =
 
 ### 성공하는 form-urlencoded 요청
 
-POST {{BASE_URL}}/api/new/
-Authorization: Basic 유저명 암호
+POST {{BASE_URL}}/blog/api/new/
+Authorization: Basic baghyeonu baghyeonu
 Content-Type: application/x-www-form-urlencoded
 
 title = 샘플+제목 &
@@ -32,8 +32,8 @@ content = 샘플+내용
 
 ### 실패하는 json 요청
 
-POST {{BASE_URL}}/api/new/
-Authorization: Basic 유저명 암호
+POST {{BASE_URL}}/blog/api/new/
+Authorization: Basic baghyeonu baghyeonu
 Content-Type: application/json
 
 {
@@ -44,8 +44,8 @@ Content-Type: application/json
 
 ### 성공하는 json 요청
 
-POST {{BASE_URL}}/api/new/
-Authorization: Basic 유저명 암호
+POST {{BASE_URL}}/blog/api/new/
+Authorization: Basic baghyeonu baghyeonu
 Content-Type: application/json
 
 {
@@ -57,8 +57,8 @@ Content-Type: application/json
 
 ### (수정/PUT) 성공하는 form-urlencoded (모든 필드 지정)
 
-PUT {{BASE_URL}}/api/101/edit/
-Authorization: Basic 유저명 암호
+PUT {{BASE_URL}}/blog/api/101/edit/
+Authorization: Basic baghyeonu baghyeonu
 Content-Type: application/x-www-form-urlencoded
 
 title = 샘플+제목+수정 &
@@ -67,8 +67,8 @@ content = 샘플+내용
 
 ### (수정/PATCH) 성공하는 form-urlencoded (업데이트할 필드만 지정)
 
-PATCH {{BASE_URL}}/api/101/edit/
-Authorization: Basic 유저명 암호
+PATCH {{BASE_URL}}/blog/api/101/edit/
+Authorization: Basic baghyeonu baghyeonu
 Content-Type: application/x-www-form-urlencoded
 
 title = 샘플+제목+수정2
