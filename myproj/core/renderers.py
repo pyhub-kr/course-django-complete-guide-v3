@@ -2,7 +2,7 @@
 
 from io import BytesIO
 
-from rest_framework.renderers import BaseRenderer, JSONRenderer
+from rest_framework.renderers import BaseRenderer
 
 import pandas as pd  # pip install pandas openpyxl
 from wordcloud import WordCloud  # pip install wordcloud
@@ -29,5 +29,12 @@ class WordcloudRenderer(BaseRenderer):
     render_style = "text"
 
     def render(self, data, accepted_media_type=None, renderer_context=None) -> str:
-        wordcloud = WordCloud().generate(str(data))
+        df = pd.json_normalize(data)
+        filtered_column_names = [
+            name for name in df.columns if name != "id" and not name.endswith(".id")
+        ]
+        df = df[filtered_column_names]
+        raw_str = " ".join(df.values.ravel())
+
+        wordcloud = WordCloud().generate(raw_str)
         return wordcloud.to_svg()
