@@ -8,6 +8,7 @@ urlpatterns_api_v1 = [
     path("", api.post_list, name="post_list"),
     path("<int:pk>/", api.post_detail, name="post_detail"),
     path("new/", api.post_new, name="post_new"),
+    path("<int:pk>/edit/", api.post_edit, name="post_edit"),
 ]
 
 urlpatterns += [

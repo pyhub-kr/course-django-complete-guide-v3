@@ -1,6 +1,11 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
+from rest_framework.generics import (
+    ListAPIView,
+    RetrieveAPIView,
+    CreateAPIView,
+    UpdateAPIView,
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
 from rest_framework.request import Request
@@ -57,3 +62,15 @@ class PostCreateAPIView(CreateAPIView):
 
 
 post_new = PostCreateAPIView.as_view()
+
+
+class PostUpdateAPIView(UpdateAPIView):
+    queryset = PostSerializer.get_optimized_queryset()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    # def perform_update(self, serializer):
+    #     serializer.save()
+
+
+post_edit = PostUpdateAPIView.as_view()
