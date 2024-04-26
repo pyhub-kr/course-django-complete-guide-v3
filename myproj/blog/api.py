@@ -5,6 +5,7 @@ from rest_framework.generics import (
     RetrieveAPIView,
     CreateAPIView,
     UpdateAPIView,
+    DestroyAPIView,
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
@@ -74,3 +75,11 @@ class PostUpdateAPIView(UpdateAPIView):
 
 
 post_edit = PostUpdateAPIView.as_view()
+
+
+class PostDestroyAPIView(DestroyAPIView):
+    queryset = Post.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
+post_delete = PostDestroyAPIView.as_view()

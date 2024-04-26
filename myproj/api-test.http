@@ -72,3 +72,9 @@ Authorization: Basic baghyeonu baghyeonu
 Content-Type: application/x-www-form-urlencoded
 
 title = 샘플+제목+수정2
+
+
+### 삭제 요청 #101
+
+DELETE {{BASE_URL}}/blog/api/101/delete/
+Authorization: Basic baghyeonu baghyeonu
