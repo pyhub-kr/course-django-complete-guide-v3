@@ -1,12 +1,13 @@
-from typing import List
+from typing import List, Optional, Type
 
 from colorama import Fore
 from django.conf import settings
-from django.db.models import Model
+from django.db.models import Model, QuerySet
 from rest_framework import permissions
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.serializers import Serializer
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework.views import APIView
 
@@ -103,3 +104,28 @@ class TestFuncPermissionMixin:
         self, request: Request, view: APIView, obj: Model
     ) -> bool:
         return True
+
+
+class ActionBasedViewSetMixin:
+    queryset_map = {}
+    serializer_class_map = {}
+
+    def get_queryset(self) -> QuerySet:
+        qs: Optional[QuerySet] = self.queryset_map.get(self.action, None)
+        if qs is not None:
+            # 인스턴스 변수로 할당
+            #   - 부모의 get_queryset 메서드의 self.queryset 코드에서는
+            #     queryset 인스턴스 변수가 없으면 클래스 변수 queryset을 참조
+            self.queryset = qs
+        return super().get_queryset()
+
+    def get_serializer_class(self) -> Type[Serializer]:
+        cls: Optional[Type[Serializer]] = self.serializer_class_map.get(
+            self.action, None
+        )
+        if cls is not None:
+            # 인스턴스 변수로 할당
+            #   - 부모의 get_serializer_class 메서드의 self.serializer_class 코드에서는
+            #     serializer_class 인스턴스 변수가 없으면 클래스 변수 serializer_class을 참조
+            self.serializer_class = cls
+        return super().get_serializer_class()

@@ -20,6 +20,7 @@ from core.mixins import (
     JSONResponseWrapperMixin,
     PermissionDebugMixin,
     TestFuncPermissionMixin,
+    ActionBasedViewSetMixin,
 )
 from core.permissions import (
     IsAuthorOrReadonly,
@@ -119,32 +120,24 @@ from .serializers import PostSerializer, PostListSerializer, PostDetailSerialize
 # post_delete = PostDestroyAPIView.as_view()
 
 
-class PostModelViewSet(ModelViewSet):
+class PostModelViewSet(ActionBasedViewSetMixin, ModelViewSet):
     queryset = Post.objects.all()
+    queryset_map = {
+        "list": PostListSerializer.get_optimized_queryset(),
+        "retrieve": PostDetailSerializer.get_optimized_queryset(),
+        "update": PostSerializer.get_optimized_queryset(),
+        "partial_update": PostSerializer.get_optimized_queryset(),
+        "destroy": Post.objects.all(),
+    }
     serializer_class = PostSerializer
+    serializer_class_map = {
+        "list": PostListSerializer,
+        "retrieve": PostDetailSerializer,
+        "create": PostSerializer,
+        "update": PostSerializer,
+        "partial_update": PostSerializer,
+    }
     permission_classes = [IsAuthorOrReadonly]
-
-    def get_queryset(self):
-        if self.action == "list":
-            self.queryset = PostListSerializer.get_optimized_queryset()
-        elif self.action == "retrieve":
-            self.queryset = PostDetailSerializer.get_optimized_queryset()
-        elif self.action in ("update", "partial_update"):
-            self.queryset = PostSerializer.get_optimized_queryset()
-        elif self.action == "destroy":
-            self.queryset = Post.objects.all()
-
-        return super().get_queryset()
-
-    def get_serializer_class(self):
-        # self.request.method == "GET"  # "list" or "retrieve"
-        if self.action == "list":
-            return PostListSerializer
-        elif self.action == "retrieve":
-            return PostDetailSerializer
-        elif self.action in ("create", "update", "partial_update"):
-            return PostSerializer
-        return super().get_serializer_class()
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
