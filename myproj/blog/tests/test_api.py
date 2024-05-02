@@ -123,3 +123,26 @@ def test_missing_required_fields_cannot_create_post(
     data = {"title": title, "content": content}
     response: Response = api_client_with_new_user_basic_auth.post(url, data=data)
     assert status.HTTP_400_BAD_REQUEST == response.status_code
+
+
+@pytest.mark.it("작성자가 아닌 유저가 수정 요청하면 거부")
+@pytest.mark.django_db
+def test_non_author_cannot_update_post(new_post, api_client_with_new_user_basic_auth):
+    url = reverse("api-v1:post_edit", args=[new_post.pk])
+    response: Response = api_client_with_new_user_basic_auth.patch(url, data={})
+    assert status.HTTP_403_FORBIDDEN == response.status_code
+
+
+@pytest.mark.it("작성자가 수정 요청하면 성공")
+@pytest.mark.django_db
+def test_author_can_update_post(faker):
+    raw_password = faker.password()
+    author = create_user(raw_password=raw_password)
+    created_post = PostFactory(author=author)
+
+    url = reverse("api-v1:post_edit", args=[created_post.pk])
+    api_client = get_api_client_with_basic_auth(author, raw_password)
+    data = {"title": faker.sentence()}
+    response: Response = api_client.patch(url, data=data)
+    assert status.HTTP_200_OK == response.status_code
+    assert data["title"] == response.data["title"]
