@@ -70,3 +70,16 @@ def test_post_list(unauthenticated_api_client):
     response: Response = unauthenticated_api_client.get(url)
     assert status.HTTP_200_OK == response.status_code
     assert len(post_list) == len(response.data["result"])
+
+
+@pytest.mark.it(
+    "특정 게시물 조회. 비인증 조회가 가능해야하며, 생성한 포스팅을 조회할 수 있어야 합니다."
+)
+@pytest.mark.django_db
+def test_post_retrieve(unauthenticated_api_client):
+    new_post = PostFactory()
+
+    url: str = reverse("api-v1:post_detail", args=[new_post.pk])
+    response: Response = unauthenticated_api_client.get(url)
+    assert status.HTTP_200_OK == response.status_code
+    assert new_post.title == response.data["result"]["title"]
