@@ -146,3 +146,30 @@ def test_author_can_update_post(faker):
     response: Response = api_client.patch(url, data=data)
     assert status.HTTP_200_OK == response.status_code
     assert data["title"] == response.data["title"]
+
+
+@pytest.mark.describe("포스팅 삭제 API 테스트")
+class TestPostDeleteGroup:
+    @pytest.mark.it("작성자가 아닌 유저가 삭제 요청하면 거부")
+    @pytest.mark.django_db
+    def test_non_author_cannot_delete_post(
+        self, new_post, api_client_with_new_user_basic_auth
+    ):
+        url = reverse("api-v1:post_delete", args=[new_post.pk])
+        response: Response = api_client_with_new_user_basic_auth.delete(url, data={})
+        assert status.HTTP_403_FORBIDDEN == response.status_code
+
+    @pytest.mark.it("작성자가 삭제 요청하면 성공")
+    @pytest.mark.django_db
+    def test_author_can_delete_post(self, faker):
+        raw_password = faker.password()
+        author = create_user(raw_password=raw_password)
+        created_post = PostFactory(author=author)
+
+        url = reverse("api-v1:post_delete", args=[created_post.pk])
+        api_client = get_api_client_with_basic_auth(author, raw_password)
+        response: Response = api_client.delete(url)
+        assert status.HTTP_204_NO_CONTENT == response.status_code
+
+        with pytest.raises(ObjectDoesNotExist):
+            Post.objects.get(pk=created_post.pk)
