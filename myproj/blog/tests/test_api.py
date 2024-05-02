@@ -102,3 +102,24 @@ def test_authenticated_user_can_create_post(api_client_with_new_user_basic_auth,
     assert status.HTTP_201_CREATED == response.status_code
     assert data["title"] == response.data["title"]
     assert data["content"] == response.data["content"]
+
+
+@pytest.mark.it("필수 필드가 누락된 생성 요청은 거부되어야 합니다.")
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    "title, content",
+    [
+        ("", "content"),
+        ("title", ""),
+        ("", ""),
+    ],
+)
+def test_missing_required_fields_cannot_create_post(
+    api_client_with_new_user_basic_auth,
+    title,
+    content,
+):
+    url = reverse("api-v1:post_new")
+    data = {"title": title, "content": content}
+    response: Response = api_client_with_new_user_basic_auth.post(url, data=data)
+    assert status.HTTP_400_BAD_REQUEST == response.status_code
