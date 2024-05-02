@@ -17,3 +17,8 @@ pandas==2.2.2
 openpyxl==3.1.2
 wordcloud==1.9.3
 colorama==0.4.6
+
+pytest==8.2.0
+pytest-django==4.8.0
+pytest-testdox==3.1.0
+factory-boy==3.3.0
