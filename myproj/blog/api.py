@@ -14,6 +14,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.utils.serializer_helpers import ReturnList, ReturnDict
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
 from core.mixins import (
     JSONResponseWrapperMixin,
@@ -39,80 +40,106 @@ from .serializers import PostSerializer, PostListSerializer, PostDetailSerialize
 #     return Response(list_data)
 
 
-class PostListAPIView(JSONResponseWrapperMixin, PermissionDebugMixin, ListAPIView):
-    queryset = PostListSerializer.get_optimized_queryset()
-    serializer_class = PostListSerializer
-
-
-post_list = PostListAPIView.as_view()
-
-
-# @api_view(["GET"])
-# def post_detail(request: Request, pk: int) -> Response:
-#     post = get_object_or_404(Post, pk=pk)
+# class PostListAPIView(JSONResponseWrapperMixin, PermissionDebugMixin, ListAPIView):
+#     queryset = PostListSerializer.get_optimized_queryset()
+#     serializer_class = PostListSerializer
 #
-#     serializer = PostDetailSerializer(instance=post)
-#     detail_data: ReturnDict = serializer.data
 #
-#     return Response(detail_data)
+# post_list = PostListAPIView.as_view()
+#
+#
+# # @api_view(["GET"])
+# # def post_detail(request: Request, pk: int) -> Response:
+# #     post = get_object_or_404(Post, pk=pk)
+# #
+# #     serializer = PostDetailSerializer(instance=post)
+# #     detail_data: ReturnDict = serializer.data
+# #
+# #     return Response(detail_data)
+#
+#
+# class PostRetrieveAPIView(
+#     JSONResponseWrapperMixin, PermissionDebugMixin, RetrieveAPIView
+# ):
+#     queryset = PostDetailSerializer.get_optimized_queryset()
+#     serializer_class = PostDetailSerializer
+#
+#
+# post_detail = PostRetrieveAPIView.as_view()
+#
+#
+# class PostCreateAPIView(PermissionDebugMixin, CreateAPIView):
+#     serializer_class = PostSerializer
+#     permission_classes = [IsAuthenticated]
+#
+#     def perform_create(self, serializer):
+#         serializer.save(author=self.request.user)
+#
+#
+# post_new = PostCreateAPIView.as_view()
+#
+#
+# class PostUpdateAPIView(PermissionDebugMixin, TestFuncPermissionMixin, UpdateAPIView):
+#     TEST_FUNC_PERMISSION_CLASS_NAME = "PostUpdateAPIView"
+#
+#     queryset = PostSerializer.get_optimized_queryset()
+#     serializer_class = PostSerializer
+#
+#     # permission_classes = [IsAuthorOrReadonly]
+#     # permission_classes = [
+#     #     make_drf_permission_class(
+#     #         class_name="PostUpdateAPIView",
+#     #         permit_safe_methods=True,
+#     #         has_permission_test_func=lambda request, view: request.user.is_authenticated,
+#     #         has_object_permission_test_func=(
+#     #             lambda request, view, obj: obj.author == request.user
+#     #         ),
+#     #     ),
+#     # ]
+#     permission_classes = [PermitSafeMethods]
+#
+#     def has_permission(self, request: Request, view: APIView) -> bool:
+#         return request.user.is_authenticated
+#
+#     def has_object_permission(self, request: Request, view: APIView, obj: Post) -> bool:
+#         return obj.author == request.user
+#
+#     # def perform_update(self, serializer):
+#     #     serializer.save()
+#
+#
+# post_edit = PostUpdateAPIView.as_view()
+#
+#
+# class PostDestroyAPIView(PermissionDebugMixin, DestroyAPIView):
+#     queryset = Post.objects.all()
+#     permission_classes = [IsAuthorOrReadonly]
+#
+#
+# post_delete = PostDestroyAPIView.as_view()
 
 
-class PostRetrieveAPIView(
-    JSONResponseWrapperMixin, PermissionDebugMixin, RetrieveAPIView
-):
-    queryset = PostDetailSerializer.get_optimized_queryset()
-    serializer_class = PostDetailSerializer
-
-
-post_detail = PostRetrieveAPIView.as_view()
-
-
-class PostCreateAPIView(PermissionDebugMixin, CreateAPIView):
+class PostModelViewSet(ModelViewSet):
+    queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthorOrReadonly]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
 
-post_new = PostCreateAPIView.as_view()
+post_list = PostModelViewSet.as_view(
+    actions={
+        "get": "list",
+        "post": "create",
+    },
+)
 
-
-class PostUpdateAPIView(PermissionDebugMixin, TestFuncPermissionMixin, UpdateAPIView):
-    TEST_FUNC_PERMISSION_CLASS_NAME = "PostUpdateAPIView"
-
-    queryset = PostSerializer.get_optimized_queryset()
-    serializer_class = PostSerializer
-
-    # permission_classes = [IsAuthorOrReadonly]
-    # permission_classes = [
-    #     make_drf_permission_class(
-    #         class_name="PostUpdateAPIView",
-    #         permit_safe_methods=True,
-    #         has_permission_test_func=lambda request, view: request.user.is_authenticated,
-    #         has_object_permission_test_func=(
-    #             lambda request, view, obj: obj.author == request.user
-    #         ),
-    #     ),
-    # ]
-    permission_classes = [PermitSafeMethods]
-
-    def has_permission(self, request: Request, view: APIView) -> bool:
-        return request.user.is_authenticated
-
-    def has_object_permission(self, request: Request, view: APIView, obj: Post) -> bool:
-        return obj.author == request.user
-
-    # def perform_update(self, serializer):
-    #     serializer.save()
-
-
-post_edit = PostUpdateAPIView.as_view()
-
-
-class PostDestroyAPIView(PermissionDebugMixin, DestroyAPIView):
-    queryset = Post.objects.all()
-    permission_classes = [IsAuthorOrReadonly]
-
-
-post_delete = PostDestroyAPIView.as_view()
+post_detail = PostModelViewSet.as_view(
+    actions={
+        "get": "retrieve",
+        "put": "update",
+        "patch": "partial_update",
+        "delete": "destroy",
+    },
+)
