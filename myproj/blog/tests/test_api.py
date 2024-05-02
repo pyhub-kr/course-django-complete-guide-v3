@@ -66,7 +66,7 @@ def new_post() -> Post:
 def test_post_list(unauthenticated_api_client):
     post_list = [PostFactory() for __ in range(10)]
 
-    url = reverse("api-v1:post_list")
+    url = reverse("api-v1:post-list")
     response: Response = unauthenticated_api_client.get(url)
     assert status.HTTP_200_OK == response.status_code
     assert len(post_list) == len(response.data)
@@ -79,7 +79,7 @@ def test_post_list(unauthenticated_api_client):
 def test_post_retrieve(unauthenticated_api_client):
     new_post = PostFactory()
 
-    url: str = reverse("api-v1:post_detail", args=[new_post.pk])
+    url: str = reverse("api-v1:post-detail", args=[new_post.pk])
     response: Response = unauthenticated_api_client.get(url)
     assert status.HTTP_200_OK == response.status_code
     assert new_post.title == response.data["title"]
@@ -88,7 +88,7 @@ def test_post_retrieve(unauthenticated_api_client):
 @pytest.mark.it("인증하지 않은 요청은 게시물 생성 요청 거부")
 @pytest.mark.django_db
 def test_unauthenticated_user_cannot_create_post(unauthenticated_api_client):
-    url = reverse("api-v1:post_new")
+    url = reverse("api-v1:post-list")
     response: Response = unauthenticated_api_client.post(url, data={})
     assert status.HTTP_403_FORBIDDEN == response.status_code
 
@@ -96,7 +96,7 @@ def test_unauthenticated_user_cannot_create_post(unauthenticated_api_client):
 @pytest.mark.it("인증된 요청은 게시물 생성 요청 성공")
 @pytest.mark.django_db
 def test_authenticated_user_can_create_post(api_client_with_new_user_basic_auth, faker):
-    url = reverse("api-v1:post_new")
+    url = reverse("api-v1:post-list")
     data = {"title": faker.sentence(), "content": faker.paragraph()}
     response: Response = api_client_with_new_user_basic_auth.post(url, data=data)
     assert status.HTTP_201_CREATED == response.status_code
@@ -119,7 +119,7 @@ def test_missing_required_fields_cannot_create_post(
     title,
     content,
 ):
-    url = reverse("api-v1:post_new")
+    url = reverse("api-v1:post-list")
     data = {"title": title, "content": content}
     response: Response = api_client_with_new_user_basic_auth.post(url, data=data)
     assert status.HTTP_400_BAD_REQUEST == response.status_code
@@ -128,7 +128,7 @@ def test_missing_required_fields_cannot_create_post(
 @pytest.mark.it("작성자가 아닌 유저가 수정 요청하면 거부")
 @pytest.mark.django_db
 def test_non_author_cannot_update_post(new_post, api_client_with_new_user_basic_auth):
-    url = reverse("api-v1:post_edit", args=[new_post.pk])
+    url = reverse("api-v1:post-detail", args=[new_post.pk])
     response: Response = api_client_with_new_user_basic_auth.patch(url, data={})
     assert status.HTTP_403_FORBIDDEN == response.status_code
 
@@ -140,7 +140,7 @@ def test_author_can_update_post(faker):
     author = create_user(raw_password=raw_password)
     created_post = PostFactory(author=author)
 
-    url = reverse("api-v1:post_edit", args=[created_post.pk])
+    url = reverse("api-v1:post-detail", args=[created_post.pk])
     api_client = get_api_client_with_basic_auth(author, raw_password)
     data = {"title": faker.sentence()}
     response: Response = api_client.patch(url, data=data)
@@ -155,7 +155,7 @@ class TestPostDeleteGroup:
     def test_non_author_cannot_delete_post(
         self, new_post, api_client_with_new_user_basic_auth
     ):
-        url = reverse("api-v1:post_delete", args=[new_post.pk])
+        url = reverse("api-v1:post-detail", args=[new_post.pk])
         response: Response = api_client_with_new_user_basic_auth.delete(url, data={})
         assert status.HTTP_403_FORBIDDEN == response.status_code
 
@@ -166,7 +166,7 @@ class TestPostDeleteGroup:
         author = create_user(raw_password=raw_password)
         created_post = PostFactory(author=author)
 
-        url = reverse("api-v1:post_delete", args=[created_post.pk])
+        url = reverse("api-v1:post-detail", args=[created_post.pk])
         api_client = get_api_client_with_basic_auth(author, raw_password)
         response: Response = api_client.delete(url)
         assert status.HTTP_204_NO_CONTENT == response.status_code
