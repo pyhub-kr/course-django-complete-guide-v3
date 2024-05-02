@@ -13,7 +13,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.utils.serializer_helpers import ReturnList, ReturnDict
 
-from core.mixins import JSONResponseWrapperMixin
+from core.mixins import JSONResponseWrapperMixin, PermissionDebugMixin
 from core.permissions import IsAuthorOrReadonly
 from .models import Post
 from .serializers import PostSerializer, PostListSerializer, PostDetailSerializer
@@ -29,7 +29,7 @@ from .serializers import PostSerializer, PostListSerializer, PostDetailSerialize
 #     return Response(list_data)
 
 
-class PostListAPIView(JSONResponseWrapperMixin, ListAPIView):
+class PostListAPIView(JSONResponseWrapperMixin, PermissionDebugMixin, ListAPIView):
     queryset = PostListSerializer.get_optimized_queryset()
     serializer_class = PostListSerializer
 
@@ -47,7 +47,9 @@ post_list = PostListAPIView.as_view()
 #     return Response(detail_data)
 
 
-class PostRetrieveAPIView(JSONResponseWrapperMixin, RetrieveAPIView):
+class PostRetrieveAPIView(
+    JSONResponseWrapperMixin, PermissionDebugMixin, RetrieveAPIView
+):
     queryset = PostDetailSerializer.get_optimized_queryset()
     serializer_class = PostDetailSerializer
 
@@ -55,7 +57,7 @@ class PostRetrieveAPIView(JSONResponseWrapperMixin, RetrieveAPIView):
 post_detail = PostRetrieveAPIView.as_view()
 
 
-class PostCreateAPIView(CreateAPIView):
+class PostCreateAPIView(PermissionDebugMixin, CreateAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
 
@@ -66,7 +68,7 @@ class PostCreateAPIView(CreateAPIView):
 post_new = PostCreateAPIView.as_view()
 
 
-class PostUpdateAPIView(UpdateAPIView):
+class PostUpdateAPIView(PermissionDebugMixin, UpdateAPIView):
     queryset = PostSerializer.get_optimized_queryset()
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrReadonly]
@@ -78,7 +80,7 @@ class PostUpdateAPIView(UpdateAPIView):
 post_edit = PostUpdateAPIView.as_view()
 
 
-class PostDestroyAPIView(DestroyAPIView):
+class PostDestroyAPIView(PermissionDebugMixin, DestroyAPIView):
     queryset = Post.objects.all()
     permission_classes = [IsAuthorOrReadonly]
 

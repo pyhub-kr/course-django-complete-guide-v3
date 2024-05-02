@@ -16,3 +16,4 @@ tqdm==4.66.2
 pandas==2.2.2
 openpyxl==3.1.2
 wordcloud==1.9.3
+colorama==0.4.6
