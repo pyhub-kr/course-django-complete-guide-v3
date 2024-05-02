@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from rest_framework.utils.serializer_helpers import ReturnList, ReturnDict
 
 from core.mixins import JSONResponseWrapperMixin, PermissionDebugMixin
-from core.permissions import IsAuthorOrReadonly
+from core.permissions import IsAuthorOrReadonly, make_drf_permission_class
 from .models import Post
 from .serializers import PostSerializer, PostListSerializer, PostDetailSerializer
 
@@ -71,7 +71,17 @@ post_new = PostCreateAPIView.as_view()
 class PostUpdateAPIView(PermissionDebugMixin, UpdateAPIView):
     queryset = PostSerializer.get_optimized_queryset()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthorOrReadonly]
+    # permission_classes = [IsAuthorOrReadonly]
+    permission_classes = [
+        make_drf_permission_class(
+            class_name="PostUpdateAPIView",
+            permit_safe_methods=True,
+            has_permission_test_func=lambda request, view: request.user.is_authenticated,
+            has_object_permission_test_func=(
+                lambda request, view, obj: obj.author == request.user
+            ),
+        ),
+    ]
 
     # def perform_update(self, serializer):
     #     serializer.save()
