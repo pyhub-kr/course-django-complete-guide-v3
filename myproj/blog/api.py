@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework.utils.serializer_helpers import ReturnList, ReturnDict
 
 from core.mixins import JSONResponseWrapperMixin
+from core.permissions import IsAuthorOrReadonly
 from .models import Post
 from .serializers import PostSerializer, PostListSerializer, PostDetailSerializer
 
@@ -68,7 +69,7 @@ post_new = PostCreateAPIView.as_view()
 class PostUpdateAPIView(UpdateAPIView):
     queryset = PostSerializer.get_optimized_queryset()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthorOrReadonly]
 
     # def perform_update(self, serializer):
     #     serializer.save()
@@ -79,7 +80,7 @@ post_edit = PostUpdateAPIView.as_view()
 
 class PostDestroyAPIView(DestroyAPIView):
     queryset = Post.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthorOrReadonly]
 
 
 post_delete = PostDestroyAPIView.as_view()
