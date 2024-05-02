@@ -83,3 +83,22 @@ def test_post_retrieve(unauthenticated_api_client):
     response: Response = unauthenticated_api_client.get(url)
     assert status.HTTP_200_OK == response.status_code
     assert new_post.title == response.data["result"]["title"]
+
+
+@pytest.mark.it("인증하지 않은 요청은 게시물 생성 요청 거부")
+@pytest.mark.django_db
+def test_unauthenticated_user_cannot_create_post(unauthenticated_api_client):
+    url = reverse("api-v1:post_new")
+    response: Response = unauthenticated_api_client.post(url, data={})
+    assert status.HTTP_403_FORBIDDEN == response.status_code
+
+
+@pytest.mark.it("인증된 요청은 게시물 생성 요청 성공")
+@pytest.mark.django_db
+def test_authenticated_user_can_create_post(api_client_with_new_user_basic_auth, faker):
+    url = reverse("api-v1:post_new")
+    data = {"title": faker.sentence(), "content": faker.paragraph()}
+    response: Response = api_client_with_new_user_basic_auth.post(url, data=data)
+    assert status.HTTP_201_CREATED == response.status_code
+    assert data["title"] == response.data["title"]
+    assert data["content"] == response.data["content"]
