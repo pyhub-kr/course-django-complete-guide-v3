@@ -59,5 +59,14 @@ def new_post() -> Post:
     return PostFactory()
 
 
-def test_post_list():
-    assert False
+@pytest.mark.it(
+    "게시물 목록 조회. 비인증 조회가 가능해야하며, 생성한 포스팅의 개수만큼 응답을 받아야 합니다."
+)
+@pytest.mark.django_db
+def test_post_list(unauthenticated_api_client):
+    post_list = [PostFactory() for __ in range(10)]
+
+    url = reverse("api-v1:post_list")
+    response: Response = unauthenticated_api_client.get(url)
+    assert status.HTTP_200_OK == response.status_code
+    assert len(post_list) == len(response.data["result"])
