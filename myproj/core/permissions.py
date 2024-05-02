@@ -71,3 +71,8 @@ def make_drf_permission_class(
     )
 
     return cast(Type[permissions.BasePermission], permission_class)
+
+
+PermitSafeMethods = make_drf_permission_class(
+    permit_safe_methods=True,
+)
