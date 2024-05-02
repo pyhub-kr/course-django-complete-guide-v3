@@ -70,6 +70,8 @@ def test_post_list(unauthenticated_api_client):
     response: Response = unauthenticated_api_client.get(url)
     assert status.HTTP_200_OK == response.status_code
     assert len(post_list) == len(response.data)
+    # 응답에서 content 필드가 없어야 합니다.
+    assert all("content" not in post for post in response.data)
 
 
 @pytest.mark.it(

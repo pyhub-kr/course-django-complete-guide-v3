@@ -124,6 +124,28 @@ class PostModelViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrReadonly]
 
+    def get_queryset(self):
+        if self.action == "list":
+            self.queryset = PostListSerializer.get_optimized_queryset()
+        elif self.action == "retrieve":
+            self.queryset = PostDetailSerializer.get_optimized_queryset()
+        elif self.action in ("update", "partial_update"):
+            self.queryset = PostSerializer.get_optimized_queryset()
+        elif self.action == "destroy":
+            self.queryset = Post.objects.all()
+
+        return super().get_queryset()
+
+    def get_serializer_class(self):
+        # self.request.method == "GET"  # "list" or "retrieve"
+        if self.action == "list":
+            return PostListSerializer
+        elif self.action == "retrieve":
+            return PostDetailSerializer
+        elif self.action in ("create", "update", "partial_update"):
+            return PostSerializer
+        return super().get_serializer_class()
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
