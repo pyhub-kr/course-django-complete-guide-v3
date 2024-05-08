@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+
+def whoami(request):
+    status = 200 if request.user.is_authenticated else 401
+    username = request.user.username or "anonymous"
+    return HttpResponse(f"Your username is <strong>{username}</strong>.", status=status)
