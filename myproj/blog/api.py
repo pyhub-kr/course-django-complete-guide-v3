@@ -23,6 +23,7 @@ from core.mixins import (
     TestFuncPermissionMixin,
     ActionBasedViewSetMixin,
 )
+from core.pagination import make_pagination_class
 from core.permissions import (
     IsAuthorOrReadonly,
     make_drf_permission_class,
@@ -121,6 +122,10 @@ from .serializers import PostSerializer, PostListSerializer, PostDetailSerialize
 # post_delete = PostDestroyAPIView.as_view()
 
 
+# class PageNumberPagination10(PageNumberPagination):
+#     page_size = 10
+
+
 class PostModelViewSet(ActionBasedViewSetMixin, ModelViewSet):
     queryset = Post.objects.all()
     queryset_map = {
@@ -140,7 +145,7 @@ class PostModelViewSet(ActionBasedViewSetMixin, ModelViewSet):
     }
     permission_classes = [IsAuthorOrReadonly]
 
-    pagination_class = PageNumberPagination
+    pagination_class = make_pagination_class(page_size=10)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
