@@ -276,4 +276,6 @@ REST_FRAMEWORK = {
         "core.renderers.PandasXlsxRenderer",
         "core.renderers.WordcloudRenderer",
     ],
+    "PAGE_SIZE": env.int("REST_FRAMEWORK_PAGE_SIZE", 5),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
 }
