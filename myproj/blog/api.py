@@ -162,7 +162,12 @@ class PostModelViewSet(ActionBasedViewSetMixin, ModelViewSet):
     # pagination_class = make_pagination_class(
     #     cls_type="limit_offset", page_size=10, max_limit=10
     # )
-    pagination_class = PkCursorPagination
+    # pagination_class = PkCursorPagination
+    pagination_class = make_pagination_class(
+        "cursor",
+        page_size=10,
+        cursor_ordering="-pk",
+    )
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
