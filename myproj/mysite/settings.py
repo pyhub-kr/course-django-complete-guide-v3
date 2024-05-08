@@ -286,10 +286,6 @@ REST_FRAMEWORK = {
 # django-cors-headers
 # https://github.com/adamchainz/django-cors-headers
 
-CORS_ALLOWED_ORIGINS = [
-    "http://mydj.com:3000",
-]
-
-CORS_ALLOW_CREDENTIALS = True
-
-SESSION_COOKIE_DOMAIN = ".mydj.com"
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
+CORS_ALLOW_CREDENTIALS = env.bool("CORS_ALLOW_CREDENTIALS", default=False)
+SESSION_COOKIE_DOMAIN = env.str("SESSION_COOKIE_DOMAIN", default=None) or None
