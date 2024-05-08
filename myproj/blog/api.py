@@ -126,6 +126,10 @@ from .serializers import PostSerializer, PostListSerializer, PostDetailSerialize
 #     page_size = 10
 
 
+class LimitOffsetPagination10(LimitOffsetPagination):
+    max_limit = 10
+
+
 class PostModelViewSet(ActionBasedViewSetMixin, ModelViewSet):
     queryset = Post.objects.all()
     queryset_map = {
@@ -146,7 +150,10 @@ class PostModelViewSet(ActionBasedViewSetMixin, ModelViewSet):
     permission_classes = [IsAuthorOrReadonly]
 
     # pagination_class = make_pagination_class(page_size=10)
-    pagination_class = LimitOffsetPagination
+    # pagination_class = LimitOffsetPagination10
+    pagination_class = make_pagination_class(
+        cls_type="limit_offset", page_size=10, max_limit=10
+    )
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
