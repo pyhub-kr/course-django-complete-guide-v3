@@ -11,11 +11,11 @@
 
 <script>
   async function fetchAsync() {
-    const config = {credentials: "include"};
+    const config = {};
     let html;
     try {
       // http://localhost:3000 페이지에서 http://localhost:8000 주소로 HTTP 요청
-      const response = await fetch("http://localhost:8000/blog/whoami/", config);
+      const response = await fetch("/blog/whoami/", config);
       html = `상태코드: ${response.status}` + "\n\n" + await response.text();
     } catch (error) {
       html = "에러\n\n" + error.toString();
