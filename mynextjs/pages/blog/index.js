@@ -2,17 +2,28 @@
 
 import { useEffect, useState } from "react";
 
-function WhoamiPage() {
-  const [message, setMessage] = useState("no message");
+export async function getServerSideProps(context) {
+  const url = "http://localhost:8000/blog/whoami/";
+  const response = await fetch(url);
+  const responseText = `상태코드: ${response.status}
+
+${await response.text()}`;
+
+  // props로 전달한 값이 컴포넌트의 속성값으로 주입
+  return { props: { message: responseText } };
+}
+
+function WhoamiPage({ message }) {
+  // const [message, setMessage] = useState("no message");
 
   // 컴포넌트 초기화 시에 1회만 실행.
-  useEffect(() => {
-    fetch("http://localhost:8000/blog/whoami/")
-      .then((response) => response.text())
-      .then((responseText) => {
-        setMessage(responseText);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:8000/blog/whoami/")
+  //     .then((response) => response.text())
+  //     .then((responseText) => {
+  //       setMessage(responseText);
+  //     });
+  // }, []);
 
   return (
     <div>
