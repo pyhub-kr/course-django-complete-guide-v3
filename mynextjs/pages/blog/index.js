@@ -3,8 +3,15 @@
 import { useEffect, useState } from "react";
 
 export async function getServerSideProps(context) {
+
+  // http://localhost:3000 에서의 쿠키를 API 요청에 활용
+  const headers = {
+    Cookie: context.req.headers.cookie,
+  };
+  console.log("headers: ", headers);
+
   const url = "http://localhost:8000/blog/whoami/";
-  const response = await fetch(url);
+  const response = await fetch(url, { headers });
   const responseText = `상태코드: ${response.status}
 
 ${await response.text()}`;
