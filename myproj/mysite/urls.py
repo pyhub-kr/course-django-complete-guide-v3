@@ -3,8 +3,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django_nextjs.render import render_nextjs_page
+
+
+async def root(request):
+    return await render_nextjs_page(request)
+
 
 urlpatterns = [
+    path("", root),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
     path("api-auth/", include("rest_framework.urls")),

@@ -55,6 +55,7 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     # django apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -69,6 +70,7 @@ INSTALLED_APPS = [
     "django_components",
     "django_extensions",
     "django_htmx",
+    "django_nextjs",
     "rest_framework",
     "taggit",
     "template_partials",
@@ -122,6 +124,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "mysite.wsgi.application"
+ASGI_APPLICATION = "mysite.asgi.application"
 
 
 # Database
@@ -289,3 +292,11 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 CORS_ALLOW_CREDENTIALS = env.bool("CORS_ALLOW_CREDENTIALS", default=False)
 SESSION_COOKIE_DOMAIN = env.str("SESSION_COOKIE_DOMAIN", default=None) or None
+
+
+# django-nextjs
+
+NEXTJS_SETTINGS = {
+    # 장고를 경유한 Next.js 요청을 전달할 Next.js 서버의 URL을 지정합니다.
+    # "nextjs_server_url": "http://127.0.0.1:3000",  # 디폴트
+}
