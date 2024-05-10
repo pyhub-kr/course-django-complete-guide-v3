@@ -1,0 +1,24 @@
+{# core/templates/nextjs_base.html #}
+
+{% extends "django_nextjs/document_base.html" %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'bootstrap/5.3.3/css/bootstrap.min.css' %}"/>
+
+    {# <head> 태그 시작 #}
+    {{ block.super }}
+    {# </head> 태그 끝 #}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>장고 레이아웃 템플릿</h1>
+
+        {# <body> 태그 시작 #}
+        {{ block.super }}
+        {# </body> 태그 끝 #}
+
+        {% block django_content %}{% endblock %}
+    </div>
+{% endblock %}

@@ -11,4 +11,8 @@ def whoami(request):
 
 async def index(request):
     # return render(request, "blog/index.html")
-    return await render_nextjs_page(request)
+    return await render_nextjs_page(
+        request,
+        template_name="blog/index.html",
+        context={},
+    )
