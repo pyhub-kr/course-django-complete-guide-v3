@@ -20,22 +20,24 @@ ${await response.text()}`;
   return { props: { message: responseText } };
 }
 
-function WhoamiPage({ message }) {
-  // const [message, setMessage] = useState("no message");
+// 웹브라우저에 코드가 다운로드된 후에 수행.
+function WhoamiPage({ message: messageSSR }) {
+  const [messageCSR, setMessageCSR] = useState("no message");
 
   // 컴포넌트 초기화 시에 1회만 실행.
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/blog/whoami/")
-  //     .then((response) => response.text())
-  //     .then((responseText) => {
-  //       setMessage(responseText);
-  //     });
-  // }, []);
+  useEffect(() => {
+    fetch("/blog/whoami/")
+      .then((response) => response.text())
+      .then((responseText) => {
+        setMessageCSR(responseText);
+      });
+  }, []);
 
   return (
     <div>
       <h2>whoami</h2>
-      <pre>{message}</pre>
+      <pre>CSR: {messageCSR}</pre>
+      <pre>SSR: {messageSSR}</pre>
       <hr />
       <small>by Next.js</small>
     </div>

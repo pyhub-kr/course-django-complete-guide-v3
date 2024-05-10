@@ -11,7 +11,8 @@ router.register(prefix="posts", viewset=PostModelViewSet)
 
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="blog/index.html"), name="index"),
+    # path("", TemplateView.as_view(template_name="blog/index.html"), name="index"),
+    path("", views.index, name="index"),
     path("whoami/", views.whoami, name="whoami"),
 ]
 urlpatterns_api_v1 = []
