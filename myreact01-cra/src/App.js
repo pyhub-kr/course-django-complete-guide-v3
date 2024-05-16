@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Counter({ initialCount }) {
   const [count, setCount] = useState(() => {
@@ -13,10 +13,6 @@ function Counter({ initialCount }) {
       if (prevCount >= 10) return 10;
       return prevCount + 1;
     });
-
-    console.log(`${count} 값으로 색상을 결정합니다.`);
-    if (count % 2 === 0) setColor("red");
-    else setColor("yellow");
   };
 
   const decrement = () => {
@@ -24,11 +20,13 @@ function Counter({ initialCount }) {
       if (prevCount <= 0) return 0;
       return prevCount - 1;
     });
+  };
 
+  useEffect(() => {
     console.log(`${count} 값으로 색상을 결정합니다.`);
     if (count % 2 === 0) setColor("red");
     else setColor("yellow");
-  };
+  }, [count]);
 
   return (
     <button
