@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 function App() {
   return <Root />;
 }
+
+const CountContext = createContext();
 
 function Root() {
   const [count, setCount] = useState(0);
@@ -10,51 +12,54 @@ function Root() {
   const increment = () => setCount((prev) => prev + 1);
 
   return (
-    <div>
-      <button onClick={() => increment()}>증가</button>
-      <A count={count} />
-      <B count={count} />
-    </div>
+    <CountContext.Provider value={{ count }}>
+      <div>
+        <button onClick={() => increment()}>증가</button>
+        <A />
+        <B />
+      </div>
+    </CountContext.Provider>
   );
 }
 
-function A({ count }) {
+function A() {
   return <div>A 컴포넌트</div>;
 }
 
-function B({ count }) {
+function B() {
   return (
     <div>
       B 컴포넌트
-      <C count={count} />
+      <C />
     </div>
   );
 }
 
-function C({ count }) {
+function C() {
   return (
     <div>
       C 컴포넌트
-      <D count={count} />
-      <E count={count} />
+      <D />
+      <E />
     </div>
   );
 }
 
-function D({ count }) {
+function D() {
   return <div>D 컴포넌트</div>;
 }
 
-function E({ count }) {
+function E() {
   return (
     <div>
       E 컴포넌트
-      <Leaf count={count} />
+      <Leaf />
     </div>
   );
 }
 
-function Leaf({ count }) {
+function Leaf() {
+  const { count } = useContext(CountContext);
   return <div>말단 컴포넌트: {count}</div>;
 }
 
