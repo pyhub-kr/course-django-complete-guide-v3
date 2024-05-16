@@ -6,12 +6,17 @@ function Counter({ initialCount }) {
     if (initialCount <= 0) return 0;
     return initialCount;
   });
+  const [color, setColor] = useState("yellow");
 
   const increment = () => {
     setCount((prevCount) => {
       if (prevCount >= 10) return 10;
       return prevCount + 1;
     });
+
+    console.log(`${count} 값으로 색상을 결정합니다.`);
+    if (count % 2 === 0) setColor("red");
+    else setColor("yellow");
   };
 
   const decrement = () => {
@@ -19,10 +24,15 @@ function Counter({ initialCount }) {
       if (prevCount <= 0) return 0;
       return prevCount - 1;
     });
+
+    console.log(`${count} 값으로 색상을 결정합니다.`);
+    if (count % 2 === 0) setColor("red");
+    else setColor("yellow");
   };
 
   return (
     <button
+      style={{ backgroundColor: color }}
       onClick={() => increment()}
       onContextMenu={(e) => {
         e.preventDefault();
