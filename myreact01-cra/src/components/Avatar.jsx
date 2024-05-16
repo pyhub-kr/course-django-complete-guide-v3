@@ -1,7 +1,12 @@
 import "./Avatar.css";
 import PropTypes from "prop-types";
 
-function Avatar({ name, image_url, url, badge }) {
+function Avatar({
+  name,
+  image_url = "https://github.com/react.png",
+  url,
+  badge,
+}) {
   return (
     <div className="avatar-container">
       <a href={url}>
@@ -14,9 +19,13 @@ function Avatar({ name, image_url, url, badge }) {
 
 Avatar.propTypes = {
   name: PropTypes.string,
-  image_url: PropTypes.string.isRequired,
+  image_url: PropTypes.string,
   url: PropTypes.string,
   badge: PropTypes.number,
 };
+
+// Avatar.defaultProps = {
+//   image_url: "https://github.com/react.png",
+// };
 
 export default Avatar;
