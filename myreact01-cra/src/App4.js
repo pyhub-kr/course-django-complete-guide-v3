@@ -2,10 +2,13 @@ import TextInput from "./components/TextInput";
 
 import Profile from "./components/Profile";
 import Message from "./components/Message";
+import { Button } from "react-bootstrap";
 
-function Button({ onClick, children }) {
-  return <button onClick={onClick}>{children}</button>;
-}
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// function Button({ onClick, children }) {
+//   return <button onClick={onClick}>{children}</button>;
+// }
 
 function App() {
   const handleClick = () => {
@@ -14,6 +17,7 @@ function App() {
 
   return (
     <div>
+      <Button>bootstrap 버튼</Button>
       <div style={{ display: "flex", gap: "10px", margin: "10px" }}>
         <Message />
         <Profile />
