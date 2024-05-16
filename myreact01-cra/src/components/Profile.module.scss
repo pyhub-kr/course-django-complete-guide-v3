@@ -1,0 +1,8 @@
+/* components/Profile.module.css */
+
+@import "./Shared";
+
+.wrapper {
+    color: darken($text-color, 30%);
+    background-color: darken($background-color, 30%);
+}
