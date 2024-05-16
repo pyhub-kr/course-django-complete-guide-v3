@@ -1,9 +1,9 @@
 // components/Profile.jsx
 
-import "./Profile.css";
+import Styles from "./Profile.module.css";
 
 function Profile() {
-  return <div className="wrapper">Profile 컴포넌트</div>;
+  return <div className={Styles.wrapper}>Profile 컴포넌트</div>;
 }
 
 export default Profile;

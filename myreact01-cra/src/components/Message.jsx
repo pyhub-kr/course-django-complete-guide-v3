@@ -1,9 +1,9 @@
 // components/Message.jsx
 
-import "./Message.css";
+import Styles from "./Message.module.css";
 
 function Message() {
-  return <div className="wrapper">Message 컴포넌트</div>;
+  return <div className={Styles.wrapper}>Message 컴포넌트</div>;
 }
 
 export default Message;
