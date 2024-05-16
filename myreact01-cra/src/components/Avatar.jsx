@@ -1,4 +1,5 @@
 import "./Avatar.css";
+import PropTypes from "prop-types";
 
 function Avatar({ name, image_url, url, badge }) {
   return (
@@ -10,5 +11,12 @@ function Avatar({ name, image_url, url, badge }) {
     </div>
   );
 }
+
+Avatar.propTypes = {
+  name: PropTypes.string,
+  image_url: PropTypes.string.isRequired,
+  url: PropTypes.string,
+  badge: PropTypes.number,
+};
 
 export default Avatar;

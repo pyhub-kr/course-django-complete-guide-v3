@@ -5,7 +5,7 @@ function App() {
     <div>
       <Avatar
         name={"django"}
-        image_url={"https://github.com/django.png"}
+        // image_url={"https://github.com/django.png"}
         url={"https://github.com/django/django"}
         badge={1}
       />
