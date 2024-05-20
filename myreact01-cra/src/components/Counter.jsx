@@ -1,27 +1,47 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { produce } from "immer";
 
-function Counter() {
-  const [state, setState] = useState({
-    count: 0,
-    color: "green",
+const INITIAL_STATE = {
+  count: 0,
+  color: "green",
+};
+
+function reducer(currentState, action) {
+  return produce(currentState, (draft) => {
+    const { type } = action;
+
+    if (type === "plus") {
+      draft.count += 1;
+    } else if (type === "minus") {
+      draft.count -= 1;
+    }
+
+    draft.color = draft.count % 2 === 0 ? "green" : "red";
   });
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
   const increment = () => {
-    setState(
-      produce((draft) => {
-        draft.count += 1;
-        draft.color = draft.count % 2 === 0 ? "green" : "red";
-      }),
-    );
+    const action = { type: "plus" };
+    dispatch(action);
+    // setState(
+    //   produce((draft) => {
+    //     draft.count += 1;
+    //     draft.color = draft.count % 2 === 0 ? "green" : "red";
+    //   }),
+    // );
   };
   const decrement = () => {
-    setState(
-      produce((draft) => {
-        draft.count -= 1;
-        draft.color = draft.count % 2 === 0 ? "green" : "red";
-      }),
-    );
+    const action = { type: "minus" };
+    dispatch(action);
+    // setState(
+    //   produce((draft) => {
+    //     draft.count -= 1;
+    //     draft.color = draft.count % 2 === 0 ? "green" : "red";
+    //   }),
+    // );
   };
 
   return (
