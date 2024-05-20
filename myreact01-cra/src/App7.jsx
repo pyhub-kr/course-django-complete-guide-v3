@@ -13,26 +13,39 @@ function MelonSongSearch() {
     },
   );
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      console.log("엔터키가 입력되었습니다. 검색을 수행합니다.");
-      const params = { query };
-      console.log("검색 요청 파라미터 :", params);
-      search({ params });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const query = e.target.query.value.trim();
+    if (query.length > 1) {
+      search({
+        params: { query },
+      });
     }
   };
+
+  // const handleKeyDown = (e) => {
+  //   if (e.key === "Enter") {
+  //     console.log("엔터키가 입력되었습니다. 검색을 수행합니다.");
+  //     const params = { query };
+  //     console.log("검색 요청 파라미터 :", params);
+  //     search({ params });
+  //   }
+  // };
 
   return (
     <div className="container">
       <div className="my-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="검색어를 입력해주세요."
-          value={query}
-          onChange={(e) => setQuery(e.target.value.trim())}
-          onKeyDown={(e) => handleKeyDown(e)}
-        />
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <input
+            type="text"
+            name="query"
+            className="form-control"
+            placeholder="검색어를 입력해주세요."
+            // value={query}
+            // onChange={(e) => setQuery(e.target.value.trim())}
+            // onKeyDown={(e) => handleKeyDown(e)}
+          />
+        </form>
         {loading && <div className="alert alert-info my-3">로딩 중 ...</div>}
         {searchResult?.SONGCONTENTS && (
           <MelonSongList songList={searchResult.SONGCONTENTS} />
