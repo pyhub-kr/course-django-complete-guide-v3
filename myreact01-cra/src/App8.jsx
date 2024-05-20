@@ -1,29 +1,21 @@
-import {
-  createBrowserRouter,
-  NavLink,
-  Outlet,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
-import "./App8.css";
+// import "./App8.css";
+import TopNav from "./components/TopNav";
+import Footer from "./components/Footer";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <>
-        <ul className="nav-links">
-          <li>
-            <NavLink to="/">홈</NavLink>
-          </li>
-          <li>
-            <NavLink to="/blog">블로그</NavLink>
-          </li>
-          <li>
-            <NavLink to="/about">소개</NavLink>
-          </li>
-        </ul>
-        <Outlet />
+        <TopNav />
+        <Container>
+          <Outlet />
+          <hr />
+          <Footer />
+        </Container>
       </>
     ),
     children: [
@@ -35,12 +27,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <div>
-      <h2>라우터</h2>
-      <RouterProvider router={router} />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
