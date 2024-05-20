@@ -23,10 +23,11 @@ function TodoList() {
     // });
     // setTodoList(newTodoList);
 
-    const newTodoList = produce(todoList, (draftTodoList) => {
-      draftTodoList[todoIndex].done = !draftTodoList[todoIndex].done;
-    });
-    setTodoList(newTodoList);
+    setTodoList(
+      produce((draftTodoList) => {
+        draftTodoList[todoIndex].done = !draftTodoList[todoIndex].done;
+      }),
+    );
   };
 
   return (
