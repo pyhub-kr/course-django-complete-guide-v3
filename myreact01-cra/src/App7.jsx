@@ -1,12 +1,12 @@
-import useAxios from "axios-hooks";
 import { useState } from "react";
+import { useApiAxios } from "./api";
 
-const SEARCH_URL = "https://pyhub.kr/melon/search";
-const DATA_URL = "https://pyhub.kr/melon/20231116.json";
+const SEARCH_URL = "/melon/search";
+const DATA_URL = "/melon/20231116.json";
 
 function MelonSongSearch() {
   const [query, setQuery] = useState("");
-  const [{ data: searchResult = [], loading, error }, search] = useAxios(
+  const [{ data: searchResult = [], loading, error }, search] = useApiAxios(
     SEARCH_URL,
     {
       manual: true,
