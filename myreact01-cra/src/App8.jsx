@@ -5,12 +5,14 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+import "./App8.css";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <>
-        <ul>
+        <ul className="nav-links">
           <li>
             <NavLink to="/">홈</NavLink>
           </li>
