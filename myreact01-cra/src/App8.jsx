@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import BlogLayout from "./pages/blog/Layout";
 import BlogIndexPage from "./pages/blog/IndexPage";
 import BlogPostDetailPage from "./pages/blog/PostDetailPage";
+import RouterErrorPage from "./pages/RouterErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
         </Container>
       </>
     ),
+    errorElement: <RouterErrorPage />,
     children: [
       { index: true, element: <div>Home</div> },
       {
