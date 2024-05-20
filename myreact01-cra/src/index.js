@@ -8,6 +8,7 @@ import App4 from "./App4";
 import App5 from "./App5";
 import reportWebVitals from "./reportWebVitals";
 import App6 from "./App6";
+import App7 from "./App7";
 
 // import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -19,7 +20,8 @@ root.render(
     {/*<App3 />*/}
     {/*<App4 />*/}
     {/*<App5 />*/}
-    <App6 />
+    {/*<App6 />*/}
+    <App7 />
   </React.StrictMode>,
 );
 
