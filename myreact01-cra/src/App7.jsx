@@ -1,31 +1,39 @@
-import { useEffect, useState } from "react";
-import Axios from "axios";
-
-// import "bootstrap/dist/css/bootstrap.css";  // bootstrap5 CSS
+import useAxios from "axios-hooks";
 
 const DATA_URL = "https://pyhub.kr/melon/20231116.json";
 
 function MelonSongList() {
-  const [songList, setSongList] = useState([]);
+  const [{ data: songList = [], loading, error }, refetch] = useAxios(DATA_URL);
 
-  async function loadSingList() {
-    const _songList = (await Axios.get(DATA_URL)).data;
-    setSongList(_songList);
-  }
-
-  useEffect(() => {
-    loadSingList();
-  }, []);
+  // const [songList, setSongList] = useState([]);
+  //
+  // async function loadSingList() {
+  //   const _songList = (await Axios.get(DATA_URL)).data;
+  //   setSongList(_songList);
+  // }
+  //
+  // useEffect(() => {
+  //   loadSingList();
+  // }, []);
 
   return (
     <div className="container">
       <h2>멜론 TOP100</h2>
 
       <div className="my-3">
-        <button className="btn btn-primary" onClick={() => loadSingList()}>
-          새로고침
+        <button
+          className="btn btn-primary"
+          onClick={() => refetch()}
+          disabled={loading}
+        >
+          {loading && (
+            <span className="spinner-border spinner-border-sm me-1"></span>
+          )}
+          {!loading && "새로고침"}
         </button>
       </div>
+
+      {error && <div className="alert alert-danger">에러: {error.message}</div>}
 
       <table className="table table-bordered table-hover">
         <thead>
