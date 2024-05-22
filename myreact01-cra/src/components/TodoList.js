@@ -52,6 +52,19 @@ function TodoList() {
     }
   };
 
+  const editTodo = (todoIndex) => {
+    const todo = todoList[todoIndex];
+    const origText = todo.text;
+    const promptText = window.prompt("수정할 내용을 입력하세요.", origText);
+    if (promptText !== null && promptText !== origText) {
+      setTodoList(
+        produce((draftTodoList) => {
+          draftTodoList[todoIndex].text = promptText;
+        }),
+      );
+    }
+  };
+
   return (
     <Container>
       <Card>
@@ -80,6 +93,14 @@ function TodoList() {
                   {todo.text}
                 </div>
                 <div>
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    className="me-1"
+                    onClick={() => editTodo(index)}
+                  >
+                    수정
+                  </Button>
                   <Button
                     variant="outline-danger"
                     size="sm"
