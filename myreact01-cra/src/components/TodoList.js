@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { produce } from "immer";
 import TodoForm from "./TodoForm";
-import { Card, Container, ListGroup } from "react-bootstrap";
+import { Button, Card, Container, ListGroup } from "react-bootstrap";
 
 const INITIAL_TODO_LIST = [
   { text: "파이썬 익히기", done: true },
@@ -44,6 +44,14 @@ function TodoList() {
     setTodoList((prev) => [...prev, { text: newText, done: false }]);
   };
 
+  const deleteTodo = (todoIndex) => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      setTodoList((prev) => {
+        return prev.filter((_, index) => index !== todoIndex);
+      });
+    }
+  };
+
   return (
     <Container>
       <Card>
@@ -60,13 +68,26 @@ function TodoList() {
             return (
               <ListGroup.Item
                 key={index}
-                style={{
-                  cursor: "pointer",
-                  ...(todo.done ? DONE_STYLE : null),
-                }}
-                onClick={() => toggleTodo(index)}
+                className="d-flex justify-content-between align-items-start"
               >
-                {todo.text}
+                <div
+                  style={{
+                    cursor: "pointer",
+                    ...(todo.done ? DONE_STYLE : null),
+                  }}
+                  onClick={() => toggleTodo(index)}
+                >
+                  {todo.text}
+                </div>
+                <div>
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() => deleteTodo(index)}
+                  >
+                    삭제
+                  </Button>
+                </div>
               </ListGroup.Item>
             );
           })}
