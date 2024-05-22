@@ -30,6 +30,14 @@ function TodoList() {
     );
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const text = e.target.content.value.trim();
+    setTodoList((prev) => [...prev, { text, done: false }]);
+    e.target.reset();
+  };
+
   return (
     <div>
       <h2>할일 목록</h2>
@@ -49,6 +57,10 @@ function TodoList() {
           </li>
         );
       })}
+
+      <form onSubmit={(e) => handleSubmit(e)}>
+        <input type="text" name="content" autoComplete="off" />
+      </form>
     </div>
   );
 }
