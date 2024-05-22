@@ -34,6 +34,10 @@ function TodoList() {
     <div>
       <h2>할일 목록</h2>
 
+      {todoList.length === 0 && (
+        <div style={{ color: "indianred" }}>등록된 할일이 없습니다.</div>
+      )}
+
       {todoList.map((todo, index) => {
         return (
           <li
