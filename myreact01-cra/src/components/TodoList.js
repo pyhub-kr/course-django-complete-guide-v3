@@ -1,6 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { produce } from "immer";
 import TodoForm from "./TodoForm";
+import { Card, Container, ListGroup } from "react-bootstrap";
 
 const INITIAL_TODO_LIST = [
   { text: "파이썬 익히기", done: true },
@@ -44,27 +45,38 @@ function TodoList() {
   };
 
   return (
-    <div>
-      <h2>할일 목록</h2>
+    <Container>
+      <Card>
+        <Card.Header>할일 목록</Card.Header>
 
-      {todoList.length === 0 && (
-        <div style={{ color: "indianred" }}>등록된 할일이 없습니다.</div>
-      )}
+        <ListGroup variant="flush">
+          {todoList.length === 0 && (
+            <ListGroup.Item variant="warning">
+              등록된 할일이 없습니다.
+            </ListGroup.Item>
+          )}
 
-      {todoList.map((todo, index) => {
-        return (
-          <li
-            key={index}
-            style={{ cursor: "pointer", ...(todo.done ? DONE_STYLE : null) }}
-            onClick={() => toggleTodo(index)}
-          >
-            {todo.text}
-          </li>
-        );
-      })}
+          {todoList.map((todo, index) => {
+            return (
+              <ListGroup.Item
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  ...(todo.done ? DONE_STYLE : null),
+                }}
+                onClick={() => toggleTodo(index)}
+              >
+                {todo.text}
+              </ListGroup.Item>
+            );
+          })}
+        </ListGroup>
 
-      <TodoForm onEnter={(newText) => addTodo(newText)} />
-    </div>
+        <Card.Body>
+          <TodoForm onEnter={(newText) => addTodo(newText)} />
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
 

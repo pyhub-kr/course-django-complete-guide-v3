@@ -1,3 +1,5 @@
+import { Form } from "react-bootstrap";
+
 function TodoForm({ onEnter }) {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -10,9 +12,9 @@ function TodoForm({ onEnter }) {
   };
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
-      <input type="text" name="content" autoComplete="off" />
-    </form>
+    <Form onSubmit={(e) => handleSubmit(e)}>
+      <Form.Control type="text" name="content" autoComplete="off" />
+    </Form>
   );
 }
 
