@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { produce } from "immer";
+import TodoForm from "./TodoForm";
 
 const INITIAL_TODO_LIST = [
   { text: "파이썬 익히기", done: true },
@@ -30,12 +31,16 @@ function TodoList() {
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //
+  //   const text = e.target.content.value.trim();
+  //   setTodoList((prev) => [...prev, { text, done: false }]);
+  //   e.target.reset();
+  // };
 
-    const text = e.target.content.value.trim();
-    setTodoList((prev) => [...prev, { text, done: false }]);
-    e.target.reset();
+  const addTodo = (newText) => {
+    setTodoList((prev) => [...prev, { text: newText, done: false }]);
   };
 
   return (
@@ -58,9 +63,7 @@ function TodoList() {
         );
       })}
 
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <input type="text" name="content" autoComplete="off" />
-      </form>
+      <TodoForm onEnter={(newText) => addTodo(newText)} />
     </div>
   );
 }
