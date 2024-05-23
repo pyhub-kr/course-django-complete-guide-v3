@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Alert, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { useApiAxios } from "../api";
 import { LOGIN_URL, LOGOUT_URL, PROFILE_URL, SIGNUP_URL } from "../constants";
+import { useStatusContext } from "../contexts/StatusContext";
 
 // Alert 컴포넌트의 variant 속성
 //  - https://react-bootstrap.github.io/docs/components/alerts/#alert
@@ -14,10 +14,11 @@ const VARIANT_MAP = {
 };
 
 function TopNav() {
-  const [{ data: statusObj = {} }] = useApiAxios({
-    url: "/accounts/api/status/",
-  });
-  const { is_authenticated = null, username = "", messages = [] } = statusObj;
+  const {
+    is_authenticated = null,
+    username = "",
+    messages = [],
+  } = useStatusContext();
 
   return (
     <>

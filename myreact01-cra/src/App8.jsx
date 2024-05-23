@@ -9,6 +9,7 @@ import BlogIndexPage from "./pages/blog/IndexPage";
 import BlogPostDetailPage from "./pages/blog/PostDetailPage";
 import RouterErrorPage from "./pages/RouterErrorPage";
 import TodoList from "./components/TodoList";
+import { StatusProvider } from "./contexts/StatusContext";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <StatusProvider>
+      <RouterProvider router={router} />
+    </StatusProvider>
+  );
 }
 
 export default App;
