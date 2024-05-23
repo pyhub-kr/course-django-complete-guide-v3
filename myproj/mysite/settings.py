@@ -300,3 +300,10 @@ NEXTJS_SETTINGS = {
     # 장고를 경유한 Next.js 요청을 전달할 Next.js 서버의 URL을 지정합니다.
     # "nextjs_server_url": "http://127.0.0.1:3000",  # 디폴트
 }
+
+
+# auth LoginView/LogoutView
+
+# accounts 앱 LoginView/LogoutView의 success_url_allowed_hosts 속성에서 사용할 호스트 목록
+#  - ex) "localhost:3000"
+SUCCESS_URL_ALLOWED_HOSTS = set(env.list("SUCCESS_URL_ALLOWED_HOSTS", default=set()))
