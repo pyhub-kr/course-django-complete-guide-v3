@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Alert, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useApiAxios } from "../api";
+import { LOGIN_URL, LOGOUT_URL, PROFILE_URL, SIGNUP_URL } from "../constants";
 
 function TopNav() {
   const [{ data: whoamiHtml = null }] = useApiAxios({
@@ -29,22 +30,37 @@ function TopNav() {
               <Nav.Link to="/about" as={NavLink}>
                 소개
               </Nav.Link>
-              <NavDropdown title="계정" id="basic-nav-dropdown">
-                <NavDropdown.Item to="/accounts/login" as={NavLink}>
-                  로그인
-                </NavDropdown.Item>
-                <NavDropdown.Item to="/accounts/signup" as={NavLink}>
-                  회원가입
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item to="/accounts/profile" as={NavLink}>
-                  프로필
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item to="/accounts/logout" as={NavLink}>
-                  로그아웃
-                </NavDropdown.Item>
-              </NavDropdown>
+              {whoamiHtml !== null && (
+                <NavDropdown title="계정" id="basic-nav-dropdown">
+                  {!whoamiHtml && (
+                    <>
+                      <NavDropdown.Item
+                        to={`${LOGIN_URL}?next=${window.location.href}`}
+                        as={NavLink}
+                      >
+                        로그인
+                      </NavDropdown.Item>
+                      <NavDropdown.Item to={SIGNUP_URL} as={NavLink}>
+                        회원가입
+                      </NavDropdown.Item>
+                    </>
+                  )}
+                  {whoamiHtml && (
+                    <>
+                      <NavDropdown.Item to={PROFILE_URL} as={NavLink}>
+                        프로필
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item
+                        to={`${LOGOUT_URL}?next=${window.location.href}`}
+                        as={NavLink}
+                      >
+                        로그아웃
+                      </NavDropdown.Item>
+                    </>
+                  )}
+                </NavDropdown>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
