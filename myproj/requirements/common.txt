@@ -26,3 +26,7 @@ factory-boy==3.3.0
 
 django-nextjs==2.4.0
 channels[daphne]==4.1.0
+
+watchdog==4.0.1
+requests==2.32.2
+beautifulsoup4==4.12.3

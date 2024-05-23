@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "parcel": "^2.12.0",
+    "process": "^0.11.10"
+  },
+  "scripts": {
+    "start": "parcel --dist-dir ../src-django-components/react_dist --public-url /static/react_dist --hmr-host 127.0.0.1 --hmr-port 1234",
+    "watch": "parcel watch ./src/*.html --no-cache --dist-dir ../src-django-components/react_dist --public-url /static/react_dist",
+    "build": "parcel build ./src/*.html --no-cache --no-scope-hoist --no-source-maps --dist-dir ../src-django-components/react_dist --public-url /static/react_dist"
+  }
+}
