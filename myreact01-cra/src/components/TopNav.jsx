@@ -3,16 +3,21 @@ import { Alert, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useApiAxios } from "../api";
 import { LOGIN_URL, LOGOUT_URL, PROFILE_URL, SIGNUP_URL } from "../constants";
 
-function TopNav() {
-  const [{ data: whoamiHtml = null }] = useApiAxios({
-    url: "/blog/whoami/",
-    headers: {
-      "Content-Type": "text/html",
-    },
-    // withCredentials: true,
-  });
+// Alert 컴포넌트의 variant 속성
+//  - https://react-bootstrap.github.io/docs/components/alerts/#alert
+const VARIANT_MAP = {
+  debug: "secondary",
+  info: "info",
+  success: "success",
+  warning: "warning",
+  error: "danger",
+};
 
-  console.log(whoamiHtml);
+function TopNav() {
+  const [{ data: statusObj = {} }] = useApiAxios({
+    url: "/accounts/api/status/",
+  });
+  const { is_authenticated = null, username = "", messages = [] } = statusObj;
 
   return (
     <>
@@ -30,9 +35,9 @@ function TopNav() {
               <Nav.Link to="/about" as={NavLink}>
                 소개
               </Nav.Link>
-              {whoamiHtml !== null && (
+              {is_authenticated !== null && (
                 <NavDropdown title="계정" id="basic-nav-dropdown">
-                  {!whoamiHtml && (
+                  {!is_authenticated && (
                     <>
                       <NavDropdown.Item
                         to={`${LOGIN_URL}?next=${window.location.href}`}
@@ -45,7 +50,7 @@ function TopNav() {
                       </NavDropdown.Item>
                     </>
                   )}
-                  {whoamiHtml && (
+                  {is_authenticated && (
                     <>
                       <NavDropdown.Item to={PROFILE_URL} as={NavLink}>
                         프로필
@@ -65,11 +70,25 @@ function TopNav() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {whoamiHtml && (
+      {is_authenticated !== null && (
         <Container>
           <Alert variant="info" className="mt-2">
-            <div dangerouslySetInnerHTML={{ __html: whoamiHtml }} />
+            Your username is <strong>{username}</strong>.
           </Alert>
+        </Container>
+      )}
+
+      {messages.length > 0 && (
+        <Container>
+          {messages.map((message, index) => (
+            <Alert
+              key={index}
+              variant={VARIANT_MAP[message.tags]}
+              className="mt-2"
+            >
+              {message.message}
+            </Alert>
+          ))}
         </Container>
       )}
     </>
