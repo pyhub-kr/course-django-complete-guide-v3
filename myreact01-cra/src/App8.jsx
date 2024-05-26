@@ -8,7 +8,7 @@ import BlogLayout from "./pages/blog/Layout";
 import BlogIndexPage from "./pages/blog/IndexPage";
 import BlogPostDetailPage from "./pages/blog/PostDetailPage";
 import RouterErrorPage from "./pages/RouterErrorPage";
-import TodoList from "./components/TodoList";
+import TodoList from "./pages/todos/TodoList";
 import { StatusProvider } from "./contexts/StatusContext";
 
 const router = createBrowserRouter([

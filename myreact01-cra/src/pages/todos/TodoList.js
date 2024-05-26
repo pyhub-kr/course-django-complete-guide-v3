@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { produce } from "immer";
-import TodoForm from "./TodoForm";
+import TodoForm from "../../components/TodoForm";
 import { Button, Card, Container, ListGroup } from "react-bootstrap";
 
 const INITIAL_TODO_LIST = [
