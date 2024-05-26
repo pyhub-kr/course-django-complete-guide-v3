@@ -54,11 +54,15 @@ function TodoList() {
     }
   };
 
-  const deleteTodo = (todoIndex) => {
+  const deleteTodo = async (todoIndex) => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      // setTodoList((prev) => {
-      //   return prev.filter((_, index) => index !== todoIndex);
-      // });
+      const todo = todoList[todoIndex];
+      const { data, response } = await TODO_REST_API.delete(todo.id);
+      if (response?.status === 204) {
+        setTodoList((prev) => {
+          return prev.filter((_, index) => index !== todoIndex);
+        });
+      }
     }
   };
 
