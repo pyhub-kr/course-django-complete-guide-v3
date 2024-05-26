@@ -4,10 +4,11 @@ from rest_framework.routers import DefaultRouter
 
 from . import views
 from . import api
-from .api import PostModelViewSet
+from .api import PostModelViewSet, TodoViewSet
 
 router = DefaultRouter()
 router.register(prefix="posts", viewset=PostModelViewSet)
+router.register(prefix="todos", viewset=TodoViewSet)
 
 
 urlpatterns = [

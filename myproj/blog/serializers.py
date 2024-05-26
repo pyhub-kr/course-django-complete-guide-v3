@@ -1,7 +1,7 @@
 from django.db.models import QuerySet
 from rest_framework import serializers
 from accounts.models import User
-from .models import Post, Comment
+from .models import Post, Comment, Todo
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -54,3 +54,9 @@ class PostDetailSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_optimized_queryset() -> QuerySet[Post]:
         return Post.objects.all()
+
+
+class TodoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Todo
+        fields = ["id", "text", "done"]

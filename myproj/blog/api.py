@@ -1,5 +1,6 @@
 from django.db.models import Model
 from django.shortcuts import get_object_or_404
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import api_view
 from rest_framework.generics import (
     ListAPIView,
@@ -33,8 +34,13 @@ from core.permissions import (
     make_drf_permission_class,
     PermitSafeMethods,
 )
-from .models import Post
-from .serializers import PostSerializer, PostListSerializer, PostDetailSerializer
+from .models import Post, Todo
+from .serializers import (
+    PostSerializer,
+    PostListSerializer,
+    PostDetailSerializer,
+    TodoSerializer,
+)
 
 
 # @api_view(["GET"])
@@ -188,3 +194,13 @@ class PostModelViewSet(ActionBasedViewSetMixin, ModelViewSet):
 #         "delete": "destroy",
 #     },
 # )
+
+
+class TodoViewSet(ModelViewSet):
+    queryset = Todo.objects.all()
+    serializer_class = TodoSerializer
+    authentication_classes = [
+        SessionAuthentication
+    ]  # DRF 기본 설정에서 Basic 인증은 제거하고 세션 인증만 사용하기를 권장
+    permission_classes = [IsAuthenticated]  # 인증 요구
+    pagination_class = None  # No Pagination
