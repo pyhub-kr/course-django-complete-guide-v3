@@ -2,16 +2,25 @@ import React, { useState } from "react";
 import { produce } from "immer";
 import TodoForm from "../../components/TodoForm";
 import { Button, Card, Container, ListGroup, Spinner } from "react-bootstrap";
-import { useApiAxios } from "../../api";
+import { makeRestApi, useApiAxios } from "../../api";
 
 const DONE_STYLE = { textDecoration: "line-through" };
 
+const TODO_REST_API = makeRestApi("/blog/api/todos/");
+
 function TodoList() {
-  const [{ data: todoList = [], loading, error: loadingError }] =
+  const [{ data: todoList = [], loading, error: loadingError }, refetch] =
     useApiAxios("/blog/api/todos/");
 
-  const toggleTodo = (todoIndex) => {
+  const toggleTodo = async (todoIndex) => {
     console.log(`인덱스#${todoIndex}를 토글합니다.`);
+
+    const todo = todoList[todoIndex];
+    const { data, error } = await TODO_REST_API.update(todo.id, {
+      done: !todo.done,
+    });
+    console.log("응답 데이터 :", data);
+    refetch();
 
     // setTodoList(
     //   produce((draftTodoList) => {
