@@ -74,4 +74,58 @@ const useApiAxios = makeUseAxios({
   axios: axiosInstance,
 });
 
-export { useApiAxios };
+const apiRequest = async (url, method, data, raiseError = false) => {
+  try {
+    const response = await axiosInstance.request({
+      method,
+      url,
+      data,
+    });
+    return { data: response.data, error: null, response };
+  } catch (error) {
+    if (error.response?.status === 400) {
+      // Bad Request. 유효성 검사 에러
+      return { data: null, error: error, response: null };
+    } else {
+      if (raiseError) throw error;
+      return { data: null, error: error, response: null };
+    }
+  }
+};
+
+const makeRestApi = (baseUrl) => {
+  return {
+    getUrl(rel) {
+      if (typeof rel === "string") {
+        if (
+          rel.startsWith("http://") ||
+          rel.startsWith("https://") ||
+          rel.startsWith("/")
+        )
+          return rel;
+      }
+      if (rel) {
+        return `${baseUrl}${rel}/`;
+      }
+      return baseUrl;
+    },
+
+    async list(raiseError = false) {
+      return apiRequest(this.getUrl(), "get", null, raiseError);
+    },
+    async detail(pk, raiseError = false) {
+      return apiRequest(this.getUrl(pk), "get", null, raiseError);
+    },
+    async create(data, raiseError = false) {
+      return apiRequest(this.getUrl(), "post", data, raiseError);
+    },
+    async update(pk, data, raiseError = false) {
+      return apiRequest(this.getUrl(pk), "patch", data, raiseError);
+    },
+    async delete(pk, raiseError = false) {
+      return apiRequest(this.getUrl(pk), "delete", null, raiseError);
+    },
+  };
+};
+
+export { useApiAxios, makeRestApi };
