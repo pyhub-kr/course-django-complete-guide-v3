@@ -46,8 +46,12 @@ function TodoList() {
   //   e.target.reset();
   // };
 
-  const addTodo = (newText) => {
-    // setTodoList((prev) => [...prev, { text: newText, done: false }]);
+  const addTodo = async (newText) => {
+    const { data, error } = await TODO_REST_API.create({ text: newText });
+    if (data) {
+      const newTodo = data;
+      setTodoList((prev) => [...prev, newTodo]);
+    }
   };
 
   const deleteTodo = (todoIndex) => {
