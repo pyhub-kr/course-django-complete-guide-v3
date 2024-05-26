@@ -16,6 +16,17 @@ const axiosInstance = Axios.create({
   // },
 });
 
+axiosInstance.interceptors.request.use((config) => {
+  // POST/PATCH/PUT/DELETE 요청에 대해 CSRF Token 헤더 자동 추가
+  if (["post", "patch", "put", "delete"].includes(config.method)) {
+    config.headers["X-CSRFToken"] = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("csrftoken="))
+      ?.split("=")[1];
+  }
+  return config;
+});
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
