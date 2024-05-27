@@ -32,7 +32,7 @@ function TodoList() {
 
       setTodoList(
         produce((draftTodoList) => {
-          draftTodoList[todoIndex].done = editedTodo;
+          draftTodoList[todoIndex] = editedTodo;
         }),
       );
     }
