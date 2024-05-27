@@ -3,6 +3,7 @@ import { produce } from "immer";
 import TodoForm from "../../components/TodoForm";
 import { Button, Card, Container, ListGroup, Spinner } from "react-bootstrap";
 import { makeRestApi, useApiAxios } from "../../api";
+import IFrameModal from "../../components/IFrameModal";
 
 const DONE_STYLE = { textDecoration: "line-through" };
 
@@ -15,6 +16,7 @@ function TodoList() {
   ] = useApiAxios("/blog/api/todos/");
 
   const [todoList, setTodoList] = useState([]);
+  const [iframeSrc, setIframeSrc] = useState(null);
 
   useEffect(() => {
     setTodoList(origTodoList || []);
@@ -86,8 +88,19 @@ function TodoList() {
 
   return (
     <Container>
+      {!!iframeSrc && (
+        <IFrameModal
+          title="할일"
+          handleClose={(currentTodo) => {
+            if (currentTodo) setTodoList((prev) => [...prev, currentTodo]);
+            setIframeSrc(null);
+          }}
+          iframeSrc={iframeSrc}
+        />
+      )}
+
       <Card>
-        <Card.Header>
+        <Card.Header className="d-flex align-items-center">
           할일 목록
           {loading && (
             <Spinner
@@ -97,6 +110,13 @@ function TodoList() {
               className="mx-1"
             />
           )}
+          <Button
+            className="ms-auto"
+            size="sm"
+            onClick={() => setIframeSrc("/blog/todos/new/")}
+          >
+            새 할일
+          </Button>
         </Card.Header>
 
         <ListGroup variant="flush">
