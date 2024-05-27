@@ -16,6 +16,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("whoami/", views.whoami, name="whoami"),
     path("todos/new/", views.todo_new, name="todo_new"),
+    path("todos/<int:pk>/edit/", views.todo_edit, name="todo_edit"),
 ]
 urlpatterns_api_v1 = []
 urlpatterns_api_v1 += router.urls
