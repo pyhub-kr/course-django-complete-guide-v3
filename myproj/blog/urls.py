@@ -15,6 +15,7 @@ urlpatterns = [
     # path("", TemplateView.as_view(template_name="blog/index.html"), name="index"),
     path("", views.index, name="index"),
     path("whoami/", views.whoami, name="whoami"),
+    path("todos/new/", views.todo_new, name="todo_new"),
 ]
 urlpatterns_api_v1 = []
 urlpatterns_api_v1 += router.urls

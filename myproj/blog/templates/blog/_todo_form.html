@@ -1,0 +1,45 @@
+{# blog/templates/blog/_todo_form.html #}
+
+{% load crispy_forms_tags static %}
+
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <link rel="stylesheet" href="{% static 'bootstrap/5.3.3/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'bootstrap-icons/1.11.3/font/bootstrap-icons.min.css' %}"/>
+</head>
+<body>
+
+{% if form %}
+    {% crispy form %}
+    <script>
+    const notifySize = () => {
+      const height = document.body.clientHeight;
+      window.parent.postMessage({event: 'resize', height }, '*');
+    };
+
+    document.body.addEventListener('resize', () => notifySize());
+    notifySize();
+    </script>
+{% endif %}
+
+{% if saved_data %}
+    <div class="alert alert-success">
+        저장되었습니다.
+    </div>
+
+    {{ saved_data|json_script }}
+    <script>
+        const scriptEl = document.currentScript.previousElementSibling;
+        const data = JSON.parse(scriptEl.textContent);
+        window.parent.postMessage({event: 'saved', data }, '*');
+    </script>
+{% endif %}
+
+</body>
+
+<script src="{% static 'bootstrap/5.3.3/js/bootstrap.min.js' %}"></script>
+
+</html>
