@@ -88,6 +88,7 @@ if DEBUG:
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
+    "csp.middleware.CSPMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -307,3 +308,13 @@ NEXTJS_SETTINGS = {
 # accounts 앱 LoginView/LogoutView의 success_url_allowed_hosts 속성에서 사용할 호스트 목록
 #  - ex) "localhost:3000"
 SUCCESS_URL_ALLOWED_HOSTS = set(env.list("SUCCESS_URL_ALLOWED_HOSTS", default=set()))
+
+
+# django-csp
+# https://django-csp.readthedocs.io/
+
+CSP_FRAME_ANCESTORS = env.list("CSP_FRAME_ANCESTORS", default=[])
+CSP_DEFAULT_SRC = ["'self'"]
+CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'"] + CSP_FRAME_ANCESTORS
+CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"] + CSP_FRAME_ANCESTORS
+CSP_IMG_SRC = ["'self'", "data:"] + CSP_FRAME_ANCESTORS

@@ -30,3 +30,5 @@ channels[daphne]==4.1.0
 watchdog==4.0.1
 requests==2.32.2
 beautifulsoup4==4.12.3
+
+django-csp==3.8
