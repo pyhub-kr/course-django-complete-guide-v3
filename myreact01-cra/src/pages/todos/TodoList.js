@@ -70,20 +70,22 @@ function TodoList() {
 
   const editTodo = async (todoIndex) => {
     const todo = todoList[todoIndex];
-    const origText = todo.text;
-    const promptText = window.prompt("수정할 내용을 입력하세요.", origText);
-    if (promptText !== null && promptText !== origText) {
-      const { data, error } = await TODO_REST_API.update(todo.id, {
-        text: promptText,
-      });
-      if (data) {
-        setTodoList(
-          produce((draftTodoList) => {
-            draftTodoList[todoIndex] = data;
-          }),
-        );
-      }
-    }
+    setIframeSrc(`/blog/todos/${todo.id}/edit/`);
+
+    // const origText = todo.text;
+    // const promptText = window.prompt("수정할 내용을 입력하세요.", origText);
+    // if (promptText !== null && promptText !== origText) {
+    //   const { data, error } = await TODO_REST_API.update(todo.id, {
+    //     text: promptText,
+    //   });
+    //   if (data) {
+    //     setTodoList(
+    //       produce((draftTodoList) => {
+    //         draftTodoList[todoIndex] = data;
+    //       }),
+    //     );
+    //   }
+    // }
   };
 
   return (
@@ -92,7 +94,21 @@ function TodoList() {
         <IFrameModal
           title="할일"
           handleClose={(currentTodo) => {
-            if (currentTodo) setTodoList((prev) => [...prev, currentTodo]);
+            // if (currentTodo) setTodoList((prev) => [...prev, currentTodo]);
+            if (currentTodo) {
+              setTodoList(
+                produce((draft) => {
+                  const todoIndex = draft.findIndex(
+                    (todo) => todo.id === currentTodo.id,
+                  );
+                  if (todoIndex !== -1) {
+                    draft[todoIndex] = currentTodo;
+                  } else {
+                    draft.push(currentTodo);
+                  }
+                }),
+              );
+            }
             setIframeSrc(null);
           }}
           iframeSrc={iframeSrc}
