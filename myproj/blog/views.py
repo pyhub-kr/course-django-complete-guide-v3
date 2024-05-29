@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.decorators.cache import cache_page
+from django.utils.cache import patch_cache_control
+from django.views.decorators.cache import cache_page, cache_control
 from django.views.generic import CreateView, UpdateView
 from django_nextjs.render import render_nextjs_page
 
@@ -10,15 +11,26 @@ from blog.serializers import TodoSerializer
 
 
 @cache_page(600)
+# @cache_control(private=True)
 def index(request):
     post_qs = Post.objects.all()
-    return render(
+
+    query = request.GET.get("query", "")
+    if query:
+        post_qs = post_qs.filter(title__icontains=query)
+
+    response = render(
         request,
         "blog/index.html",
         {
             "post_list": post_qs,
         },
     )
+
+    if query:
+        patch_cache_control(response, private=True)
+
+    return response
 
 
 def whoami(request):
