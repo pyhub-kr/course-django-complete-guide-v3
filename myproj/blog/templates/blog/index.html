@@ -1,5 +1,11 @@
-{% extends "nextjs_base.html" %}
+{% extends "base.html" %}
 
-{% block django_content %}
+{% block content %}
     <div class="alert alert-info">blog/index.html 템플릿</div>
+
+    <ul>
+        {% for post in post_list %}
+            <li>{{ post.title }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
