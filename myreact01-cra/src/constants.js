@@ -12,7 +12,7 @@ const toBoolean = (str) => {
 const ROOT_PATH = process.env.REACT_APP_ROOT_PATH || "/"; // 추가
 
 // 디폴트: "http://localhost:8000/
-const API_HOST = process.env.REACT_APP_API_HOST || "http://localhost:8000";
+const API_HOST = process.env.REACT_APP_API_HOST || "";
 
 // 0 : no timeout
 const API_TIMEOUT = parseInt(process.env.REACT_APP_API_TIMEOUT) || 0;
