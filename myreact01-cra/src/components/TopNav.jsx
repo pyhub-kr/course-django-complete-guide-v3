@@ -1,6 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { Alert, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { LOGIN_URL, LOGOUT_URL, PROFILE_URL, SIGNUP_URL } from "../constants";
+import {
+  LOGIN_URL,
+  LOGOUT_URL,
+  PROFILE_URL,
+  ROOT_PATH,
+  SIGNUP_URL,
+} from "../constants";
 import { useStatusContext } from "../contexts/StatusContext";
 
 // Alert 컴포넌트의 variant 속성
@@ -24,16 +30,16 @@ function TopNav() {
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand to={"/"} as={NavLink}>
+          <Navbar.Brand to={ROOT_PATH} as={NavLink}>
             파이썬 사랑방
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto" variant="underline">
-              <Nav.Link to="/blog" as={NavLink}>
+              <Nav.Link to={`${ROOT_PATH}blog`} as={NavLink}>
                 블로그
               </Nav.Link>
-              <Nav.Link to="/about" as={NavLink}>
+              <Nav.Link to={`${ROOT_PATH}about`} as={NavLink}>
                 소개
               </Nav.Link>
               {is_authenticated !== null && (
@@ -41,25 +47,23 @@ function TopNav() {
                   {!is_authenticated && (
                     <>
                       <NavDropdown.Item
-                        to={`${LOGIN_URL}?next=${window.location.href}`}
-                        as={NavLink}
+                        href={`${LOGIN_URL}?next=${window.location.href}`}
                       >
                         로그인
                       </NavDropdown.Item>
-                      <NavDropdown.Item to={SIGNUP_URL} as={NavLink}>
+                      <NavDropdown.Item href={SIGNUP_URL}>
                         회원가입
                       </NavDropdown.Item>
                     </>
                   )}
                   {is_authenticated && (
                     <>
-                      <NavDropdown.Item to={PROFILE_URL} as={NavLink}>
+                      <NavDropdown.Item href={PROFILE_URL}>
                         프로필
                       </NavDropdown.Item>
                       <NavDropdown.Divider />
                       <NavDropdown.Item
-                        to={`${LOGOUT_URL}?next=${window.location.href}`}
-                        as={NavLink}
+                        href={`${LOGOUT_URL}?next=${window.location.href}`}
                       >
                         로그아웃
                       </NavDropdown.Item>

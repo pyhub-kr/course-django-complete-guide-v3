@@ -10,10 +10,11 @@ import BlogPostDetailPage from "./pages/blog/PostDetailPage";
 import RouterErrorPage from "./pages/RouterErrorPage";
 import TodoList from "./pages/todos/TodoList";
 import { StatusProvider } from "./contexts/StatusContext";
+import { ROOT_PATH } from "./constants";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROOT_PATH,
     element: (
       <>
         <TopNav />

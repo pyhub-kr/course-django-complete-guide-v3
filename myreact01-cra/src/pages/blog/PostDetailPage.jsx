@@ -1,6 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 import { postList } from "./data";
 import { Alert } from "react-bootstrap";
+import { ROOT_PATH } from "../../constants";
 
 function PostDetailPage() {
   const { postId } = useParams();
@@ -19,7 +20,7 @@ function PostDetailPage() {
       <h3>{post.title}</h3>
       <div>{post.content}</div>
       <hr />
-      <NavLink to="/blog">목록으로</NavLink>
+      <NavLink to={`${ROOT_PATH}blog`}>목록으로</NavLink>
     </div>
   );
 }

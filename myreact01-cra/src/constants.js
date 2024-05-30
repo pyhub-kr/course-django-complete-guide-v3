@@ -9,6 +9,8 @@ const toBoolean = (str) => {
   return lowerStr === "1" || lowerStr.startsWith("t");
 };
 
+const ROOT_PATH = process.env.REACT_APP_ROOT_PATH || "/"; // 추가
+
 // 디폴트: "http://localhost:8000/
 const API_HOST = process.env.REACT_APP_API_HOST || "http://localhost:8000";
 
@@ -29,6 +31,7 @@ const PROFILE_URL =
   process.env.REACT_APP_LOGIN_URL || `${API_HOST}/accounts/profile/`;
 
 export {
+  ROOT_PATH,
   API_HOST,
   API_TIMEOUT,
   API_WITH_CREDENTIALS,
