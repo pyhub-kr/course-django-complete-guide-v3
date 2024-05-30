@@ -319,3 +319,6 @@ CSP_DEFAULT_SRC = ["'self'"]
 CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'"] + CSP_FRAME_ANCESTORS
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"] + CSP_FRAME_ANCESTORS
 CSP_IMG_SRC = ["'self'", "data:"] + CSP_FRAME_ANCESTORS
+
+if not CSP_FRAME_ANCESTORS:
+    CSP_FRAME_ANCESTORS = ["'self'"]
