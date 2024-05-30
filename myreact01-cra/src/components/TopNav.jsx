@@ -31,7 +31,7 @@ function TopNav() {
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
           <Navbar.Brand to={ROOT_PATH} as={NavLink}>
-            파이썬 사랑방
+            파이썬 사랑방 with 장고
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
