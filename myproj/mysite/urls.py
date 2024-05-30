@@ -4,11 +4,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path, include
-from django_nextjs.render import render_nextjs_page
+
+# from django_nextjs.render import render_nextjs_page
 
 
-async def root(request):
-    return await render_nextjs_page(request)
+# async def root(request):
+#     return await render_nextjs_page(request)
 
 
 def test(request):
@@ -16,7 +17,7 @@ def test(request):
 
 
 urlpatterns = [
-    path("", root),
+    # path("", root),
     path("test/", test),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
