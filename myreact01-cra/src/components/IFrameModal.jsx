@@ -16,7 +16,10 @@ function IFrameModal({ title, iframeSrc, handleClose }) {
 
   useEffect(() => {
     const handleMessage = (event) => {
-      if (url.startsWith(event.origin)) {
+      if (
+        window.location.origin === event.origin ||
+        url.startsWith(event.origin)
+      ) {
         if (event.data.event === "saved") {
           const savedData = event.data.data;
           if (handleClose) handleClose(savedData);
