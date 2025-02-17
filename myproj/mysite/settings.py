@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django_components.safer_staticfiles",
+    "django.contrib.staticfiles",
     # third apps
     "corsheaders",
     "crispy_forms",
@@ -110,9 +110,7 @@ ROOT_URLCONF = "mysite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR / "core" / "src-django-components",
-        ],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -180,8 +178,12 @@ USE_TZ = True
 STATIC_URL = env.str("STATIC_URL", default="static/")
 STATIC_ROOT = env.str("STATIC_ROOT", default=BASE_DIR / "staticfiles")
 
-STATICFILES_DIRS = [
-    BASE_DIR / "core" / "src-django-components",
+STATICFILES_DIRS = []
+
+# django-components 설정을 위해 정의
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
 
@@ -261,11 +263,21 @@ if SENTRY_DSN:
 # django-components
 #  - context variable를 resolve하는 방식이 변경
 #    https://github.com/EmilStenstrom/django-components/?tab=readme-ov-file#isolate-components-slots
+from django_components import ComponentsSettings  # noqa
 
-COMPONENTS = {
-    # 0.67 미만 버전과 동일한 동작을 맞추기 위한 설정 (강의에서는 0.61 버전)
-    "slot_context_behavior": "allow_override",  # 디폴트: "prefer_root"
-}
+COMPONENTS = ComponentsSettings(
+    dirs=[
+        BASE_DIR / "core" / "src-django-components",
+    ],
+)
+
+STATICFILES_FINDERS += [
+    "django_components.finders.ComponentsFileSystemFinder",
+]
+
+MIDDLEWARE += [
+    "django_components.middleware.ComponentDependencyMiddleware",
+]
 
 
 # djangorestframework

@@ -1,4 +1,4 @@
-from django_components.component import register, Component
+from django_components import register, Component
 
 
 @register("modal-form")

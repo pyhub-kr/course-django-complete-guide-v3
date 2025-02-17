@@ -25,6 +25,7 @@ urlpatterns = [
     path("blog/", include("blog.urls")),
     path("", include("photolog.urls")),
     path("", include("core.urls")),
+    path("", include("django_components.urls")),
 ]
 
 if settings.DEBUG:

@@ -1,5 +1,8 @@
 {% load component_tags crispy_forms_tags partials %}
 
+{# django-components 템플릿을 렌더링하는 템플릿에 </head> 태그가 없다면 아래 템플릿 태그를 써줘야 CSS 코드가 주입 #}
+{% component_css_dependencies %}
+
 {% partialdef form %}
     {% crispy form %}
 {% endpartialdef %}
@@ -24,3 +27,6 @@
       })();
     </script>
 {% endif %}
+
+{# django-components 템플릿을 렌더링하는 템플릿에 </body> 태그가 없다면 아래 템플릿 태그를 써줘야 JS 코드가 주입 #}
+{% component_js_dependencies %}
